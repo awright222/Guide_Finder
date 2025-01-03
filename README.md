@@ -1,17 +1,10 @@
-# Lovely Paws Hotel
+# Guide Finder
 
 ## Full Stack React, Redux-Toolkit, Python, PostgreSQL, AWS S3 App
 
 ## Introduction
 
-This is a full-stack built with React, Redux-Toolkit, Python, PostgreSQL and AWS S3. The application features user authentication, which allows users to login, sign-up, logout, and use a demo user login for easy access. This application also includes 4 major CRUD features:
-
-1. Pets (and Pet's Image)
-2. Reviews
-3. Services
-4. Booking (or Reservation)
-
-The User is partially with Create and Read.
+This is a full-stack built with React, Redux-Toolkit, Python, PostgreSQL and AWS S3. The application features user authentication, which allows users to login, sign-up, logout, and use a demo user login for easy access. 
 
 The frontend was built with React, Redux-Toolkit (with normalized data), and CSS. The backend was built with Python, PostgreSQL and the AWS S3 buckets for image upload.
 
