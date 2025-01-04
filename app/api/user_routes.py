@@ -1,5 +1,6 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from sqlalchemy import not_
 from app.models import User, db
 
 user_routes = Blueprint('users', __name__)
@@ -12,40 +13,34 @@ def auth_required():
 def forbidden():
     return jsonify({"message": "Forbidden"}), 403
 
-@user_routes.route('/')
+# Get all users
+@user_routes.route('/', methods=['GET'])
 @login_required
 def users():
-    """
-    Query for all users and returns them in a list of user dictionaries
-    """
-    if not current_user.is_authenticated:
-        return auth_required()
     users = User.query.all()
-    return jsonify({'users': [user.to_dict() for user in users]})
+    return {'users': [user.to_dict() for user in users]}
 
+# Get all real users (excluding demo users)
+@user_routes.route('/real', methods=['GET'])
+@login_required
+def real_users():
+    excluded_usernames = ["demo-client", "demo-manager"]
+    users = User.query.filter(not_(User.username.in_(excluded_usernames))).all()
+    return {'users': [user.to_dict() for user in users]}
 
-@user_routes.route('/<int:id>')
+# Get a user by ID
+@user_routes.route('/<int:id>', methods=['GET'])
 @login_required
 def user(id):
-    """
-    Query for a user by id and returns that user in a dictionary
-    """
-    if not current_user.is_authenticated:
-        return auth_required()
     user = User.query.get(id)
     if not user:
         return jsonify({"message": "User not found"}), 404
-    return jsonify(user.to_dict())
+    return user.to_dict()
 
-
+# Update the profile of the logged-in user
 @user_routes.route('/profile', methods=['PUT'])
 @login_required
 def update_profile():
-    """
-    Updates the profile information of the logged-in User
-    """
-    if not current_user.is_authenticated:
-        return auth_required()
     data = request.get_json()
     user = User.query.get(current_user.id)
     if not user:
@@ -68,15 +63,10 @@ def update_profile():
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
-
+# Update a user by ID
 @user_routes.route('/<int:id>', methods=['PUT'])
 @login_required
 def update_user(id):
-    """
-    Updates and returns an existing User
-    """
-    if not current_user.is_authenticated:
-        return auth_required()
     data = request.get_json()
     user = User.query.get(id)
     if not user:
@@ -101,15 +91,10 @@ def update_user(id):
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
-
+# Delete a user by ID
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
-    """
-    Deletes an existing User
-    """
-    if not current_user.is_authenticated:
-        return auth_required()
     user = User.query.get(id)
     if not user:
         return jsonify({"message": "User not found"}), 404
@@ -121,3 +106,4 @@ def delete_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
+
