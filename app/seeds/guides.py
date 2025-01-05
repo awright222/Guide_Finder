@@ -225,6 +225,22 @@ def seed_guides():
             services='Montana Backcountry Skiing',
             username='SophiaWhite',
             password='password'
+        ),
+        Guide(
+            firstname='Tenzing',
+            lastname='Norgay',
+            email='tenzing.norgay@everestguides.com',
+            phone_num='977-1-5555555',
+            address='123 Everest Base Camp',
+            city='Kathmandu',
+            state='Bagmati',
+            zip='44600',
+            businessname="Everest Guided Trips",
+            insurance_provider_name='Himalayan Insurance',
+            insurance_number='EVEREST123',
+            services='Guided trips up Everest',
+            username='TenzingNorgay',
+            password='everest2023'
         )
     ]
 
