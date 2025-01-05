@@ -14,7 +14,6 @@ def seed_guides():
             businessname="John's Guide Service",
             insurance_provider_name='Insurance Co',
             insurance_number='123456789',
-            services='Wyoming Mule Deer Hunt',
             username='JohnDoe',
             password='password'
         ),
@@ -30,7 +29,6 @@ def seed_guides():
             businessname="Jane's Guide Service",
             insurance_provider_name='Insurance Co',
             insurance_number='987654321',
-            services='New Mexico Elk Hunt',
             username='JaneSmith',
             password='password'
         ),
@@ -46,7 +44,6 @@ def seed_guides():
             businessname="Mike's Fishing Adventures",
             insurance_provider_name='Insurance Co',
             insurance_number='555555555',
-            services='Florida Keys Fly Fishing',
             username='MikeJohnson',
             password='password'
         ),
@@ -62,7 +59,6 @@ def seed_guides():
             businessname="Sarah's Wilderness Expeditions",
             insurance_provider_name='Insurance Co',
             insurance_number='444444444',
-            services='Alaska Moose Hunt',
             username='SarahWilliams',
             password='password'
         ),
@@ -78,7 +74,6 @@ def seed_guides():
             businessname="Tom's Fishing Charters",
             insurance_provider_name='Insurance Co',
             insurance_number='333333333',
-            services='Alaska Fishing',
             username='TomBrown',
             password='password'
         ),
@@ -94,7 +89,6 @@ def seed_guides():
             businessname="Emily's Climbing Adventures",
             insurance_provider_name='Insurance Co',
             insurance_number='222222222',
-            services='California Rock Climbing',
             username='EmilyDavis',
             password='password'
         ),
@@ -110,7 +104,6 @@ def seed_guides():
             businessname="David's Climbing Expeditions",
             insurance_provider_name='Insurance Co',
             insurance_number='111111111',
-            services='Zion National Park Rock Climbing',
             username='DavidMiller',
             password='password'
         ),
@@ -126,7 +119,6 @@ def seed_guides():
             businessname="Laura's Backpacking Tours",
             insurance_provider_name='Insurance Co',
             insurance_number='666666666',
-            services='Glacier National Park Montana Backpacking',
             username='LauraWilson',
             password='password'
         ),
@@ -142,7 +134,6 @@ def seed_guides():
             businessname="Chris's Rafting Adventures",
             insurance_provider_name='Insurance Co',
             insurance_number='777777777',
-            services='Colorado White Water Rafting',
             username='ChrisMoore',
             password='password'
         ),
@@ -158,7 +149,6 @@ def seed_guides():
             businessname="Anna's Kayaking Tours",
             insurance_provider_name='Insurance Co',
             insurance_number='888888888',
-            services='Idaho White Water Kayaking',
             username='AnnaTaylor',
             password='password'
         ),
@@ -174,7 +164,6 @@ def seed_guides():
             businessname="James's Spear Fishing",
             insurance_provider_name='Insurance Co',
             insurance_number='999999999',
-            services='Baja Mexico Spear Fishing',
             username='JamesAnderson',
             password='password'
         ),
@@ -190,7 +179,6 @@ def seed_guides():
             businessname="Olivia's Fly Fishing",
             insurance_provider_name='Insurance Co',
             insurance_number='101010101',
-            services='New Zealand Fly Fishing',
             username='OliviaMartinez',
             password='password'
         ),
@@ -206,7 +194,6 @@ def seed_guides():
             businessname="Ethan's Fly Fishing",
             insurance_provider_name='Insurance Co',
             insurance_number='202020202',
-            services='Montana Fly Fishing',
             username='EthanThomas',
             password='password'
         ),
@@ -222,7 +209,6 @@ def seed_guides():
             businessname="Sophia's Ski Adventures",
             insurance_provider_name='Insurance Co',
             insurance_number='303030303',
-            services='Montana Backcountry Skiing',
             username='SophiaWhite',
             password='password'
         ),
@@ -238,7 +224,6 @@ def seed_guides():
             businessname="Everest Guided Trips",
             insurance_provider_name='Himalayan Insurance',
             insurance_number='EVEREST123',
-            services='Guided trips up Everest',
             username='TenzingNorgay',
             password='everest2023'
         )

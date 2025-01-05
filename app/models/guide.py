@@ -1,6 +1,8 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import jwt
+from datetime import datetime, timedelta
 
 class Guide(db.Model, UserMixin):
     __tablename__ = 'guides'
@@ -20,9 +22,10 @@ class Guide(db.Model, UserMixin):
     businessname = db.Column(db.String(255), nullable=True)
     insurance_provider_name = db.Column(db.String(255), nullable=True)
     insurance_number = db.Column(db.String(50), nullable=True)
-    services = db.Column(db.String(255), nullable=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+
+    services = db.relationship('Service', back_populates='guide')
 
     @property
     def password(self):
@@ -34,6 +37,12 @@ class Guide(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+    def generate_auth_token(self, expires_in=600):
+        return jwt.encode(
+            {'id': self.id, 'exp': datetime.utcnow() + timedelta(seconds=expires_in)},
+            'your-secret-key', algorithm='HS256'
+        )
 
     def to_dict(self):
         return {
@@ -49,6 +58,6 @@ class Guide(db.Model, UserMixin):
             'businessname': self.businessname,
             'insurance_provider_name': self.insurance_provider_name,
             'insurance_number': self.insurance_number,
-            'services': self.services,
+            'services': [service.to_dict() for service in self.services],
             'username': self.username
         }
