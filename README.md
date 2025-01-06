@@ -3842,3 +3842,67 @@ Returns all conversations for a specific Guide.
       "message": "Internal server error"
     }
     ```
+    
+### Favorites API Documentation
+
+#### Add a Favorite
+- **URL**: `/api/favorites`
+- **Method**: `POST`
+- **Headers**:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer <your_auth_token>`
+- **Body**:
+    ```json
+    {
+      "service_id": 1
+    }
+    ```
+- **Response**:
+  - **Status Code**: `201 Created`
+  - **Body**:
+    ```json
+    {
+      "id": 1,
+      "user_id": 1,
+      "service_id": 1
+    }
+    ```
+
+#### Remove a Favorite
+- **URL**: `/api/favorites/<service_id>`
+- **Method**: `DELETE`
+- **Headers**:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer <your_auth_token>`
+- **Response**:
+  - **Status Code**: `200 OK`
+  - **Body**:
+    ```json
+    {
+      "message": "Favorite successfully removed"
+    }
+    ```
+
+#### Get All Favorites
+- **URL**: `/api/favorites`
+- **Method**: `GET`
+- **Headers**:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer <your_auth_token>`
+- **Response**:
+  - **Status Code**: `200 OK`
+  - **Body**:
+    ```json
+    [
+      {
+        "id": 1,
+        "user_id": 1,
+        "service_id": 1
+      },
+      {
+        "id": 2,
+        "user_id": 1,
+        "service_id": 2
+      }
+    ]
+    ```

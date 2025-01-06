@@ -4,6 +4,8 @@ from .services import seed_services, undo_services
 from .guides import seed_guides, undo_guides
 from .bookings import seed_bookings, undo_bookings
 from .reviews import seed_reviews, undo_reviews
+from .messages import seed_messages, undo_messages
+from .favorites import seed_favorites, undo_favorites
 
 from app.models.db import db, environment, SCHEMA
 
@@ -23,11 +25,15 @@ def seed():
         undo_guides()
         undo_bookings()
         undo_reviews()
+        undo_messages()
+        undo_favorites()
     seed_users()
     seed_services()
     seed_guides()
     seed_bookings()
     seed_reviews()
+    seed_messages()
+    seed_favorites()
     
 
 # Creates the `flask seed undo` command
@@ -38,4 +44,6 @@ def undo():
     undo_guides()
     undo_users()
     undo_reviews()
+    undo_messages()
+    undo_favorites()
     # Add other undo functions here

@@ -4,6 +4,8 @@ from .guide import Guide
 from .service import Service
 from .booking import Booking
 from .review import Review
+from .message import Message
+from .favorite import Favorite
 from .db import environment, SCHEMA
 
-__all__ = ['db', 'User', 'Guide', 'Service', 'Booking', 'environment', 'Review', 'SCHEMA']
+__all__ = ['db', 'User', 'Guide', 'Service', 'Booking', 'Review', 'Message', 'environment', 'Favorite', 'SCHEMA']

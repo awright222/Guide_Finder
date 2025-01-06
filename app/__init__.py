@@ -11,6 +11,8 @@ from .api.guide_routes import guide_routes
 from .api.service_routes import service_routes 
 from .api.booking_routes import booking_routes
 from .api.review_routes import review_routes
+from .api.message_routes import message_routes
+from .api.favorite_routes import favorite_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -34,6 +36,8 @@ app.register_blueprint(guide_routes, url_prefix='/api/guides')
 app.register_blueprint(service_routes, url_prefix='/api/services')
 app.register_blueprint(booking_routes, url_prefix='/api/bookings')
 app.register_blueprint(review_routes, url_prefix='/api/reviews')
+app.register_blueprint(message_routes, url_prefix='/api/messages')
+app.register_blueprint(favorite_routes, url_prefix='/api/favorites')
 db.init_app(app)
 Migrate(app, db)
 
