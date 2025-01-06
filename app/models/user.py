@@ -2,7 +2,6 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -21,6 +20,8 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(50), nullable=True)
     zip = db.Column(db.String(20), nullable=True)
     is_manager = db.Column(db.Boolean, default=False)
+
+    bookings = db.relationship('Booking', back_populates='client', cascade='all, delete-orphan')
 
     @property
     def password(self):
@@ -45,5 +46,6 @@ class User(db.Model, UserMixin):
             'city': self.city,
             'state': self.state,
             'zip': self.zip,
-            'is_manager': self.is_manager
+            'is_manager': self.is_manager,
+            'bookings': [booking.to_dict() for booking in self.bookings]
         }

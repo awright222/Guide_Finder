@@ -17,6 +17,7 @@ class Service(db.Model):
     about_guide = db.Column(db.Text, nullable=False)
 
     guide = db.relationship('Guide', back_populates='services')
+    bookings = db.relationship('Booking', back_populates='service', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
@@ -31,5 +32,6 @@ class Service(db.Model):
             'images': self.images,
             'reviews': self.reviews,
             'experience_requirement': self.experience_requirement,
-            'about_guide': self.about_guide
+            'about_guide': self.about_guide,
+            'bookings': [booking.to_dict() for booking in self.bookings]
         }
