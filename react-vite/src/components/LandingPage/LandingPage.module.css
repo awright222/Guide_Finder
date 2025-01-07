@@ -1,0 +1,26 @@
+.container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  .favoritesList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .favoriteItem {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }

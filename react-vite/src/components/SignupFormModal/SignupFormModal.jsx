@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { thunkSignup } from "../../redux/session";
+import { signup } from "../../redux/session"; // Correct import for signup
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -24,7 +24,7 @@ function SignupFormModal() {
     }
 
     const serverResponse = await dispatch(
-      thunkSignup({
+      signup({
         email,
         username,
         password,
