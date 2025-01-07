@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { signup } from "../../redux/session"; // Correct import for signup
-import "./SignupForm.css";
+import { signup } from "../../redux/session"; 
+import "./SignupForm.module.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();

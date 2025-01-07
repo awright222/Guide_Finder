@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFavoritesThunk } from '../../redux/favorites';
-import { useNavigate } from 'react-router-dom'; 
-import landingStyles from './LandingPage.module.css'; 
+import { useNavigate } from 'react-router-dom';
+import landingStyles from './LandingPage.module.css';
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -14,29 +13,19 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getFavoritesThunk());
-
-      // Redirect based on user role after login
-      if (user.role === 'guide') navigate('/guide-dashboard');
-      else if (user.role === 'manager') navigate('/manager-dashboard');
-      else navigate('/user-dashboard');
+      // Fetch user-specific data or perform other actions
     }
   }, [dispatch, user, navigate]);
 
   return (
     <div className={landingStyles.container}>
-      <h1 className={landingStyles.title}>Welcome to Guide Finder</h1>
+      <h1 className={landingStyles.title}>Guide Finder</h1>
+      <h2 className={landingStyles.subtitle}>From summit to sea, find your adventure</h2>
+      <button className={landingStyles.button}>Start Your Adventure</button>
 
       {errors && errors !== null && !user && <p className={landingStyles.error}>Error: {errors}</p>}
-
       {loading && <p>Loading...</p>}
 
-      {/* Public content here */}
-      {!user && (
-        <p>Explore the platform and find your next adventure!</p>
-      )}
-
-      {/* Show user content only if authenticated */}
       {user && !loading && (
         <>
           <h2 className={landingStyles.subtitle}>Your Favorites</h2>
@@ -49,6 +38,24 @@ const LandingPage = () => {
           </ul>
         </>
       )}
+
+      <div className={landingStyles.section}>
+        <div className={landingStyles.aboutBox}>
+          <h2 className={landingStyles.sectionTitle}>About Guide Finder</h2>
+          <p>About Guide Finder</p>
+          <button className={landingStyles.readMoreButton}>Read More</button>
+        </div>
+        <div className={landingStyles.whoWeAreBox}>
+          <h3 className={landingStyles.sectionTitle}>Who We Are</h3>
+          <p>Short description about who we are.</p>
+          <button className={landingStyles.readMoreButton}>Read More</button>
+        </div>
+        <div className={landingStyles.howItWorksBox}>
+          <h3 className={landingStyles.sectionTitle}>How It Works</h3>
+          <p>Short description about how it works.</p>
+          <button className={landingStyles.readMoreButton}>Read More</button>
+        </div>
+      </div>
     </div>
   );
 };

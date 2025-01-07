@@ -1,26 +1,99 @@
+:root {
+  --deep-charcoal-gray: #37474F;
+  --muted-sky-blue: #90CAF9;
+  --soft-olive-green: #A5D6A7;
+  --off-white: #F5F5F5;
+}
+
 .container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .title {
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
-  
-  .subtitle {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-  }
-  
-  .favoritesList {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .favoriteItem {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  background-color: var(--off-white);
+  min-height: 100vh; 
+}
+
+.title {
+  font-size: 3em;
+  margin-bottom: 10px;
+  color: var(--deep-charcoal-gray);
+}
+
+.subtitle {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: var(--deep-charcoal-gray);
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: var(--muted-sky-blue);
+  color: var(--deep-charcoal-gray);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: var(--off-white);
+}
+
+.section-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--deep-charcoal-gray);
+}
+
+.aboutBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 2px solid var(--muted-sky-blue);
+  background-color: var(--soft-olive-green);
+  color: var(--deep-charcoal-gray);
+}
+
+.whoWeAreBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 2px solid var(--muted-sky-blue);
+  background-color: var(--deep-charcoal-gray);
+  color: var(--off-white);
+}
+
+.howItWorksBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 2px solid var(--muted-sky-blue);
+  background-color: var (--deep-charcoal-gray);
+  color: var (--off-white);
+}
+
+.read-more-button {
+  padding: 5px 10px;
+  background-color: var(--muted-sky-blue);
+  color: var(--deep-charcoal-gray);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
