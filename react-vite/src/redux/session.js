@@ -7,16 +7,16 @@ const initialState = {
 };
 
 // Helper function to get JWT from localStorage
-const getToken = () => {
-  return localStorage.getItem('token');
-};
+const getToken = () => localStorage.getItem('token');
 
+// Restore user session
 export const restoreUser = createAsyncThunk(
   "session/restoreUser",
   async (_, { rejectWithValue }) => {
     const token = getToken();
     if (!token) {
-      return rejectWithValue(null); 
+      console.warn("No token found. Skipping restore user process.");
+      return null; // Return null instead of rejecting
     }
 
     try {
@@ -29,15 +29,16 @@ export const restoreUser = createAsyncThunk(
       const data = await res.json();
 
       if (!res.ok) {
-        return rejectWithValue(data);
+        throw new Error(data.message || "Failed to restore session.");
       }
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Trouble getting current user");
+      return rejectWithValue(error.message || "Error restoring session.");
     }
   }
 );
 
+// Login user
 export const login = createAsyncThunk(
   "session/login",
   async ({ email, password }, { rejectWithValue }) => {
@@ -51,66 +52,43 @@ export const login = createAsyncThunk(
       const data = await res.json();
 
       if (!res.ok) {
-        return rejectWithValue("Unauthorized access. Please check your credentials.");
+        throw new Error(data.message || "Invalid login credentials.");
       }
 
       localStorage.setItem('token', data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Login failed");
+      return rejectWithValue(error.message || "Login failed.");
     }
   }
 );
 
+// Signup user
 export const signup = createAsyncThunk(
   "session/signup",
-  async (
-    {
-      username,
-      email,
-      password,
-      firstname,
-      lastname,
-      phone_num,
-      address,
-      city,
-      state,
-      zip,
-    },
-    { rejectWithValue }
-  ) => {
+  async (userInfo, { rejectWithValue }) => {
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          firstname,
-          lastname,
-          phone_num,
-          address,
-          city,
-          state,
-          zip,
-        }),
+        body: JSON.stringify(userInfo),
         credentials: 'include',
       });
       const data = await res.json();
 
       if (!res.ok) {
-        return rejectWithValue("Unauthorized access. Please check your credentials.");
+        throw new Error(data.message || "Signup failed.");
       }
 
       localStorage.setItem('token', data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Signup failed");
+      return rejectWithValue(error.message || "Signup error occurred.");
     }
   }
 );
 
+// Logout user
 export const logout = createAsyncThunk(
   "session/logout",
   async (_, { rejectWithValue }) => {
@@ -120,19 +98,24 @@ export const logout = createAsyncThunk(
         credentials: 'include',
       });
       localStorage.removeItem('token');
-      return;
     } catch (error) {
-      return rejectWithValue(error.message || "Logout failed");
+      return rejectWithValue("Logout failed. Please try again.");
     }
   }
 );
 
+// Create the session slice
 const sessionSlice = createSlice({
   name: "session",
   initialState,
-  reducers: {},
+  reducers: {
+    resetErrors: (state) => {
+      state.errors = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Restore User
       .addCase(restoreUser.pending, (state) => {
         state.loading = true;
         state.errors = null;
@@ -145,6 +128,8 @@ const sessionSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
+
+      // Login
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.errors = null;
@@ -157,6 +142,8 @@ const sessionSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
+
+      // Signup
       .addCase(signup.pending, (state) => {
         state.loading = true;
         state.errors = null;
@@ -169,6 +156,8 @@ const sessionSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
       })
+
+      // Logout
       .addCase(logout.pending, (state) => {
         state.loading = true;
         state.errors = null;
@@ -184,4 +173,5 @@ const sessionSlice = createSlice({
   },
 });
 
+export const { resetErrors } = sessionSlice.actions;
 export default sessionSlice.reducer;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, restoreUser } from "../../redux/session";
 import { useModal } from "../../context/Modal";
-import "./LoginForm.module.css";
+import styles from "./LoginForm.module.css"; 
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -29,33 +29,42 @@ function LoginFormModal() {
     }
   };
 
+  console.log("LoginFormModal rendered");
+
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
-      </form>
-    </>
+    <div className={styles.loginModal}>
+      <div className={styles.loginModalBackground} onClick={closeModal} />
+      <div className={styles.loginModalContent}>
+        <h1 className={styles.modalTitle}>Log In</h1>
+        <form onSubmit={handleSubmit} className={styles.modalForm}>
+          <label className={styles.modalLabel}>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.modalInput}
+              autoComplete="email"
+              placeholder="Please enter email" 
+            />
+          </label>
+          {errors.email && <p className={styles.modalError}>{errors.email}</p>}
+          <label className={styles.modalLabel}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.modalInput}
+              autoComplete="current-password"
+              placeholder="Please enter password" 
+            />
+          </label>
+          {errors.password && <p className={styles.modalError}>{errors.password}</p>}
+          <button type="submit" className={styles.modalButton}>Log In</button>
+        </form>
+      </div>
+    </div>
   );
 }
 

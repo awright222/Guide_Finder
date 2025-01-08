@@ -1,4 +1,4 @@
-#modal {
+.modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -7,18 +7,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 12px; 
+  overflow: hidden;
 }
 
-#modal-background {
+.modalBackground {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
-#modal-content {
+.modalContent {
   position: absolute;
-  background-color:white;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  overflow: hidden;
 }

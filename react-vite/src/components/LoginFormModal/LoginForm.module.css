@@ -1,0 +1,93 @@
+:root {
+  --deep-charcoal-gray: #37474F;
+  --muted-sky-blue: #90CAF9;
+  --soft-olive-green: #A5D6A7;
+  --off-white: #F5F5F5;
+}
+
+.loginModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); 
+  z-index: 1000; 
+}
+
+.loginModalBackground {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+ 
+}
+
+.loginModalContent {
+  position: relative; 
+  background-color: var(--deep-charcoal-gray); 
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  max-width: 600px; 
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.modalTitle {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--off-white);
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%;
+}
+
+.modalLabel {
+  margin-bottom: 10px;
+  font-size: 20px; 
+  color: var(--deep-charcoal-gray);
+  width: 100%; 
+}
+
+.modalInput {
+  padding: 8px;
+  font-size: 20px; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+  width: 60%; 
+  justify-content: center;
+}
+
+.modalError {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.modalButton {
+  padding: 12px 55px;
+  font-size: 16px;
+  background-color: var(--muted-sky-blue); 
+  color: var(--deep-charcoal-gray); 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px; 
+}
+
+.modalButton:hover {
+  background-color: var(--soft-olive-green);
+}

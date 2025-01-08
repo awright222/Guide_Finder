@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import store from "./redux/store";
 import { router } from "./router";
 import * as sessionActions from "./redux/session";
+import { ModalProvider, Modal } from "./context/Modal"; 
 import "./index.css";
 
 if (import.meta.env.MODE !== "production") {
@@ -15,7 +16,10 @@ if (import.meta.env.MODE !== "production") {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <RouterProvider router={router} />
+      <ModalProvider>
+        <Modal /> 
+        <RouterProvider router={router} />
+      </ModalProvider>
     </ReduxProvider>
   </React.StrictMode>
 );

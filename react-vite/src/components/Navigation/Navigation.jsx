@@ -1,18 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import navStyles from "./Navigation.module.css";
+import { useModal } from "../../context/Modal"; 
+import LoginFormModal from "../LoginFormModal"; 
+import { login } from "../../redux/session"; 
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDemoOpen, setIsDemoOpen] = useState(false); 
   const user = useSelector((state) => state.session.user);
+  const dispatch = useDispatch();
+  const { setModalContent } = useModal(); 
+  const demoDropdownRef = useRef(null);
 
   const toggleSidePanel = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleDemoDropdown = () => {
+    setIsDemoOpen(!isDemoOpen);
+  };
+
+  useEffect(() => {
+    if (isDemoOpen && demoDropdownRef.current) {
+      demoDropdownRef.current.style.top = "100%";
+    }
+  }, [isDemoOpen]);
+
+  const openLoginModal = () => {
+    setModalContent(<LoginFormModal />); 
+  };
+
+  const handleDemoLogin = (role) => {
+    const credentials = {
+      manager: { email: "manager@example.com", password: "password" },
+      user: { email: "user@example.com", password: "password" },
+      guide: { email: "guide@example.com", password: "password" },
+    };
+
+    dispatch(login(credentials[role]));
+    toggleSidePanel(); 
   };
 
   return (
@@ -24,135 +56,148 @@ function Navigation() {
         <button onClick={toggleSidePanel} className={`${navStyles.closeButton} ${isOpen ? navStyles.open : ""}`}>
           &times;
         </button>
-        <ul>
-          <li>
+        <div className={navStyles.navItems}>
+          <div className={navStyles.navItem}>
             <NavLink to="/" onClick={toggleSidePanel}>
               <div className={navStyles.iconBox}>
                 <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
               </div>
               <div className={navStyles.linkBox}>Home</div>
             </NavLink>
-          </li>
+          </div>
           {user ? (
             <>
               {user.role === 'user' && (
                 <>
-                  <li>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/user-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>User Dashboard</div>
                     </NavLink>
-                  </li>
-                  <li>
+                  </div>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/user-profile" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
-                  </li>
+                  </div>
                 </>
               )}
               {user.role === 'manager' && (
                 <>
-                  <li>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/manager-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>Manager Dashboard</div>
                     </NavLink>
-                  </li>
-                  <li>
+                  </div>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/manager-profile" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
-                  </li>
+                  </div>
                 </>
               )}
               {user.role === 'guide' && (
                 <>
-                  <li>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/guide-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>Guide Dashboard</div>
                     </NavLink>
-                  </li>
-                  <li>
+                  </div>
+                  <div className={navStyles.navItem}>
                     <NavLink to="/guide-profile" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
                         <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
-                  </li>
+                  </div>
                 </>
               )}
-              <li>
+              <div className={navStyles.navItem}>
                 <ProfileButton />
-              </li>
+              </div>
             </>
           ) : (
             <>
-              <li>
-                <NavLink to="/login" onClick={toggleSidePanel}>
+              <div className={navStyles.navItem}>
+                <button onClick={openLoginModal} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
                     <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                   </div>
                   <div className={navStyles.linkBox}>Log In</div>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/signup" onClick={toggleSidePanel}>
+                </button>
+              </div>
+              <div className={navStyles.navItem}>
+                <button onClick={toggleSidePanel} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
                     <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                   </div>
                   <div className={navStyles.linkBox}>Sign Up</div>
-                </NavLink>
-              </li>
-              <li>
-              <NavLink to="/demo-user" onClick={toggleSidePanel}>
-            <div className={navStyles.iconBox}>
-              <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
-            </div>
-            <div className={navStyles.linkBox}>Explore</div>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/demo" onClick={toggleSidePanel}>
-            <div className={navStyles.iconBox}>
-              <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
-            </div>
-            <div className={navStyles.linkBox}>Demo</div>
-          </NavLink>
-        </li>
-              <hr className={navStyles.navDivider} />
-              <li>
+                </button>
+              </div>
+              <div className={navStyles.navItem}>
+                <button onClick={toggleSidePanel} className={navStyles.linkBox}>
+                  <div className={navStyles.iconBox}>
+                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                  </div>
+                  <div className={navStyles.linkBox}>Explore</div>
+                </button>
+              </div>
+              <div className={`${navStyles.navItem} ${isDemoOpen ? navStyles.open : ""}`}>
+                <div>
+                  <button onClick={toggleDemoDropdown} className={navStyles.linkBox}>
+                    <div className={navStyles.iconBox}>
+                      <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                    </div>
+                    <div className={navStyles.linkBox}>Demo</div>
+                  </button>
+                  {isDemoOpen && (
+                    <div className={navStyles.demoDropdown} ref={demoDropdownRef}>
+                      <div>
+                        <button onClick={() => handleDemoLogin("manager")} className={navStyles.linkBox}>
+                          Manager
+                        </button>
+                      </div>
+                      <div>
+                        <button onClick={() => handleDemoLogin("user")} className={navStyles.linkBox}>
+                          User
+                        </button>
+                      </div>
+                      <div>
+                        <button onClick={() => handleDemoLogin("guide")} className={navStyles.linkBox}>
+                          Guide
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {isDemoOpen && <hr className={navStyles.navDivider} />} 
+              <div className={navStyles.navItem}>
                 <NavLink to="/partners" onClick={toggleSidePanel}>
                   <div className={navStyles.iconBox}>
                     <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                   </div>
                   <div className={navStyles.linkBox}>Our Partners</div>
                 </NavLink>
-              </li>
-              <li>
-                <NavLink to="/contact" onClick={toggleSidePanel}>
-                  <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
-                  </div>
-                  <div className={navStyles.linkBox}>Contact</div>
-                </NavLink>
-              </li>
+              </div>
             </>
           )}
-        </ul>
+        </div>
         <div className={navStyles.footerContent}>
           <div className={navStyles.footerBox}>
             <div className={navStyles.socialLinksBox}>

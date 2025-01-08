@@ -4,12 +4,6 @@
   --soft-olive-green: #A5D6A7;
   --off-white: #F5F5F5;
 }
-/* 
-html, body {
-  height: 100%; 
-  margin: 0;
-  padding: 0;
-} */
 
 .menuButton {
   font-size: 2em;
@@ -19,8 +13,8 @@ html, body {
   position: fixed;
   top: 10px;
   left: 10px;
-  z-index: 1000;
   color: var(--deep-charcoal-gray); 
+  z-index: 1000;
 }
 
 .menuButton.open {
@@ -31,7 +25,6 @@ html, body {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 999;
   top: 0;
   left: 0;
   background-color: var(--deep-charcoal-gray);
@@ -41,40 +34,43 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  z-index: 999;
 }
 
 .sidePanel.open {
   width: 250px;
 }
 
-.sidePanel ul {
-  list-style-type: none;
-  padding: 0;
+.navItems {
   flex-grow: 1;
   display: none;
-}
-
-.sidePanel.open ul {
-  display: flex; 
   flex-direction: column;
 }
 
-.sidePanel ul li {
-  padding: 8px 16px;
-  text-align: left;
+.sidePanel.open .navItems {
   display: flex;
-  align-items: center;
 }
 
-.sidePanel ul li a {
+.navItem {
+  padding: 8px 16px;
+  text-align: left;
+  display: block; 
+}
+
+.navItem a,
+.navItem button {
   color: var(--off-white);
   text-decoration: none;
   font-size: 1.5em;
   display: flex;
   align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.sidePanel ul li a:hover {
+.navItem a:hover,
+.navItem button:hover {
   color: var(--muted-sky-blue);
 }
 
@@ -151,24 +147,45 @@ svg.svg-inline--fa.fa-location-dot {
 }
 
 .navDivider {
+  width: 50%;
+  margin: 10px auto;
+  border: 1px solid var(--off-white);
+}
+
+.demoDropdown {
+  display: flex;
+  flex-direction: column;
+  padding: 9px 16px;
+  text-align: left;
+  background-color: var(--deep-charcoal-gray);
+  /* position: absolute;  */
+  top: 100%; 
+  left: 0;
+  width: 100%;
+}
+
+.demoDropdown button::before {
+  content: "•";
+  color: var(--off-white);
+  font-size: 1.5em;
+  margin-right: 8px;
+}
+
+.navItem.open .demoDropdown {
+  display: block; 
+}
+
+.demoDropdown button {
+  color: var(--off-white);
+  text-decoration: none;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  background: none;
   border: none;
-  border-top: 1px solid var(--off-white);
-  margin: 20px 0; 
-  width: 50%; 
-  align-self: center; 
+  cursor: pointer;
 }
 
-/* 
-@media (max-width: 768px) {
-  .sidePanel ul li a .fa-location-dot {
-    font-size: 0.75em; 
-    margin-right: 0.25em; 
-  }
+.demoDropdown button:hover {
+  color: var(--muted-sky-blue);
 }
-
-@media (min-width: 769px) {
-  .sidePanel ul li a .fa-location-dot {
-    font-size: 1em; 
-    margin-right: 0.5em; 
-  }
-} */

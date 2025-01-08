@@ -7,23 +7,44 @@ import * as sessionActions from "../redux/session";
 export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("Restoring user...");
     dispatch(sessionActions.restoreUser())
-      .then(() => {
-        console.log("User restored");
+      .unwrap()
+      .then((user) => {
+        if (user === null) {
+          console.log("No token found, user not logged in.");
+        } else {
+          console.log("User restored successfully");
+        }
         setIsLoaded(true);
       })
-      .catch(err => console.error("Error restoring user:", err));
+      .catch((err) => {
+        console.error("Error restoring user:", err);
+        setError("Failed to restore session.");
+        setIsLoaded(true);
+      });
   }, [dispatch]);
-  
 
   return (
     <>
       <Navigation />
-      {isLoaded && <div style={{ minHeight: '100vh' }}><Outlet /></div>}
-
+      {isLoaded ? (
+        error ? (
+          <div style={{ minHeight: '100vh', textAlign: 'center', padding: '2rem' }}>
+            <p>{error}</p>
+          </div>
+        ) : (
+          <div style={{ minHeight: '100vh' }}>
+            <Outlet />
+          </div>
+        )
+      ) : (
+        <div style={{ minHeight: '100vh', textAlign: 'center', padding: '2rem' }}>
+          <p>Loading...</p>
+        </div>
+      )}
     </>
   );
 }
