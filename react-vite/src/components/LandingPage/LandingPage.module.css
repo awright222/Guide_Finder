@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 0px;
   text-align: center;
   background-color: var(--off-white);
   min-height: 100vh; 
@@ -28,20 +28,19 @@
 }
 
 .button {
-  padding: 10px 20px;
-  background-color: var(--muted-sky-blue);
-  color: var(--deep-charcoal-gray);
+  padding: 10px 20px; 
+  background-color: var(--deep-charcoal-gray);
+  color: var(--off-white);
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1em;
 }
 
 .section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: var(--off-white);
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
 }
 
 .section-title {
@@ -50,43 +49,66 @@
   color: var(--deep-charcoal-gray);
 }
 
+.aboutContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; 
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
+  height: 350px; 
+  background-color: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* padding: 20px; */
+}
+
+.imageBox {
+  width: 40%; 
+  height: 100%;
+  background-image: url('https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw85a2ee60/sports/snow/f24_collections-snow-shoppable-hero-1.jpg?q=80&sw=800'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden; 
+}
+
 .aboutBox {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border: 2px solid var(--muted-sky-blue);
+  width: 60%;
+  height: 100%; 
   background-color: var(--soft-olive-green);
   color: var(--deep-charcoal-gray);
+  overflow: hidden;
 }
 
-.whoWeAreBox {
+.infoContainer {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%; 
+  max-width: 1200px; 
+  margin: 20px 0;
+  gap: 20px; 
+}
+
+.exploreBox, .howItWorksBox {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50%;
+  height: 300px;
   padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
+  justify-content: center;
+  text-align: center;
+  /* margin: 20px 10px; */
+  border-radius: 1px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border: 2px solid var(--muted-sky-blue);
   background-color: var(--deep-charcoal-gray);
   color: var(--off-white);
-}
-
-.howItWorksBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border: 2px solid var(--muted-sky-blue);
-  background-color: var (--deep-charcoal-gray);
-  color: var (--off-white);
 }
 
 .read-more-button {
@@ -96,4 +118,43 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.sectionDivider {
+  width: 80%;
+  border: none;
+  border-top: 2px solid var(--muted-sky-blue);
+  margin: 40px 0;
+}
+
+.headerContentBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5); 
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  margin: auto; 
+}
+
+.headerSection {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95%; 
+  height: 350px; 
+  /* background-image: url('https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw247d3078/sports/fly-fishing/F24-collections_fly-fish-hero.jpg?q=85&sw=850');  */
+  background-size: cover; 
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 0; 
 }

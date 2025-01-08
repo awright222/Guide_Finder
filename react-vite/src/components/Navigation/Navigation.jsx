@@ -118,13 +118,21 @@ function Navigation() {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/demo-user" onClick={toggleSidePanel}>
-                  <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
-                  </div>
-                  <div className={navStyles.linkBox}>Explore</div>
-                </NavLink>
-              </li>
+              <NavLink to="/demo-user" onClick={toggleSidePanel}>
+            <div className={navStyles.iconBox}>
+              <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+            </div>
+            <div className={navStyles.linkBox}>Explore</div>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/demo" onClick={toggleSidePanel}>
+            <div className={navStyles.iconBox}>
+              <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+            </div>
+            <div className={navStyles.linkBox}>Demo</div>
+          </NavLink>
+        </li>
               <hr className={navStyles.navDivider} />
               <li>
                 <NavLink to="/partners" onClick={toggleSidePanel}>
