@@ -1,1 +1,10 @@
 /* TODO: Add sitewide styles */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Apply the font to the entire web app */
+body {
+  font-family: 'Lexend Deca', 'Montserrat', sans-serif;
+}
+
+/* TODO: Add sitewide styles */
