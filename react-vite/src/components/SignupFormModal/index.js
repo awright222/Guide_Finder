@@ -1,3 +1,4 @@
 import SignupFormModal from './SignupFormModal';
+import GuideSignupFormModal from './GuideSignupFormModal';
 
-export default SignupFormModal;
+export { SignupFormModal, GuideSignupFormModal };

@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import ProfileButton from "./ProfileButton";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import navStyles from "./Navigation.module.css";
-import { useModal } from "../../context/Modal"; 
-import LoginFormModal from "../LoginFormModal"; 
-import { login } from "../../redux/session"; 
+import { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { useModal } from '../../context/Modal';
+import { SignupFormModal } from '../SignupFormModal';
+import LoginFormModal from '../LoginFormModal'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; 
+import { FaLinkedin, FaGithub } from 'react-icons/fa'; 
+import { login } from '../../redux/session'; 
+import ProfileButton from './ProfileButton'; 
+import navStyles from './Navigation.module.css'; 
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,10 @@ function Navigation() {
 
   const openLoginModal = () => {
     setModalContent(<LoginFormModal />); 
+  };
+
+  const openSignupModal = () => {
+    setModalContent(<SignupFormModal />);
   };
 
   const handleDemoLogin = (role) => {
@@ -142,7 +147,7 @@ function Navigation() {
                 </button>
               </div>
               <div className={navStyles.navItem}>
-                <button onClick={toggleSidePanel} className={navStyles.linkBox}>
+                <button onClick={openSignupModal} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
                     <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                   </div>

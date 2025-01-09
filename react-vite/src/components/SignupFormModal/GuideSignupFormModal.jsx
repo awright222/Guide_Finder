@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { signup } from "../../redux/session"; 
-import "./SignupForm.module.css";
-import GuideSignupFormModal from "./GuideSignupFormModal"; 
+import { signupGuide } from "../../redux/session"; 
+import "./GuideSignupFormModal.module.css";
 
-function SignupFormModal() {
+function GuideSignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [errors, setErrors] = useState({});
-  const { setModalContent, closeModal } = useModal();
+  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +26,12 @@ function SignupFormModal() {
     }
 
     const serverResponse = await dispatch(
-      signup({
+      signupGuide({
         email,
         username,
         password,
+        firstname,
+        lastname,
       })
     );
 
@@ -39,20 +42,34 @@ function SignupFormModal() {
     }
   };
 
-  const openGuideApplicationModal = () => {
-    closeModal(); // Close current modal first
-    setModalContent(<GuideSignupFormModal />); // Open the GuideSignupFormModal
-  };
-
   return (
-    <div className="signupModal">
-      <div className="signupModalContent">
-        <button onClick={openGuideApplicationModal} className="guideApplicationButton">
-          Guide Application
-        </button>
-        <h1>Sign Up</h1>
+    <div className="guideSignupModal">
+      <div className="guideSignupModalContent">
+        <h1>Guide Sign Up</h1>
         {errors.server && <p>{errors.server}</p>}
         <form onSubmit={handleSubmit}>
+          <div className="formGroup">
+            <label>First Name</label>
+            <input
+              type="text"
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+              placeholder="Enter your first name"
+              required
+            />
+            {errors.firstname && <p>{errors.firstname}</p>}
+          </div>
+          <div className="formGroup">
+            <label>Last Name</label>
+            <input
+              type="text"
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
+              placeholder="Enter your last name"
+              required
+            />
+            {errors.lastname && <p>{errors.lastname}</p>}
+          </div>
           <div className="formGroup">
             <label>Email</label>
             <input
@@ -104,4 +121,4 @@ function SignupFormModal() {
   );
 }
 
-export default SignupFormModal;
+export default GuideSignupFormModal;

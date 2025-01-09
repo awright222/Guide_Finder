@@ -88,6 +88,31 @@ export const signup = createAsyncThunk(
   }
 );
 
+// Signup guide
+export const signupGuide = createAsyncThunk(
+  "session/signupGuide",
+  async (guideInfo, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/auth/signup/guide", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(guideInfo),
+        credentials: 'include',
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Guide signup failed.");
+      }
+
+      localStorage.setItem('token', data.token);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Guide signup error occurred.");
+    }
+  }
+);
+
 // Logout user
 export const logout = createAsyncThunk(
   "session/logout",
@@ -153,6 +178,20 @@ const sessionSlice = createSlice({
         state.errors = action.payload;
       })
       .addCase(signup.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+
+      // Signup Guide
+      .addCase(signupGuide.pending, (state) => {
+        state.loading = true;
+        state.errors = null;
+      })
+      .addCase(signupGuide.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      })
+      .addCase(signupGuide.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
