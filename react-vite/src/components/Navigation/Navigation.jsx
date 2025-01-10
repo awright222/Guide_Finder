@@ -10,6 +10,8 @@ import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import ProfileButton from './ProfileButton'; 
 import navStyles from './Navigation.module.css'; 
 
+
+
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDemoOpen, setIsDemoOpen] = useState(false); 
@@ -155,6 +157,7 @@ function Navigation() {
                   <div className={navStyles.iconBox}>
                     <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
                   </div>
+                  
                   <div className={navStyles.linkBox}>Explore</div>
                 </button>
               </div>

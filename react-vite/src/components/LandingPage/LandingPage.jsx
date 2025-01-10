@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-regular-svg-icons';
+import { useModal } from '../../context/Modal';
+import { SignupFormModal } from '../SignupFormModal';
 import landingStyles from './LandingPage.module.css';
 
 const LandingPage = () => {
@@ -12,12 +14,16 @@ const LandingPage = () => {
   const user = useSelector((state) => state.session.user);
   const loading = useSelector((state) => state.session.loading);
   const errors = useSelector((state) => state.session.errors);
+  const { setModalContent } = useModal();
 
   useEffect(() => {
     if (user) {
       // Fetch user-specific data or perform other actions
     }
   }, [dispatch, user, navigate]);
+  const openSignupModal = () => {
+    setModalContent(<SignupFormModal />);
+  };
 
   return (
     <div className={landingStyles.container}>
@@ -25,7 +31,7 @@ const LandingPage = () => {
         <div className={landingStyles.headerContentBox}>
           <h1 className={landingStyles.title}>Guide Finder</h1>
           <h2 className={landingStyles.subtitle}>From summit to sea, find your adventure</h2>
-          <button className={landingStyles.button}>Start Your Adventure</button>
+          <button className={landingStyles.button} onClick={openSignupModal}>Start Your Adventure</button>
 
           {errors && errors !== null && !user && <p className={landingStyles.error}>Error: {errors}</p>}
           {loading && <p>Loading...</p>}
@@ -52,7 +58,7 @@ const LandingPage = () => {
           <div className={landingStyles.imageBox}></div>
           <div className={landingStyles.aboutBox}>
             <h2 className={landingStyles.sectionTitle}>About Guide Finder</h2>
-            <p>Climb peaks, tackle white water.... bla bla bla </p>
+            <p> bla bla bla </p>
             <button className={landingStyles.readMoreButton}>Read More</button>
           </div>
         </div>

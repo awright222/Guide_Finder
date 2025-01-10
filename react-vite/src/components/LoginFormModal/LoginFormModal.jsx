@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { login, restoreUser } from "../../redux/session";
 import { useModal } from "../../context/Modal";
 import { useNavigate } from "react-router-dom";
-import styles from "./LoginForm.module.css";
+import loginFormStyles from "./LoginForm.module.css";
 
 function LoginFormModal({ initialEmail = "", initialPassword = "" }) {
   const dispatch = useDispatch();
@@ -54,33 +54,35 @@ function LoginFormModal({ initialEmail = "", initialPassword = "" }) {
   };
 
   return (
-    <div className={styles.loginModal}>
-      <div className={styles.loginModalBackground} onClick={closeModal} />
-      <div className={styles.loginModalContent}>
-        <h1 className={styles.modalTitle}>Log In</h1>
-        <form onSubmit={handleSubmit} className={styles.loginForm}>
+    <div className={loginFormStyles.loginModalContainer}>
+      <div className={loginFormStyles.loginModalBackground} onClick={closeModal} />
+      <div className={loginFormStyles.loginModalContent}>
+        <h1 className={loginFormStyles.modalTitle}>Log In</h1>
+        <form onSubmit={handleSubmit} className={loginFormStyles.modalForm}>
           <div>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email" className={loginFormStyles.modalLabel}>Email</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className={loginFormStyles.modalInput}
             />
-            {errors.email && <p className={styles.error}>{errors.email}</p>}
+            {errors.email && <p className={loginFormStyles.modalError}>{errors.email}</p>}
           </div>
           <div>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className={loginFormStyles.modalLabel}>Password</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className={loginFormStyles.modalInput}
             />
-            {errors.password && <p className={styles.error}>{errors.password}</p>}
+            {errors.password && <p className={loginFormStyles.modalError}>{errors.password}</p>}
           </div>
-          {errors.general && <p className={styles.error}>{errors.general}</p>}
-          <button type="submit">Login</button>
+          {errors.general && <p className={loginFormStyles.modalError}>{errors.general}</p>}
+          <button type="submit" className={loginFormStyles.modalButton}>Login</button>
         </form>
       </div>
     </div>
