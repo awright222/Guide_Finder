@@ -34,10 +34,12 @@ function Navigation() {
   }, [isDemoOpen]);
 
   const openLoginModal = (initialEmail = "", initialPassword = "") => {
-    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} />); 
+    console.log("Opening login modal");
+    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} />);
   };
-
+  
   const openSignupModal = () => {
+    console.log("Opening signup modal");
     setModalContent(<SignupFormModal />);
   };
 

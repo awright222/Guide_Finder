@@ -36,6 +36,7 @@ function LoginFormModal({ initialEmail = "", initialPassword = "" }) {
         }
       } else {
         await dispatch(restoreUser());
+        console.log("Closing modal after successful login");
         closeModal();
 
         // Navigate to the appropriate route based on the user's role
