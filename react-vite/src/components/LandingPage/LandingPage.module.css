@@ -47,6 +47,7 @@
   font-size: 2em;
   margin-bottom: 20px;
   color: var(--deep-charcoal-gray);
+  
 }
 
 .aboutContainer {
@@ -137,8 +138,8 @@
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.5); 
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   margin: auto; 
+  
 }
 
 .headerSection {

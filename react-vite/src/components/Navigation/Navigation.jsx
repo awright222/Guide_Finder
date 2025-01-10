@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import { SignupFormModal } from '../SignupFormModal';
@@ -7,7 +7,6 @@ import LoginFormModal from '../LoginFormModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons'; 
 import { FaLinkedin, FaGithub } from 'react-icons/fa'; 
-import { login } from '../../redux/session'; 
 import ProfileButton from './ProfileButton'; 
 import navStyles from './Navigation.module.css'; 
 
@@ -15,7 +14,6 @@ function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDemoOpen, setIsDemoOpen] = useState(false); 
   const user = useSelector((state) => state.session.user);
-  const dispatch = useDispatch();
   const { setModalContent } = useModal(); 
   const demoDropdownRef = useRef(null);
 
@@ -33,8 +31,8 @@ function Navigation() {
     }
   }, [isDemoOpen]);
 
-  const openLoginModal = () => {
-    setModalContent(<LoginFormModal />); 
+  const openLoginModal = (initialEmail = "", initialPassword = "") => {
+    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} />); 
   };
 
   const openSignupModal = () => {
@@ -43,13 +41,11 @@ function Navigation() {
 
   const handleDemoLogin = (role) => {
     const credentials = {
-      manager: { email: "manager@example.com", password: "password" },
-      user: { email: "user@example.com", password: "password" },
-      guide: { email: "guide@example.com", password: "password" },
+      user: { email: "demo-client@aa.io", password: "password" },
+      guide: { email: "demo-guide@aa.io", password: "password" },
+      manager: { email: "demo-manager@aa.io", password: "password" },
     };
-
-    dispatch(login(credentials[role]));
-    toggleSidePanel(); 
+    openLoginModal(credentials[role].email, credentials[role].password);
   };
 
   return (
@@ -173,18 +169,18 @@ function Navigation() {
                   {isDemoOpen && (
                     <div className={navStyles.demoDropdown} ref={demoDropdownRef}>
                       <div>
-                        <button onClick={() => handleDemoLogin("manager")} className={navStyles.linkBox}>
-                          Manager
+                        <button onClick={() => handleDemoLogin('user')} className={navStyles.linkBox}>
+                          Demo User
                         </button>
                       </div>
                       <div>
-                        <button onClick={() => handleDemoLogin("user")} className={navStyles.linkBox}>
-                          User
+                        <button onClick={() => handleDemoLogin('guide')} className={navStyles.linkBox}>
+                          Demo Guide
                         </button>
                       </div>
                       <div>
-                        <button onClick={() => handleDemoLogin("guide")} className={navStyles.linkBox}>
-                          Guide
+                        <button onClick={() => handleDemoLogin('manager')} className={navStyles.linkBox}>
+                          Demo Manager
                         </button>
                       </div>
                     </div>

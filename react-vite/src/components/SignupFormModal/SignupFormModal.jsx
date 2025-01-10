@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { signup } from "../../redux/session"; 
+import { signup } from "../../redux/session";
 import userSignupStyles from "./SignupForm.module.css";
-import GuideSignupFormModal from "./GuideSignupFormModal"; 
+import GuideSignupFormModal from "./GuideSignupFormModal";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -23,12 +23,10 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({}); // Clear previous errors
 
     if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
-      });
+      return setErrors({ confirmPassword: "Passwords must match." });
     }
 
     const serverResponse = await dispatch(
@@ -46,16 +44,21 @@ function SignupFormModal() {
       })
     );
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+    // Updated error handling to match the backend structure
+    if (serverResponse?.errors) {
+      if (Array.isArray(serverResponse.errors)) {
+        setErrors({ general: serverResponse.errors[0] });
+      } else {
+        setErrors(serverResponse.errors);
+      }
     } else {
       closeModal();
     }
   };
 
   const openGuideApplicationModal = () => {
-    closeModal(); // Close current modal first
-    setModalContent(<GuideSignupFormModal />); // Open the GuideSignupFormModal
+    closeModal();
+    setModalContent(<GuideSignupFormModal />);
   };
 
   const handleOutsideClick = (e) => {
@@ -72,7 +75,8 @@ function SignupFormModal() {
           Guide Application
         </button>
         <h1>Sign Up</h1>
-        {errors.server && <p>{errors.server}</p>}
+        {/* General error message */}
+        {errors.general && <p className={userSignupStyles.modalError}>{errors.general}</p>}
         <form onSubmit={handleSubmit}>
           <div className={userSignupStyles.formGroup}>
             <label>Email</label>
@@ -83,7 +87,7 @@ function SignupFormModal() {
               placeholder="Enter your email"
               required
             />
-            {errors.email && <p>{errors.email}</p>}
+            {errors.email && <p className={userSignupStyles.modalError}>{errors.email}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Username</label>
@@ -94,7 +98,7 @@ function SignupFormModal() {
               placeholder="Choose a username"
               required
             />
-            {errors.username && <p>{errors.username}</p>}
+            {errors.username && <p className={userSignupStyles.modalError}>{errors.username}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Password</label>
@@ -105,7 +109,7 @@ function SignupFormModal() {
               placeholder="Create a password"
               required
             />
-            {errors.password && <p>{errors.password}</p>}
+            {errors.password && <p className={userSignupStyles.modalError}>{errors.password}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Confirm Password</label>
@@ -116,7 +120,7 @@ function SignupFormModal() {
               placeholder="Confirm your password"
               required
             />
-            {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+            {errors.confirmPassword && <p className={userSignupStyles.modalError}>{errors.confirmPassword}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>First Name</label>
@@ -127,7 +131,7 @@ function SignupFormModal() {
               placeholder="Enter your first name"
               required
             />
-            {errors.firstname && <p>{errors.firstname}</p>}
+            {errors.firstname && <p className={userSignupStyles.modalError}>{errors.firstname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Last Name</label>
@@ -138,7 +142,7 @@ function SignupFormModal() {
               placeholder="Enter your last name"
               required
             />
-            {errors.lastname && <p>{errors.lastname}</p>}
+            {errors.lastname && <p className={userSignupStyles.modalError}>{errors.lastname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Phone Number</label>
@@ -148,7 +152,7 @@ function SignupFormModal() {
               onChange={(e) => setPhoneNum(e.target.value)}
               placeholder="Enter your phone number"
             />
-            {errors.phoneNum && <p>{errors.phoneNum}</p>}
+            {errors.phoneNum && <p className={userSignupStyles.modalError}>{errors.phoneNum}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Address</label>
@@ -158,7 +162,7 @@ function SignupFormModal() {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your address"
             />
-            {errors.address && <p>{errors.address}</p>}
+            {errors.address && <p className={userSignupStyles.modalError}>{errors.address}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>City</label>
@@ -168,7 +172,7 @@ function SignupFormModal() {
               onChange={(e) => setCity(e.target.value)}
               placeholder="Enter your city"
             />
-            {errors.city && <p>{errors.city}</p>}
+            {errors.city && <p className={userSignupStyles.modalError}>{errors.city}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>State</label>
@@ -178,7 +182,7 @@ function SignupFormModal() {
               onChange={(e) => setState(e.target.value)}
               placeholder="Enter your state"
             />
-            {errors.state && <p>{errors.state}</p>}
+            {errors.state && <p className={userSignupStyles.modalError}>{errors.state}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Zip Code</label>
@@ -188,7 +192,7 @@ function SignupFormModal() {
               onChange={(e) => setZip(e.target.value)}
               placeholder="Enter your zip code"
             />
-            {errors.zip && <p>{errors.zip}</p>}
+            {errors.zip && <p className={userSignupStyles.modalError}>{errors.zip}</p>}
           </div>
           <div className={userSignupStyles.joinButtonContainer}>
             <button type="submit" className={userSignupStyles.joinButton}>Join</button>

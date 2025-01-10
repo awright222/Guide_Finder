@@ -1,69 +1,83 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+
 const initialState = {
   user: null,
   loading: false,
   errors: null,
 };
 
-// Helper function to get JWT from localStorage
-const getToken = () => localStorage.getItem('token');
+const tokenUtils = {
+  getToken: () => localStorage.getItem('token'),
+  setToken: (token) => localStorage.setItem('token', token),
+  clearToken: () => localStorage.removeItem('token'),
 
-// Restore user session
+  getCSRFToken: () => {
+      const csrfMatch = document.cookie.match(/(^|;\s*)csrf_token=([^;]*)/);
+      return csrfMatch ? csrfMatch[2] : null;
+  }
+};
+
+// Restore User
 export const restoreUser = createAsyncThunk(
   "session/restoreUser",
   async (_, { rejectWithValue }) => {
-    const token = getToken();
-    if (!token) {
-      console.warn("No token found. Skipping restore user process.");
-      return null; // Return null instead of rejecting
-    }
+      try {
+          await fetch("/api/auth/csrf", { credentials: 'include' });
 
-    try {
-      const res = await fetch("/api/auth/", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-        credentials: 'include',
-      });
-      const data = await res.json();
+          const token = tokenUtils.getToken();
+          if (!token) return null;
 
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to restore session.");
+          const res = await fetch("/api/auth/", {
+              headers: { Authorization: `Bearer ${token}` },
+              credentials: 'include',
+          });
+          if (!res.ok) throw new Error("Failed to restore session.");
+          return await res.json();
+      } catch (error) {
+          return rejectWithValue(error.message);
       }
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message || "Error restoring session.");
-    }
   }
 );
 
-// Login user
+
+// Login
 export const login = createAsyncThunk(
   "session/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-      });
-      const data = await res.json();
+        const csrfToken = tokenUtils.getCSRFToken();
+        console.log("CSRF Token:", csrfToken);
+        if (!csrfToken) {
+            throw new Error("CSRF token not found. Please refresh the page.");
+        }
 
-      if (!res.ok) {
-        throw new Error(data.message || "Invalid login credentials.");
-      }
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken  
+            },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include' 
+        });
 
-      localStorage.setItem('token', data.token);
-      return data;
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.errors || "Login failed.");
+        }
+
+        const data = await res.json();
+        tokenUtils.setToken(data.token); 
+        return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Login failed.");
+      console.error("Login error:", error);
+        return rejectWithValue(error.message);
     }
-  }
-);
+});
 
-// Signup user
+
+// Signup (User)
 export const signup = createAsyncThunk(
   "session/signup",
   async (userInfo, { rejectWithValue }) => {
@@ -75,20 +89,16 @@ export const signup = createAsyncThunk(
         credentials: 'include',
       });
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Signup failed.");
-      }
-
-      localStorage.setItem('token', data.token);
+      if (!res.ok) throw new Error(data.message || "Signup failed.");
+      tokenUtils.setToken(data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Signup error occurred.");
+      return rejectWithValue(error.message);
     }
   }
 );
 
-// Signup guide
+// Signup Guide
 export const signupGuide = createAsyncThunk(
   "session/signupGuide",
   async (guideInfo, { rejectWithValue }) => {
@@ -100,20 +110,16 @@ export const signupGuide = createAsyncThunk(
         credentials: 'include',
       });
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Guide signup failed.");
-      }
-
-      localStorage.setItem('token', data.token);
+      if (!res.ok) throw new Error(data.message || "Guide signup failed.");
+      tokenUtils.setToken(data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || "Guide signup error occurred.");
+      return rejectWithValue(error.message);
     }
   }
 );
 
-// Logout user
+// Logout
 export const logout = createAsyncThunk(
   "session/logout",
   async (_, { rejectWithValue }) => {
@@ -122,14 +128,14 @@ export const logout = createAsyncThunk(
         method: "POST",
         credentials: 'include',
       });
-      localStorage.removeItem('token');
+      tokenUtils.clearToken();
     } catch (error) {
       return rejectWithValue("Logout failed. Please try again.");
     }
   }
 );
 
-// Create the session slice
+// Session Slice
 const sessionSlice = createSlice({
   name: "session",
   initialState,
@@ -139,76 +145,50 @@ const sessionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    const setLoading = (state) => {
+      state.loading = true;
+      state.errors = null;
+    };
+    const setError = (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    };
+
     builder
-      // Restore User
-      .addCase(restoreUser.pending, (state) => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(restoreUser.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload;
-      })
+      .addCase(restoreUser.pending, setLoading)
       .addCase(restoreUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
+      .addCase(restoreUser.rejected, setError)
 
-      // Login
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload;
-      })
+      .addCase(login.pending, setLoading)
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
+      .addCase(login.rejected, setError)
 
-      // Signup
-      .addCase(signup.pending, (state) => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(signup.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload;
-      })
+      .addCase(signup.pending, setLoading)
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
+      .addCase(signup.rejected, setError)
 
-      // Signup Guide
-      .addCase(signupGuide.pending, (state) => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(signupGuide.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload;
-      })
+      .addCase(signupGuide.pending, setLoading)
       .addCase(signupGuide.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
+      .addCase(signupGuide.rejected, setError)
 
-      // Logout
-      .addCase(logout.pending, (state) => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload;
-      })
+      .addCase(logout.pending, setLoading)
       .addCase(logout.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
-      });
+      })
+      .addCase(logout.rejected, setError);
   },
 });
 

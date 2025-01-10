@@ -1,15 +1,25 @@
-import { createBrowserRouter } from 'react-router-dom';
-import LandingPage from '../components/LandingPage';
-import Layout from './Layout';
+import { createBrowserRouter } from "react-router-dom";
+import Layout from './Layout'; 
+import LandingPage from "../components/LandingPage";
+import UserHomePage from "../components/UserHomePage"; 
+// Import other components as needed
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
-    element: <Layout />,
+    path: "/",
+    element: <Layout />, // Use Layout as the main layout
     children: [
       {
         path: "/",
         element: <LandingPage />,
       },
+      {
+        path: "user-home",
+        element: <UserHomePage />,
+      },
+      // Add other routes here
     ],
   },
 ]);
+
+export { router };
