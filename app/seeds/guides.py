@@ -226,6 +226,21 @@ def seed_guides():
             insurance_number='EVEREST123',
             username='TenzingNorgay',
             password='everest2023'
+        ),
+        Guide(
+            firstname='Demo',
+            lastname='Guide',
+            email='demo-guide@aa.io',
+            phone_num='555-555-5555',
+            address='789 Demo St',
+            city='Demoville',
+            state='CA',
+            zip='12345',
+            businessname="Demo's Guide Service",
+            insurance_provider_name='Demo Insurance',
+            insurance_number='000000000',
+            username='DemoGuide',
+            password='password'
         )
     ]
 
