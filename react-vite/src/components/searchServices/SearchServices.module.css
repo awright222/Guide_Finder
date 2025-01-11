@@ -1,0 +1,61 @@
+:root {
+    --deep-charcoal-gray: #37474F;
+    --muted-sky-blue: #90CAF9;
+    --soft-olive-green: #A5D6A7;
+    --off-white: #F5F5F5;
+  }
+  
+  .searchServicesPage {
+    background-color: var(--off-white);
+    color: var(--deep-charcoal-gray);
+    padding: 20px;
+  }
+  
+  .searchBar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: var(--soft-olive-green);
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .searchBar input, .searchBar select {
+    padding: 10px;
+    border: 1px solid var(--deep-charcoal-gray);
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  
+  .servicesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .serviceItem {
+    border: 1px solid var(--deep-charcoal-gray);
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--off-white);
+    cursor: pointer;
+    flex: 1 1 calc(25% - 20px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .serviceItem img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .serviceItem p {
+    margin: 10px 0 0;
+    font-size: 1.2em;
+    text-align: center;
+  }

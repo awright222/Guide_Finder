@@ -37,8 +37,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7); /* Dark, semi-transparent background */
-  z-index: 1000; /* Ensure it's on top */
+  background-color: rgba(223, 217, 217, 0.6);
+  z-index: 1000; 
 }
 
 .modalBackground {
@@ -50,12 +50,12 @@
 }
 
 .modalContent {
-  position: relative; /* Let flexbox handle positioning */
-  background-color: var(--deep-charcoal-gray); /* Dark background */
+  position: relative; 
+  background-color: var(--deep-charcoal-gray);
   border-radius: 12px;
   overflow: hidden;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   max-width: 600px;
   width: 100%;
   display: flex;

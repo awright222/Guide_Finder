@@ -1,0 +1,143 @@
+:root {
+    --deep-charcoal-gray: #37474F;
+    --muted-sky-blue: #90CAF9;
+    --soft-olive-green: #A5D6A7;
+    --off-white: #F5F5F5;
+  }
+  
+  .guideDashboard {
+    background-color: var(--off-white);
+    color: var(--deep-charcoal-gray);
+    padding: 20px;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--deep-charcoal-gray);
+    padding: 10px 20px;
+  }
+  
+  .navbar a {
+    color: var(--off-white);
+    text-decoration: none;
+    font-size: 1.5em;
+  }
+  
+  .navbarCenter button {
+    background: none;
+    border: none;
+    color: var(--off-white);
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  
+  .navbarCenter button:hover {
+    color: var(--muted-sky-blue);
+  }
+  
+  .profileButton {
+    background: none;
+    border: none;
+    color: var(--off-white);
+    font-size: 1.2em;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .profileDropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--deep-charcoal-gray);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .profileButton:hover .profileDropdown {
+    display: block;
+  }
+  
+  .profileDropdown button {
+    background: none;
+    border: none;
+    color: var(--off-white);
+    font-size: 1em;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .profileDropdown button:hover {
+    color: var(--muted-sky-blue);
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .sloganBox {
+    flex: 1;
+    background-color: var(--soft-olive-green);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 300px; 
+    margin-right: auto;
+  }
+  
+  .sloganBox h2 {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin: 0;
+    color: var(--deep-charcoal-gray);
+    text-align: left;
+  }
+  
+  .sloganBox p {
+    font-size: 3em;
+    margin: 0;
+    color: var(--deep-charcoal-gray);
+    text-align: left; 
+  }
+  
+  .bookingsBox {
+    flex: 1;
+    background-color: var(--deep-charcoal-gray);
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--off-white);
+  }
+  
+  .bookingsList {
+    background-color: var(--off-white);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--deep-charcoal-gray);
+    margin-top: 10px;
+  }
+  
+  .servicesBox {
+    flex: 1;
+    background-color: var(--muted-sky-blue);
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .bookingItem, .serviceItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .bookingItem img, .serviceItem img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import { SignupFormModal } from '../SignupFormModal';
 import LoginFormModal from '../LoginFormModal'; 
@@ -13,6 +13,7 @@ import navStyles from './Navigation.module.css';
 
 
 function Navigation() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDemoOpen, setIsDemoOpen] = useState(false); 
   const user = useSelector((state) => state.session.user);
@@ -35,7 +36,7 @@ function Navigation() {
 
   const openLoginModal = (initialEmail = "", initialPassword = "") => {
     console.log("Opening login modal");
-    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} />);
+    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} navigate={navigate}/>);
   };
   
   const openSignupModal = () => {
@@ -52,8 +53,14 @@ function Navigation() {
     openLoginModal(credentials[role].email, credentials[role].password);
   };
 
+  const hideSidePanelRoutes = ["/user-dashboard", "/manager-dashboard", "/guide-dashboard"];
+  const isDashboardPage = hideSidePanelRoutes.includes(location.pathname);
+
   return (
     <>
+
+  {!isDashboardPage && ( 
+       <>
       <button onClick={toggleSidePanel} className={`${navStyles.menuButton} ${isOpen ? navStyles.open : ""}`}>
         ☰
       </button>
@@ -70,6 +77,8 @@ function Navigation() {
               <div className={navStyles.linkBox}>Home</div>
             </NavLink>
           </div>
+          
+         
           {user ? (
             <>
               {user.role === 'user' && (
@@ -77,27 +86,28 @@ function Navigation() {
                   <div className={navStyles.navItem}>
                     <NavLink to="/user-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>User Dashboard</div>
                     </NavLink>
                   </div>
                   <div className={navStyles.navItem}>
-                    <NavLink to="/user-profile" onClick={toggleSidePanel}>
+                    <NavLink to="/user-profile=" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
                   </div>
                 </>
               )}
+
               {user.role === 'manager' && (
                 <>
                   <div className={navStyles.navItem}>
                     <NavLink to="/manager-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>Manager Dashboard</div>
                     </NavLink>
@@ -105,19 +115,20 @@ function Navigation() {
                   <div className={navStyles.navItem}>
                     <NavLink to="/manager-profile" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
                   </div>
                 </>
               )}
+
               {user.role === 'guide' && (
                 <>
                   <div className={navStyles.navItem}>
                     <NavLink to="/guide-dashboard" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>Guide Dashboard</div>
                     </NavLink>
@@ -125,23 +136,25 @@ function Navigation() {
                   <div className={navStyles.navItem}>
                     <NavLink to="/guide-profile" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>
-                        <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                        <FontAwesomeIcon icon={faLocationDot} />
                       </div>
                       <div className={navStyles.linkBox}>Profile</div>
                     </NavLink>
                   </div>
                 </>
               )}
+
               <div className={navStyles.navItem}>
                 <ProfileButton />
               </div>
             </>
           ) : (
+            // If user is NOT logged in
             <>
               <div className={navStyles.navItem}>
                 <button onClick={openLoginModal} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                    <FontAwesomeIcon icon={faLocationDot} />
                   </div>
                   <div className={navStyles.linkBox}>Log In</div>
                 </button>
@@ -149,7 +162,7 @@ function Navigation() {
               <div className={navStyles.navItem}>
                 <button onClick={openSignupModal} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                    <FontAwesomeIcon icon={faLocationDot} />
                   </div>
                   <div className={navStyles.linkBox}>Sign Up</div>
                 </button>
@@ -157,46 +170,31 @@ function Navigation() {
               <div className={navStyles.navItem}>
                 <button onClick={toggleSidePanel} className={navStyles.linkBox}>
                   <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                    <FontAwesomeIcon icon={faLocationDot} />
                   </div>
-                  
                   <div className={navStyles.linkBox}>Explore</div>
                 </button>
               </div>
               <div className={`${navStyles.navItem} ${isDemoOpen ? navStyles.open : ""}`}>
-                <div>
-                  <button onClick={toggleDemoDropdown} className={navStyles.linkBox}>
-                    <div className={navStyles.iconBox}>
-                      <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
-                    </div>
-                    <div className={navStyles.linkBox}>Demo</div>
-                  </button>
-                  {isDemoOpen && (
-                    <div className={navStyles.demoDropdown} ref={demoDropdownRef}>
-                      <div>
-                        <button onClick={() => handleDemoLogin('user')} className={navStyles.linkBox}>
-                          Demo User
-                        </button>
-                      </div>
-                      <div>
-                        <button onClick={() => handleDemoLogin('guide')} className={navStyles.linkBox}>
-                          Demo Guide
-                        </button>
-                      </div>
-                      <div>
-                        <button onClick={() => handleDemoLogin('manager')} className={navStyles.linkBox}>
-                          Demo Manager
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <button onClick={toggleDemoDropdown} className={navStyles.linkBox}>
+                  <div className={navStyles.iconBox}>
+                    <FontAwesomeIcon icon={faLocationDot} />
+                  </div>
+                  <div className={navStyles.linkBox}>Demo</div>
+                </button>
+                {isDemoOpen && (
+                  <div className={navStyles.demoDropdown} ref={demoDropdownRef}>
+                    <button onClick={() => handleDemoLogin('user')} className={navStyles.linkBox}>Demo User</button>
+                    <button onClick={() => handleDemoLogin('guide')} className={navStyles.linkBox}>Demo Guide</button>
+                    <button onClick={() => handleDemoLogin('manager')} className={navStyles.linkBox}>Demo Manager</button>
+                  </div>
+                )}
               </div>
-              {isDemoOpen && <hr className={navStyles.navDivider} />} 
+              {isDemoOpen && <hr className={navStyles.navDivider} />}
               <div className={navStyles.navItem}>
                 <NavLink to="/partners" onClick={toggleSidePanel}>
                   <div className={navStyles.iconBox}>
-                    <FontAwesomeIcon icon={faLocationDot} className="fa-location-dot" />
+                    <FontAwesomeIcon icon={faLocationDot} />
                   </div>
                   <div className={navStyles.linkBox}>Our Partners</div>
                 </NavLink>
@@ -204,6 +202,8 @@ function Navigation() {
             </>
           )}
         </div>
+
+        {/* Footer Section */}
         <div className={navStyles.footerContent}>
           <div className={navStyles.footerBox}>
             <div className={navStyles.socialLinksBox}>
@@ -223,7 +223,10 @@ function Navigation() {
         </div>
       </div>
     </>
-  );
+)}
+</>
+);
 }
+
 
 export default Navigation;

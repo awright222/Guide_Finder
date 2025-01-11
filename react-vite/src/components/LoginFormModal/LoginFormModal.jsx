@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, restoreUser } from "../../redux/session";
 import { useModal } from "../../context/Modal";
-import { useNavigate } from "react-router-dom";
 import loginFormStyles from "./LoginForm.module.css";
 
-function LoginFormModal({ initialEmail = "", initialPassword = "" }) {
+function LoginFormModal({ initialEmail = "", initialPassword = "", navigate }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+ 
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState(initialPassword);
   const [errors, setErrors] = useState({});
@@ -42,7 +41,7 @@ function LoginFormModal({ initialEmail = "", initialPassword = "" }) {
         // Navigate to the appropriate route based on the user's role
         const userRole = serverResponse.user.role;
         const routeMap = {
-          user: '/user-home',
+          user: '/user-dashboard',
           guide: '/guide-dashboard',
           manager: '/manager-dashboard',
         };

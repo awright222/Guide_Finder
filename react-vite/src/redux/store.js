@@ -3,12 +3,14 @@ import { default as logger } from "redux-logger";
 import sessionReducer from "./session";
 import favoritesReducer from "./favorites";
 import bookingsReducer from "./bookings";
+import servicesReducer from "./services";
 
 const store = configureStore({
   reducer: {
     session: sessionReducer,
     favorites: favoritesReducer,
     bookings: bookingsReducer,
+    services: servicesReducer,
   },
   middleware: (getDefaultMiddleware) => {
     const middlewares = getDefaultMiddleware();

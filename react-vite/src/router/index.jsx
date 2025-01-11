@@ -1,23 +1,40 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from './Layout'; 
 import LandingPage from "../components/LandingPage";
-import UserHomePage from "../components/UserHomePage"; 
-// Import other components as needed
+import UserDashboard from "../components/UserDashboard";
+import GuideDashboard from "../components/GuideDashboard";
+import { Services, ServiceDetail } from "../components/services";
+import SearchServices from '../components/searchServices';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />, // Use Layout as the main layout
+    element: <Layout />, 
     children: [
       {
         path: "/",
         element: <LandingPage />,
       },
       {
-        path: "user-home",
-        element: <UserHomePage />,
+        path: "user-dashboard",
+        element: <UserDashboard />,
       },
-      // Add other routes here
+      {
+        path: "guide-dashboard",
+        element: <GuideDashboard />,
+      },
+      {
+        path: "services", 
+        element: <Services />,
+      },
+      {
+        path: "services/:serviceId", 
+        element: <ServiceDetail />,
+      },
+      {
+        path: "search-services",
+        element: <SearchServices />,
+      },
     ],
   },
 ]);
