@@ -77,15 +77,17 @@ const GuideDashboard = () => {
 
         <div className={GuideDashboardStyles.servicesBox}>
           <h2>Services</h2>
-          {services.length > 0 ? (
-            services.map(service => (
-              <div key={service.id} className={GuideDashboardStyles.serviceItem} onClick={() => handleServiceClick(service)}>
-                <p>{service.title}</p>
-              </div>
-            ))
-          ) : (
-            <p>No services available.</p>
-          )}
+          <div className={GuideDashboardStyles.servicesGrid}>
+            {services.length > 0 ? (
+              services.map(service => (
+                <div key={service.id} className={GuideDashboardStyles.serviceItem} onClick={() => handleServiceClick(service)}>
+                  <p>{service.title}</p>
+                </div>
+              ))
+            ) : (
+              <p>No services available.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

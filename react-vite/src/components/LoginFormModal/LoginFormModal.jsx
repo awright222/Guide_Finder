@@ -1,55 +1,45 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login, restoreUser } from "../../redux/session";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
+import * as sessionActions from "../../redux/session";
 import loginFormStyles from "./LoginForm.module.css";
 
-function LoginFormModal({ initialEmail = "", initialPassword = "", navigate }) {
+function LoginFormModal({ navigate }) {
   const dispatch = useDispatch();
- 
-  const [email, setEmail] = useState(initialEmail);
-  const [password, setPassword] = useState(initialPassword);
+  const csrfToken = useSelector(state => state.session.csrfToken);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setErrors({}); // Clear previous errors
 
-    try {
-      const serverResponse = await dispatch(
-        login({ email, password })
-      );
+    if (!csrfToken) {
+      setErrors({ general: "CSRF token not found. Please refresh the page." });
+      return;
+    }
 
-      console.log("Server Response:", serverResponse);
+    // Pass CSRF token in the headers
+    const serverResponse = await dispatch(
+      sessionActions.login({ email, password, csrfToken })
+    );
 
-      // Check if the server responded with errors
-      if (serverResponse?.errors) {
-        console.error("Login Errors:", serverResponse.errors);
-        // Handling error based on array or object error response
-        if (Array.isArray(serverResponse.errors)) {
-          setErrors({ general: serverResponse.errors[0] });
-        } else {
-          setErrors(serverResponse.errors);
-        }
-      } else {
-        await dispatch(restoreUser());
-        console.log("Closing modal after successful login");
-        closeModal();
+    if (serverResponse.type === "session/login/rejected") {
+      setErrors(serverResponse.payload.errors || {});
+    } else {
+      await dispatch(sessionActions.restoreUser());
+      closeModal();
 
-        // Navigate to the appropriate route based on the user's role
-        const userRole = serverResponse.user.role;
-        const routeMap = {
-          user: '/user-dashboard',
-          guide: '/guide-dashboard',
-          manager: '/manager-dashboard',
-        };
-        navigate(routeMap[userRole]);
-      }
-    } catch (error) {
-      console.error("Unexpected Error:", error);
-      setErrors({ general: "An unexpected error occurred. Please try again." });
+      // Navigate to the appropriate route based on the user's role
+      const userRole = serverResponse.payload.user.role;
+      const routeMap = {
+        user: '/user-dashboard',
+        guide: '/guide-dashboard',
+        manager: '/manager-dashboard',
+      };
+      navigate(routeMap[userRole]);
     }
   };
 
@@ -67,8 +57,10 @@ function LoginFormModal({ initialEmail = "", initialPassword = "", navigate }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={loginFormStyles.modalInput}
+              autoComplete="email"
+              required
             />
-            {errors.email && <p className={loginFormStyles.modalError}>{errors.email}</p>}
+            {errors.payload?.email && <p className={loginFormStyles.modalError}>{errors.payload?.email}</p>}
           </div>
           <div>
             <label htmlFor="password" className={loginFormStyles.modalLabel}>Password</label>
@@ -78,8 +70,10 @@ function LoginFormModal({ initialEmail = "", initialPassword = "", navigate }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={loginFormStyles.modalInput}
+              autoComplete="current-password"
+              required
             />
-            {errors.password && <p className={loginFormStyles.modalError}>{errors.password}</p>}
+            {errors.payload?.password && <p className={loginFormStyles.modalError}>{errors.payload?.password}</p>}
           </div>
           {errors.general && <p className={loginFormStyles.modalError}>{errors.general}</p>}
           <button type="submit" className={loginFormStyles.modalButton}>Login</button>

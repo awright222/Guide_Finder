@@ -130,6 +130,12 @@
     border-radius: 8px;
   }
   
+  .servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
   .bookingItem, .serviceItem {
     display: flex;
     align-items: center;

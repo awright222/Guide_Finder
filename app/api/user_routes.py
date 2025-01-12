@@ -106,4 +106,3 @@ def delete_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
-

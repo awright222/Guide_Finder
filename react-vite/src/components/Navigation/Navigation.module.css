@@ -152,27 +152,36 @@ svg.svg-inline--fa.fa-location-dot {
   border: 1px solid var(--off-white);
 }
 
+.demoButtonContainer {
+  position: relative;
+  padding: 8px 16px;
+}
+
+.demoButton {
+  background-color: var(--muted-sky-blue);
+  color: var(--deep-charcoal-gray);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
 .demoDropdown {
-  display: flex;
+  display: none;
   flex-direction: column;
   padding: 9px 16px;
   text-align: left;
   background-color: var(--deep-charcoal-gray);
-  /* position: absolute;  */
+  position: absolute;
   top: 100%; 
   left: 0;
   width: 100%;
+  z-index: 1000;
 }
 
-.demoDropdown button::before {
-  content: "•";
-  color: var(--off-white);
-  font-size: 1.5em;
-  margin-right: 8px;
-}
-
-.navItem.open .demoDropdown {
-  display: block; 
+.demoButtonContainer:hover .demoDropdown {
+  display: flex;
 }
 
 .demoDropdown button {
@@ -184,6 +193,7 @@ svg.svg-inline--fa.fa-location-dot {
   background: none;
   border: none;
   cursor: pointer;
+  padding: 8px 0;
 }
 
 .demoDropdown button:hover {

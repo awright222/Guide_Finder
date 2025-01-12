@@ -1,3 +1,5 @@
+from . import db
+
 class Service(db.Model):
     __tablename__ = 'services'
 
