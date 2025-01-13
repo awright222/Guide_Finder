@@ -40,7 +40,7 @@ const SearchServices = () => {
     const search = (data) => {
         if (!Array.isArray(data)) {
             console.warn('Invalid data format, expected an array:', data);
-            return [];  // Prevent errors by returning an empty array
+            return []; 
         }
 
         return data.filter(item =>

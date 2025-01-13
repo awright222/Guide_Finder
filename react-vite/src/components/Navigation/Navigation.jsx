@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import ProfileButton from './ProfileButton'; 
-import DemoButton from './DemoButton';  // Make sure this import is correct
+import DemoButton from './DemoButton'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
@@ -45,7 +45,7 @@ function Navigation() {
               &times;
             </button>
             <div className={navStyles.navItems}>
-              {/* Home Button */}
+             
               <div className={navStyles.navItem}>
                 <NavLink to="/" onClick={toggleSidePanel}>
                   <div className={navStyles.iconBox}>
@@ -55,7 +55,7 @@ function Navigation() {
                 </NavLink>
               </div>
 
-              {/* Login and Sign Up (if user is not logged in) */}
+              
               {!user && (
                 <>
                   <div className={navStyles.navItem}>
@@ -77,7 +77,7 @@ function Navigation() {
                 </>
               )}
 
-              {/* Explore Button */}
+              
               <div className={navStyles.navItem}>
                 <NavLink to="/search-services" onClick={toggleSidePanel}>
                   <div className={navStyles.iconBox}>
@@ -87,12 +87,12 @@ function Navigation() {
                 </NavLink>
               </div>
 
-              {/* Demo Button (with dropdown) */}
+             
               <div className={navStyles.navItem}>
-                <DemoButton />  {/* Your DemoButton component */}
+                <DemoButton /> 
               </div>
 
-              {/* Our Partners Button */}
+           
               <div className={navStyles.navItem}>
                 <NavLink to="/partners" onClick={toggleSidePanel}>
                   <div className={navStyles.iconBox}>
@@ -103,7 +103,7 @@ function Navigation() {
               </div>
             </div>
 
-            {/* Footer Content */}
+
             <div className={navStyles.footerContent}>
               <div className={navStyles.footerBox}>
                 <div className={navStyles.socialLinksBox}>

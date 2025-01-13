@@ -14,14 +14,14 @@ function LoginFormModal({ navigate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({}); 
 
     if (!csrfToken) {
       setErrors({ general: "CSRF token not found. Please refresh the page." });
       return;
     }
 
-    // Pass CSRF token in the headers
+    // Pass CSRF token in headers
     const serverResponse = await dispatch(
       sessionActions.login({ email, password, csrfToken })
     );
@@ -32,7 +32,7 @@ function LoginFormModal({ navigate }) {
       await dispatch(sessionActions.restoreUser());
       closeModal();
 
-      // Navigate to the appropriate route based on the user's role
+      
       const userRole = serverResponse.payload.user.role;
       const routeMap = {
         user: '/user-dashboard',

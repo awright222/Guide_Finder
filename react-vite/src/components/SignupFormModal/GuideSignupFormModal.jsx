@@ -27,13 +27,17 @@ function GuideSignupFormModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (password !== confirmPassword) {
       return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
+        confirmPassword: "Confirm Password field must be the same as the Password field",
       });
     }
 
+    // Clear previous errors
+    setErrors({});
+
+    // Dispatch signup action
     const serverResponse = await dispatch(
       signupGuide({
         email,
@@ -53,10 +57,11 @@ function GuideSignupFormModal() {
       })
     );
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+    // Check for errors
+    if (serverResponse.type === "session/signupGuide/rejected") {
+      setErrors(serverResponse.payload); // Set the error payload
     } else {
-      closeModal();
+      closeModal(); // Close modal on success
     }
   };
 

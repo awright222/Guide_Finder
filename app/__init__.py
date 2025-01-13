@@ -1,3 +1,5 @@
+
+
 import os
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
@@ -41,8 +43,10 @@ app.register_blueprint(favorite_routes, url_prefix='/api/favorites')
 db.init_app(app)
 Migrate(app, db)
 
-# Application Security
-CORS(app)
+# CORS Configuration
+CORS(app, supports_credentials=True) 
+
+# CSRF Protection
 CSRFProtect(app)
 
 # Since we are deploying with Docker and Flask,
@@ -62,8 +66,8 @@ def inject_csrf_token(response):
     response.set_cookie(
         'csrf_token',
         generate_csrf(),
-        secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get('FLASK_ENV') == 'production' else None,
+        secure=False,  # Disable secure for local testing (set to True in production)
+        samesite='Lax',  # Use 'Lax' for local testing (adjust to 'Strict' in production)
         httponly=True
     )
     return response

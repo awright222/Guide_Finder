@@ -6,10 +6,10 @@ export const fetchServices = createAsyncThunk('services/fetchServices', async (f
     console.log('Fetching services from API with filters:', filters);
     const query = new URLSearchParams(filters).toString();
 
-    // FIX: Corrected the endpoint to match your Flask route
+    
     const response = await axios.get(`/api/services/search?${query}`);
     
-    // Flatten and ensure array structure
+    // Flatten
     const services = Array.isArray(response.data) 
         ? response.data 
         : response.data.services || [];
@@ -53,7 +53,6 @@ const servicesSlice = createSlice({
             })
             .addCase(fetchServices.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                // Ensure the data is always an array
                 state.items = Array.isArray(action.payload) ? action.payload : [];
             })
             .addCase(fetchServices.rejected, (state, action) => {

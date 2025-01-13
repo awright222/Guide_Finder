@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-
 const initialState = {
   user: null,
   loading: false,
@@ -98,7 +97,7 @@ export const signup = createAsyncThunk(
   }
 );
 
-// Signup Guide
+// Signup (Guide)
 export const signupGuide = createAsyncThunk(
   "session/signupGuide",
   async (guideInfo, { rejectWithValue }) => {
@@ -111,13 +110,14 @@ export const signupGuide = createAsyncThunk(
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Guide signup failed.");
-      tokenUtils.setToken(data.token);
+      tokenUtils.setToken(data.token); 
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 // Logout
 export const logout = createAsyncThunk(
@@ -135,7 +135,6 @@ export const logout = createAsyncThunk(
   }
 );
 
-// Session Slice
 const sessionSlice = createSlice({
   name: "session",
   initialState,
@@ -176,10 +175,10 @@ const sessionSlice = createSlice({
       })
       .addCase(signup.rejected, setError)
 
-      .addCase(signupGuide.pending, setLoading)
+      .addCase(signupGuide.pending, setLoading)  
       .addCase(signupGuide.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload; 
       })
       .addCase(signupGuide.rejected, setError)
 

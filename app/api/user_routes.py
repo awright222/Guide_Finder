@@ -5,11 +5,11 @@ from app.models import User, db
 
 user_routes = Blueprint('users', __name__)
 
-# Error response for authentication required
+
 def auth_required():
     return jsonify({"message": "Authentication required"}), 401
 
-# Error response for forbidden access
+
 def forbidden():
     return jsonify({"message": "Forbidden"}), 403
 
