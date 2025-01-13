@@ -11,6 +11,7 @@ const store = configureStore({
     favorites: favoritesReducer,
     bookings: bookingsReducer,
     services: servicesReducer,
+    //messages:messagesReducer,
   },
   middleware: (getDefaultMiddleware) => {
     const middlewares = getDefaultMiddleware();
