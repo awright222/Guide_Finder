@@ -6,74 +6,158 @@ const initialState = {
   errors: null,
 };
 
-const tokenUtils = {
-  getToken: () => localStorage.getItem('token'),
-  setToken: (token) => localStorage.setItem('token', token),
-  clearToken: () => localStorage.removeItem('token'),
+// const tokenUtils = {
+//   getToken: () => localStorage.getItem('token'),
+//   setToken: (token) => localStorage.setItem('token', token),
+//   clearToken: () => localStorage.removeItem('token'),
 
-  getCSRFToken: () => {
-      const csrfMatch = document.cookie.match(/(^|;\s*)csrf_token=([^;]*)/);
-      return csrfMatch ? csrfMatch[2] : null;
-  }
-};
+//   getCSRFToken: () => {
+//       const csrfMatch = document.cookie.match(/(^|;\s*)csrf_token=([^;]*)/);
+//       return csrfMatch ? csrfMatch[2] : null;
+//   }
+// };
 
-// Restore User
+//! Restore User (ORIGINAL)
 export const restoreUser = createAsyncThunk(
   "session/restoreUser",
   async (_, { rejectWithValue }) => {
-      try {
-          await fetch("/api/auth/csrf", { credentials: 'include' });
+    try {
+      const res = await fetch("/api/auth/");
+      const data = await res.json();
 
-          const token = tokenUtils.getToken();
-          if (!token) return null;
-
-          const res = await fetch("/api/auth/", {
-              headers: { Authorization: `Bearer ${token}` },
-              credentials: 'include',
-          });
-          if (!res.ok) throw new Error("Failed to restore session.");
-          return await res.json();
-      } catch (error) {
-          return rejectWithValue(error.message);
+      if (!res.ok) {
+        return rejectWithValue(data);
       }
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Trouble getting current user");
+    }
   }
 );
 
+//! TESTING 2 restore user   // get 403 Forbidden
+
+// export const restoreUser = createAsyncThunk(
+//   "session/restoreUser",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const res = await fetch("/api/auth/", {
+//         method: "GET",
+//         credentials: "include", // Include credentials (cookies) in the request
+//         headers: {
+//           "Content-Type": "application/json",
+//           "X-CSRF-Token": getCsrfToken(), // Include CSRF token if required
+//         },
+//       });
+
+//       const data = await res.json();
+
+//       if (!res.ok) {
+//         return rejectWithValue(data);
+//       }
+
+//       return data;
+//     } catch (error) {
+//       return rejectWithValue(error.message || "Trouble getting current user");
+//     }
+//   }
+// );
+
+// // Helper function to get CSRF token from cookies
+// const getCsrfToken = () => {
+//   const name = "csrf_token=";
+//   const decodedCookie = decodeURIComponent(document.cookie);
+//   const ca = decodedCookie.split(';');
+//   for (let i = 0; i < ca.length; i++) {
+//     let c = ca[i];
+//     while (c.charAt(0) === ' ') {
+//       c = c.substring(1);
+//     }
+//     if (c.indexOf(name) === 0) {
+//       return c.substring(name.length, c.length);
+//     }
+//   }
+//   return "";
+// };
+
+//! TESTING 1 restore user
+// export const restoreUser = createAsyncThunk(
+//   "session/restoreUser",
+//   async (_, { rejectWithValue }) => {
+//       try {
+//           await fetch("/api/auth/csrf", { credentials: 'include' });
+
+//           const token = tokenUtils.getToken();
+//           if (!token) return null;
+
+//           const res = await fetch("/api/auth/", {
+//               headers: { Authorization: `Bearer ${token}` },
+//               credentials: 'include',
+//           });
+//           if (!res.ok) throw new Error("Failed to restore session.");
+//           return await res.json();
+//       } catch (error) {
+//           return rejectWithValue(error.message);
+//       }
+//   }
+// );
 
 // Login
 export const login = createAsyncThunk(
   "session/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-        const csrfToken = tokenUtils.getCSRFToken();
-        console.log("CSRF Token:", csrfToken);
-        if (!csrfToken) {
-            throw new Error("CSRF token not found. Please refresh the page.");
-        }
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-        const res = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": csrfToken  
-            },
-            body: JSON.stringify({ email, password }),
-            credentials: 'include' 
-        });
+      if (!res.ok) {
+        return rejectWithValue(data);
+      }
 
-        if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.errors || "Login failed.");
-        }
-
-        const data = await res.json();
-        tokenUtils.setToken(data.token); 
-        return data;
+      return data;
     } catch (error) {
-      console.error("Login error:", error);
-        return rejectWithValue(error.message);
+      return rejectWithValue(error.message || "Login failed");
     }
-});
+  }
+);
+// export const login = createAsyncThunk(
+//   "session/login",
+//   async ({ email, password }, { rejectWithValue }) => {
+//     try {
+//         const csrfToken = tokenUtils.getCSRFToken();
+//         console.log("CSRF Token:", csrfToken);
+//         if (!csrfToken) {
+//             throw new Error("CSRF token not found. Please refresh the page.");
+//         }
+
+//         const res = await fetch("/api/auth/login", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "X-CSRF-Token": csrfToken  
+//             },
+//             body: JSON.stringify({ email, password }),
+//             credentials: 'include' 
+//         });
+
+//         if (!res.ok) {
+//             const errorData = await res.json();
+//             throw new Error(errorData.errors || "Login failed.");
+//         }
+
+//         const data = await res.json();
+//         tokenUtils.setToken(data.token); 
+//         return data;
+//     } catch (error) {
+//       console.error("Login error:", error);
+//         return rejectWithValue(error.message);
+//     }
+// });
 
 
 // Signup (User)

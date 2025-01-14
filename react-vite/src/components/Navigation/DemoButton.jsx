@@ -28,15 +28,11 @@ const DemoButton = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const csrfToken = useSelector(state => state.session.csrfToken); 
+  // const csrfToken = useSelector(state => state.session.csrfToken); 
+
 
   const handleDemoLogin = (email, password) => {
-    if (!csrfToken) {
-      console.error("CSRF token missing");
-      return; 
-    }
-
-    dispatch(login({ email, password, csrfToken }));
+    dispatch(login({ email, password }));
     setIsDropdownOpen(false);
     navigate("/");
   };
@@ -45,7 +41,7 @@ const DemoButton = () => {
     <div className={DemoButtonStyles.demoButton}>
       <button
         className={DemoButtonStyles.dropdownButton}
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
+        onClick={() => setIsDropdownOpen(true)} 
       >
         Demo
       </button>

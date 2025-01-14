@@ -4,32 +4,61 @@ import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../redux/session";
 import loginFormStyles from "./LoginForm.module.css";
 
+// function LoginFormModal({ navigate }) {
+//   const dispatch = useDispatch();
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [errors, setErrors] = useState({});
+//   const { closeModal } = useModal();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     const serverResponse = await dispatch(
+//       sessionActions.login({ email, password })
+//     );
+
+//     if (serverResponse.type === "session/login/rejected") {
+//       setErrors(serverResponse);
+//     } else {
+//       navigate("/");
+//       closeModal();
+
+
 function LoginFormModal({ navigate }) {
   const dispatch = useDispatch();
-  const csrfToken = useSelector(state => state.session.csrfToken);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-
+  // const dispatch = useDispatch();
+  // const csrfToken = useSelector(state => state.session.csrfToken);
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [errors, setErrors] = useState({});
+  // const { closeModal } = useModal();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); 
+    // setErrors({}); 
+    // console.log('csrfToken from login modal', csrfToken)
 
-    if (!csrfToken) {
-      setErrors({ general: "CSRF token not found. Please refresh the page." });
-      return;
-    }
+    // if (!csrfToken) {
+    //   setErrors({ general: "CSRF token not found. Please refresh the page." });
+    //   return;
+    // }
 
     // Pass CSRF token in headers
     const serverResponse = await dispatch(
-      sessionActions.login({ email, password, csrfToken })
+      sessionActions.login({ email, password })
     );
 
     if (serverResponse.type === "session/login/rejected") {
       setErrors(serverResponse.payload.errors || {});
     } else {
-      await dispatch(sessionActions.restoreUser());
+      // await dispatch(sessionActions.restoreUser());
+      // closeModal();
+      navigate("/");
       closeModal();
 
       
