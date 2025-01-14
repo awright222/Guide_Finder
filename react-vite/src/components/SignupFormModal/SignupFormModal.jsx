@@ -11,8 +11,8 @@ function SignupFormModal() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstname, setfirstname] = useState(""); 
-  const [lastname, setlastname] = useState(""); 
+  const [firstname, setFirstname] = useState(""); 
+  const [lastname, setLastname] = useState(""); 
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -34,8 +34,8 @@ function SignupFormModal() {
         email,
         username,
         password,
-        firstname, // Updated to firstname
-        lastname, // Updated to lastname
+        firstname,
+        lastname,
         phone_num: phoneNum,
         address,
         city,
@@ -125,7 +125,7 @@ function SignupFormModal() {
             <input
               type="text"
               value={firstname}
-              onChange={(e) => setfirstname(e.target.value)} // Updated to firstname
+              onChange={(e) => setFirstname(e.target.value)}
               placeholder="Enter your first name"
               required
             />
@@ -136,7 +136,7 @@ function SignupFormModal() {
             <input
               type="text"
               value={lastname}
-              onChange={(e) => setlastname(e.target.value)} // Updated to lastname
+              onChange={(e) => setLastname(e.target.value)}
               placeholder="Enter your last name"
               required
             />

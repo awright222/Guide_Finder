@@ -21,8 +21,12 @@ const UserDashboard = () => {
   }, [dispatch, user]);
 
   const handleLogout = async () => {
-    await dispatch(logout());
-    navigate('/'); // Redirect to home page after logout
+    try {
+      await dispatch(logout());
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed!!!!!:', error);
+    }
   };
 
   const handleFavoriteClick = (serviceId) => {

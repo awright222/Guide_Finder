@@ -32,10 +32,17 @@ def guide_login():
         return guide.to_dict()
     return form.errors, 401
 
+# @auth_routes.route('/logout', methods=['POST'])
+# def logout():
+#     logout_user()
+#     return {'message': 'User logged out'}
+
 @auth_routes.route('/logout', methods=['POST'])
 def logout():
     logout_user()
-    return {'message': 'User logged out'}
+    response = jsonify({'message': 'User logged out'})
+    response.delete_cookie('session')
+    return response
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
