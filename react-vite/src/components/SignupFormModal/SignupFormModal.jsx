@@ -11,8 +11,8 @@ function SignupFormModal() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [fname, setFname] = useState(""); // Updated to fname
+  const [lname, setLname] = useState(""); // Updated to lname
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -34,8 +34,8 @@ function SignupFormModal() {
         email,
         username,
         password,
-        firstname,
-        lastname,
+        fname, // Updated to fname
+        lname, // Updated to lname
         phone_num: phoneNum,
         address,
         city,
@@ -44,7 +44,6 @@ function SignupFormModal() {
       })
     );
 
-    // Updated error handling to match the backend structure
     if (serverResponse?.errors) {
       if (Array.isArray(serverResponse.errors)) {
         setErrors({ general: serverResponse.errors[0] });
@@ -75,7 +74,6 @@ function SignupFormModal() {
           Guide Application
         </button>
         <h1>Sign Up</h1>
-        {/* General error message */}
         {errors.general && <p className={userSignupStyles.modalError}>{errors.general}</p>}
         <form onSubmit={handleSubmit}>
           <div className={userSignupStyles.formGroup}>
@@ -126,23 +124,23 @@ function SignupFormModal() {
             <label>First Name</label>
             <input
               type="text"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
+              value={fname}
+              onChange={(e) => setFname(e.target.value)} // Updated to fname
               placeholder="Enter your first name"
               required
             />
-            {errors.firstname && <p className={userSignupStyles.modalError}>{errors.firstname}</p>}
+            {errors.fname && <p className={userSignupStyles.modalError}>{errors.fname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Last Name</label>
             <input
               type="text"
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
+              value={lname}
+              onChange={(e) => setLname(e.target.value)} // Updated to lname
               placeholder="Enter your last name"
               required
             />
-            {errors.lastname && <p className={userSignupStyles.modalError}>{errors.lastname}</p>}
+            {errors.lname && <p className={userSignupStyles.modalError}>{errors.lname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Phone Number</label>
