@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../redux/session';
 import { getFavoritesThunk } from '../../redux/favorites';
 import { fetchBookings } from '../../redux/bookings';
+import { useNavigate } from 'react-router-dom';
 import UserDashboardStyles from './UserDashboard.module.css';
 
 const UserDashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(state => state.session.user);
   const favorites = useSelector(state => state.favorites);
   const bookings = useSelector(state => state.bookings.items);
@@ -18,8 +20,17 @@ const UserDashboard = () => {
     }
   }, [dispatch, user]);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate('/'); // Redirect to home page after logout
+  };
+
+  const handleFavoriteClick = (serviceId) => {
+    navigate(`/services/${serviceId}`);
+  };
+
+  const handleSearchClick = () => {
+    navigate('/search-services');
   };
 
   return (
@@ -29,19 +40,19 @@ const UserDashboard = () => {
           <a href="/user-dashboard">GF</a>
         </div>
         <div className={UserDashboardStyles.navbarCenter}>
-          <button>Search</button>
+          <button onClick={handleSearchClick}>Search</button>
           <button>Gallery</button>
           <button>Messages</button>
           <button>Partners</button>
         </div>
         <div className={UserDashboardStyles.navbarRight}>
-          <button className={UserDashboardStyles.profileButton}>
+          <div className={UserDashboardStyles.profileButton}>
             Profile
             <div className={UserDashboardStyles.profileDropdown}>
               <button>Edit Profile</button>
               <button onClick={handleLogout}>Logout</button>
             </div>
-          </button>
+          </div>
         </div>
       </nav>
 
@@ -56,7 +67,7 @@ const UserDashboard = () => {
           <div className={UserDashboardStyles.favoritesList}>
             {favorites.length > 0 ? (
               favorites.map(favorite => (
-                <div key={favorite.id} className={UserDashboardStyles.favoriteItem}>
+                <div key={favorite.id} className={UserDashboardStyles.favoriteItem} onClick={() => handleFavoriteClick(favorite.service_id)}>
                   <img src={favorite.image} alt={favorite.title} />
                   <p>{favorite.title}</p>
                 </div>

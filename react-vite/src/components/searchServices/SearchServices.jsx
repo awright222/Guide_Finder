@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchServices } from '../../redux/services';
+import { addFavorite, removeFavorite } from '../../redux/favorites'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import searchServicesStyles from './SearchServices.module.css'; 
 
 const SearchServices = () => {
     const dispatch = useDispatch();
 
-    const services = useSelector(state => 
-        Array.isArray(state.services.items) ? state.services.items : []
-    );
+    const services = useSelector(state => Array.isArray(state.services.items) ? state.services.items : []);
+    const favorites = useSelector(state => Array.isArray(state.favorites.items) ? state.favorites.items : []);
     const status = useSelector(state => state.services.status);
     const error = useSelector(state => state.services.error);
 
@@ -20,10 +23,7 @@ const SearchServices = () => {
     });
 
     useEffect(() => {
-        console.log('Fetching services on component mount...');
-        dispatch(fetchServices()).then(response => {
-            console.log('Fetched services:', response.payload);
-        });
+        dispatch(fetchServices());
     }, [dispatch]);
 
     const handleChange = (e) => {
@@ -33,22 +33,25 @@ const SearchServices = () => {
         });
     };
 
-    const experienceLevels = [
-        'No Experience', 'Weekend Warrior', 'Pro'
-    ];
+    const handleFavoriteClick = (serviceId) => {
+        const isFavorite = favorites.some(fav => fav.service_id === serviceId);
+        if (isFavorite) {
+            dispatch(removeFavorite(serviceId));
+        } else {
+            dispatch(addFavorite(serviceId));
+        }
+    };
+
+    const experienceLevels = ['No Experience', 'Weekend Warrior', 'Pro'];
 
     const search = (data) => {
-        if (!Array.isArray(data)) {
-            console.warn('Invalid data format, expected an array:', data);
-            return []; 
-        }
-
         return data.filter(item =>
             Object.keys(filters).every(key => {
-                if (key === 'name' && filters[key]) {
-                    return item.title.toLowerCase().includes(filters[key].toLowerCase());
+                if (filters[key] === '') return true;
+                if (key === 'name') {
+                    return item.title?.toLowerCase().includes(filters[key].toLowerCase());
                 }
-                return filters[key] === '' || item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase());
+                return item[key]?.toString().toLowerCase().includes(filters[key].toLowerCase());
             })
         );
     };
@@ -82,16 +85,25 @@ const SearchServices = () => {
             </div>
             <hr className={searchServicesStyles.divider} />
             <div className={searchServicesStyles.serviceGrid}>
-                {search(services).map(service => (
-                    <div key={service.id} className={searchServicesStyles.serviceCard}>
-                        <img src={service.images} alt={service.title} className={searchServicesStyles.serviceImage} />
-                        <h3 className={searchServicesStyles.serviceTitle}>{service.title}</h3>
-                        <p className={searchServicesStyles.serviceDescription}>{service.description}</p>
-                        <p><strong>Location:</strong> {service.location}</p>
-                        <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
-                        <p><strong>Cost:</strong> ${service.cost}</p>
-                    </div>
-                ))}
+                {search(services).map(service => {
+                    const isFavorite = favorites.some(fav => fav.service_id === service.id);
+                    return (
+                        <div key={service.id} className={searchServicesStyles.serviceCard}>
+                            <img src={service.images} alt={service.title} className={searchServicesStyles.serviceImage} />
+                            <h3 className={searchServicesStyles.serviceTitle}>{service.title}</h3>
+                            <p className={searchServicesStyles.serviceDescription}>{service.description}</p>
+                            <p><strong>Location:</strong> {service.location}</p>
+                            <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
+                            <p><strong>Cost:</strong> ${service.cost}</p>
+                            <button 
+                                className={isFavorite ? searchServicesStyles.favorited : ''} 
+                                onClick={() => handleFavoriteClick(service.id)}
+                            >
+                                <FontAwesomeIcon icon={isFavorite ? solidHeart : regularHeart} />
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

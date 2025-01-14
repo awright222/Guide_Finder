@@ -11,8 +11,8 @@ function SignupFormModal() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [fname, setFname] = useState(""); // Updated to fname
-  const [lname, setLname] = useState(""); // Updated to lname
+  const [firstname, setfirstname] = useState(""); 
+  const [lastname, setlastname] = useState(""); 
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -34,8 +34,8 @@ function SignupFormModal() {
         email,
         username,
         password,
-        fname, // Updated to fname
-        lname, // Updated to lname
+        firstname, // Updated to firstname
+        lastname, // Updated to lastname
         phone_num: phoneNum,
         address,
         city,
@@ -124,23 +124,23 @@ function SignupFormModal() {
             <label>First Name</label>
             <input
               type="text"
-              value={fname}
-              onChange={(e) => setFname(e.target.value)} // Updated to fname
+              value={firstname}
+              onChange={(e) => setfirstname(e.target.value)} // Updated to firstname
               placeholder="Enter your first name"
               required
             />
-            {errors.fname && <p className={userSignupStyles.modalError}>{errors.fname}</p>}
+            {errors.firstname && <p className={userSignupStyles.modalError}>{errors.firstname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Last Name</label>
             <input
               type="text"
-              value={lname}
-              onChange={(e) => setLname(e.target.value)} // Updated to lname
+              value={lastname}
+              onChange={(e) => setlastname(e.target.value)} // Updated to lastname
               placeholder="Enter your last name"
               required
             />
-            {errors.lname && <p className={userSignupStyles.modalError}>{errors.lname}</p>}
+            {errors.lastname && <p className={userSignupStyles.modalError}>{errors.lastname}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Phone Number</label>

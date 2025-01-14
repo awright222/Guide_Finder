@@ -4,7 +4,7 @@ import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
-import ProfileButton from './ProfileButton'; 
+//import ProfileButton from './ProfileButton'; 
 import DemoButton from './DemoButton'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';

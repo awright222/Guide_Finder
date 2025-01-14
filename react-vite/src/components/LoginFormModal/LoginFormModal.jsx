@@ -1,54 +1,21 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../redux/session";
 import loginFormStyles from "./LoginForm.module.css";
-
-// function LoginFormModal({ navigate }) {
-//   const dispatch = useDispatch();
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [errors, setErrors] = useState({});
-//   const { closeModal } = useModal();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const serverResponse = await dispatch(
-//       sessionActions.login({ email, password })
-//     );
-
-//     if (serverResponse.type === "session/login/rejected") {
-//       setErrors(serverResponse);
-//     } else {
-//       navigate("/");
-//       closeModal();
-
 
 function LoginFormModal({ navigate }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [userRole, setUserRole] = useState(null); 
   const { closeModal } = useModal();
-  // const dispatch = useDispatch();
-  // const csrfToken = useSelector(state => state.session.csrfToken);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [errors, setErrors] = useState({});
-  // const { closeModal } = useModal();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setErrors({}); 
-    // console.log('csrfToken from login modal', csrfToken)
 
-    // if (!csrfToken) {
-    //   setErrors({ general: "CSRF token not found. Please refresh the page." });
-    //   return;
-    // }
-
-    // Pass CSRF token in headers
     const serverResponse = await dispatch(
       sessionActions.login({ email, password })
     );
@@ -56,21 +23,24 @@ function LoginFormModal({ navigate }) {
     if (serverResponse.type === "session/login/rejected") {
       setErrors(serverResponse.payload.errors || {});
     } else {
-      // await dispatch(sessionActions.restoreUser());
-      // closeModal();
-      navigate("/");
+      setLoginSuccess(true);
+      setUserRole(serverResponse.payload?.user?.role); 
+      setErrors({});
       closeModal();
+    }
+  };
 
-      
-      const userRole = serverResponse.payload.user.role;
+  
+  useEffect(() => {
+    if (loginSuccess) {
       const routeMap = {
         user: '/user-dashboard',
         guide: '/guide-dashboard',
         manager: '/manager-dashboard',
       };
-      navigate(routeMap[userRole]);
+      navigate(routeMap[userRole] || "/");
     }
-  };
+  }, [loginSuccess, userRole, navigate]); 
 
   return (
     <div className={loginFormStyles.loginModalContainer}>

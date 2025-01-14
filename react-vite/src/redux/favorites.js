@@ -1,35 +1,49 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-export const getFavoritesThunk = createAsyncThunk(
-  'favorites/getFavorites',
-  async (_, { getState }) => {
-    const state = getState();
-    const token = state.session.user?.token; 
+// Thunks without Authorization header
+export const getFavoritesThunk = createAsyncThunk('favorites/getFavorites', async () => {
+  const response = await axios.get('/api/favorites');
+  return response.data;
+});
 
-    const response = await fetch('/api/favorites', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+export const addFavorite = createAsyncThunk('favorites/addFavorite', async (serviceId) => {
+  const response = await axios.post('/api/favorites', { service_id: serviceId });
+  return response.data;
+});
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch favorites');
-    }
-
-    const data = await response.json();
-    return data;
-  }
-);
+export const removeFavorite = createAsyncThunk('favorites/removeFavorite', async (serviceId) => {
+  const response = await axios.delete(`/api/favorites/${serviceId}`);
+  return response.data;
+});
 
 const favoritesSlice = createSlice({
   name: 'favorites',
-  initialState: [],
+  initialState: {
+    items: [],
+    status: 'idle',
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getFavoritesThunk.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder
+      .addCase(getFavoritesThunk.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getFavoritesThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = Array.isArray(action.payload) ? action.payload : [];
+      })
+      .addCase(getFavoritesThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(removeFavorite.fulfilled, (state, action) => {
+        state.items = state.items.filter(item => item.id !== action.payload.id);
+      });
   },
 });
 

@@ -121,3 +121,15 @@ table th {
 table tbody tr:nth-child(even) {
   background-color: var(--soft-olive-green);
 }
+
+.serviceCard button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: var(--deep-charcoal-gray);
+}
+
+.serviceCard button.favorited {
+  color: var(--muted-sky-blue);
+}

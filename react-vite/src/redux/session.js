@@ -6,18 +6,6 @@ const initialState = {
   errors: null,
 };
 
-// const tokenUtils = {
-//   getToken: () => localStorage.getItem('token'),
-//   setToken: (token) => localStorage.setItem('token', token),
-//   clearToken: () => localStorage.removeItem('token'),
-
-//   getCSRFToken: () => {
-//       const csrfMatch = document.cookie.match(/(^|;\s*)csrf_token=([^;]*)/);
-//       return csrfMatch ? csrfMatch[2] : null;
-//   }
-// };
-
-//! Restore User (ORIGINAL)
 export const restoreUser = createAsyncThunk(
   "session/restoreUser",
   async (_, { rejectWithValue }) => {
@@ -36,129 +24,37 @@ export const restoreUser = createAsyncThunk(
   }
 );
 
-//! TESTING 2 restore user   // get 403 Forbidden
-
-// export const restoreUser = createAsyncThunk(
-//   "session/restoreUser",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const res = await fetch("/api/auth/", {
-//         method: "GET",
-//         credentials: "include", // Include credentials (cookies) in the request
-//         headers: {
-//           "Content-Type": "application/json",
-//           "X-CSRF-Token": getCsrfToken(), // Include CSRF token if required
-//         },
-//       });
-
-//       const data = await res.json();
-
-//       if (!res.ok) {
-//         return rejectWithValue(data);
-//       }
-
-//       return data;
-//     } catch (error) {
-//       return rejectWithValue(error.message || "Trouble getting current user");
-//     }
-//   }
-// );
-
-// // Helper function to get CSRF token from cookies
-// const getCsrfToken = () => {
-//   const name = "csrf_token=";
-//   const decodedCookie = decodeURIComponent(document.cookie);
-//   const ca = decodedCookie.split(';');
-//   for (let i = 0; i < ca.length; i++) {
-//     let c = ca[i];
-//     while (c.charAt(0) === ' ') {
-//       c = c.substring(1);
-//     }
-//     if (c.indexOf(name) === 0) {
-//       return c.substring(name.length, c.length);
-//     }
-//   }
-//   return "";
-// };
-
-//! TESTING 1 restore user
-// export const restoreUser = createAsyncThunk(
-//   "session/restoreUser",
-//   async (_, { rejectWithValue }) => {
-//       try {
-//           await fetch("/api/auth/csrf", { credentials: 'include' });
-
-//           const token = tokenUtils.getToken();
-//           if (!token) return null;
-
-//           const res = await fetch("/api/auth/", {
-//               headers: { Authorization: `Bearer ${token}` },
-//               credentials: 'include',
-//           });
-//           if (!res.ok) throw new Error("Failed to restore session.");
-//           return await res.json();
-//       } catch (error) {
-//           return rejectWithValue(error.message);
-//       }
-//   }
-// );
-
-// Login
 export const login = createAsyncThunk(
   "session/login",
   async ({ email, password }, { rejectWithValue }) => {
+    
     try {
+      console.log("Login request sent with email:", email, "and password:", password); // Log the request data
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      console.log(res, "res")
+      console.log("Login response status:", res.status); // Log the response status
+
       const data = await res.json();
 
+      console.log("Login response data:", data); // Log the response data
+
       if (!res.ok) {
+        console.error("Login failed with status:", res.status, "and message:", data.message);
         return rejectWithValue(data);
       }
 
       return data;
     } catch (error) {
+      console.error("Login request failed:", error);
+      console.log('FAILED!')
       return rejectWithValue(error.message || "Login failed");
     }
   }
 );
-// export const login = createAsyncThunk(
-//   "session/login",
-//   async ({ email, password }, { rejectWithValue }) => {
-//     try {
-//         const csrfToken = tokenUtils.getCSRFToken();
-//         console.log("CSRF Token:", csrfToken);
-//         if (!csrfToken) {
-//             throw new Error("CSRF token not found. Please refresh the page.");
-//         }
-
-//         const res = await fetch("/api/auth/login", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 "X-CSRF-Token": csrfToken  
-//             },
-//             body: JSON.stringify({ email, password }),
-//             credentials: 'include' 
-//         });
-
-//         if (!res.ok) {
-//             const errorData = await res.json();
-//             throw new Error(errorData.errors || "Login failed.");
-//         }
-
-//         const data = await res.json();
-//         tokenUtils.setToken(data.token); 
-//         return data;
-//     } catch (error) {
-//       console.error("Login error:", error);
-//         return rejectWithValue(error.message);
-//     }
-// });
-
 
 // Signup (User)
 export const signup = createAsyncThunk(
@@ -173,7 +69,7 @@ export const signup = createAsyncThunk(
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Signup failed.");
-      tokenUtils.setToken(data.token);
+      // tokenUtils.setToken(data.token);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -194,7 +90,7 @@ export const signupGuide = createAsyncThunk(
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Guide signup failed.");
-      tokenUtils.setToken(data.token); 
+      // tokenUtils.setToken(data.token); 
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -208,16 +104,14 @@ export const logout = createAsyncThunk(
   "session/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: 'include',
-      });
-      tokenUtils.clearToken();
+      await fetch("/api/auth/logout");
+      return;
     } catch (error) {
-      return rejectWithValue("Logout failed. Please try again.");
+      return rejectWithValue(error.message || "Logout failed");
     }
   }
 );
+
 
 const sessionSlice = createSlice({
   name: "session",
@@ -228,45 +122,46 @@ const sessionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    const setLoading = (state) => {
-      state.loading = true;
-      state.errors = null;
-    };
     const setError = (state, action) => {
       state.loading = false;
       state.errors = action.payload;
     };
 
     builder
-      .addCase(restoreUser.pending, setLoading)
+      // .addCase(restoreUser.pending, setLoading)
       .addCase(restoreUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
       .addCase(restoreUser.rejected, setError)
 
-      .addCase(login.pending, setLoading)
+      // .addCase(login.pending, setLoading)
       .addCase(login.fulfilled, (state, action) => {
+        console.log("login successful", action.payload);
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload;    //action.payload.user?
       })
-      .addCase(login.rejected, setError)
+      .addCase(login.rejected, (state, action) => {
+        console.error("Login failed:", action.payload); // Log the error payload
+        state.loading = false;
+        state.errors = action.payload;
+      })
 
-      .addCase(signup.pending, setLoading)
+      // .addCase(signup.pending, setLoading)
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       })
       .addCase(signup.rejected, setError)
 
-      .addCase(signupGuide.pending, setLoading)  
+      // .addCase(signupGuide.pending, setLoading)  
       .addCase(signupGuide.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload; 
       })
       .addCase(signupGuide.rejected, setError)
 
-      .addCase(logout.pending, setLoading)
+      // .addCase(logout.pending, setLoading)
       .addCase(logout.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
