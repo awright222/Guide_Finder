@@ -15,7 +15,7 @@ function LoginFormModal({ navigate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+console.log("LOGIN RAN")
     const serverResponse = await dispatch(
       sessionActions.login({ email, password })
     );

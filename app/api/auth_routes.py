@@ -40,9 +40,10 @@ def guide_login():
 @auth_routes.route('/logout', methods=['POST'])
 def logout():
     logout_user()
-    response = jsonify({'message': 'User logged out'})
-    response.delete_cookie('session')
-    return response
+    # response = jsonify({'message': 'User logged out'})
+    # response.delete_cookie('session')
+    # return response
+    return {'message': 'User logged out'}
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
