@@ -12,7 +12,7 @@ const GuideDashboard = () => {
   const services = useSelector(state => state.services.items);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.is_guide) {
       dispatch(fetchBookings());
       dispatch(fetchServices());
     }
@@ -31,64 +31,32 @@ const GuideDashboard = () => {
   };
 
   return (
-    <div className={GuideDashboardStyles.guideDashboard}>
-      <nav className={GuideDashboardStyles.navbar}>
-        <div className={GuideDashboardStyles.navbarLeft}>
-          <a href="/guide-dashboard">GF</a>
-        </div>
-        <div className={GuideDashboardStyles.navbarCenter}>
-          <button>Search</button>
-          <button>Gallery</button>
-          <button>Messages</button>
-          <button>Partners</button>
-        </div>
-        <div className={GuideDashboardStyles.navbarRight}>
-          <button className={GuideDashboardStyles.profileButton}>
-            Profile
-            <div className={GuideDashboardStyles.profileDropdown}>
-              <button>Edit Profile</button>
-              <button onClick={handleLogout}>Logout</button>
+    <div className={GuideDashboardStyles.dashboard}>
+      <h1>Welcome, {user.firstname} {user.lastname}</h1>
+      <button onClick={handleLogout} className={GuideDashboardStyles.logoutButton}>Logout</button>
+      <div className={GuideDashboardStyles.section}>
+        <h2>Your Bookings</h2>
+        {bookings.length > 0 ? (
+          bookings.map(booking => (
+            <div key={booking.id} className={GuideDashboardStyles.booking} onClick={() => handleBookingClick(booking)}>
+              <p>{booking.details}</p>
             </div>
-          </button>
-        </div>
-      </nav>
-
-      <div className={GuideDashboardStyles.content}>
-        <div className={GuideDashboardStyles.sloganBox}>
-          <h2>Guide Finder.</h2>
-          <p>From Summit to sea, find your adventure</p>
-        </div>
-
-        <div className={GuideDashboardStyles.bookingsBox}>
-          <h2>Bookings</h2>
-          <div className={GuideDashboardStyles.bookingsList}>
-            {bookings.length > 0 ? (
-              bookings.map(booking => (
-                <div key={booking.id} className={GuideDashboardStyles.bookingItem} onClick={() => handleBookingClick(booking)}>
-                  <img src={booking.image} alt={booking.title} />
-                  <p>{booking.title}</p>
-                </div>
-              ))
-            ) : (
-              <p>No bookings yet.</p>
-            )}
-          </div>
-        </div>
-
-        <div className={GuideDashboardStyles.servicesBox}>
-          <h2>Services</h2>
-          <div className={GuideDashboardStyles.servicesGrid}>
-            {services.length > 0 ? (
-              services.map(service => (
-                <div key={service.id} className={GuideDashboardStyles.serviceItem} onClick={() => handleServiceClick(service)}>
-                  <p>{service.title}</p>
-                </div>
-              ))
-            ) : (
-              <p>No services available.</p>
-            )}
-          </div>
-        </div>
+          ))
+        ) : (
+          <p>No bookings available.</p>
+        )}
+      </div>
+      <div className={GuideDashboardStyles.section}>
+        <h2>Your Services</h2>
+        {services.length > 0 ? (
+          services.map(service => (
+            <div key={service.id} className={GuideDashboardStyles.service} onClick={() => handleServiceClick(service)}>
+              <p>{service.title}</p>
+            </div>
+          ))
+        ) : (
+          <p>No services available.</p>
+        )}
       </div>
     </div>
   );

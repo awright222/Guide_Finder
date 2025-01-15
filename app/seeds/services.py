@@ -2,10 +2,10 @@ from app.models import db, Service
 
 def seed_services():
     services = [
-        # John Doe
+        # John Doe (guide_id=10)
         Service(
-            guide_id=1,
-            title="Mule Deer Hunt in Wyoming",  # Add title field
+            guide_id=10,
+            title="Mule Deer Hunt in Wyoming",
             type="Hunting",
             location="Wyoming",
             country="USA",
@@ -18,8 +18,8 @@ def seed_services():
             about_guide="John has been guiding hunts for over 20 years."
         ),
         Service(
-            guide_id=1,
-            title="Elk Tracking in Wyoming",  # Add title field
+            guide_id=10,
+            title="Elk Tracking in Wyoming",
             type="Hunting",
             location="Wyoming",
             country="USA",
@@ -32,10 +32,10 @@ def seed_services():
             about_guide="John has been guiding hunts for over 20 years."
         ),
         
-        # Jane Smith
+        # Jane Smith (guide_id=11)
         Service(
-            guide_id=2,
-            title="Climbing in Yosemite",  # Add title field
+            guide_id=11,
+            title="Climbing in Yosemite",
             type="Climbing",
             location="Yosemite",
             country="USA",
@@ -48,8 +48,8 @@ def seed_services():
             about_guide="Jane is a professional climber with over 15 years of experience."
         ),
         Service(
-            guide_id=2,
-            title="Backpacking on the Appalachian Trail",  # Add title field
+            guide_id=11,
+            title="Backpacking on the Appalachian Trail",
             type="Backpacking",
             location="Appalachian Trail",
             country="USA",
@@ -62,10 +62,10 @@ def seed_services():
             about_guide="Jane is an experienced backpacker and guide."
         ),
 
-        # Mike Johnson
+        # Mike Johnson (guide_id=12)
         Service(
-            guide_id=3,
-            title="Fly Fishing in the Florida Keys",  # Add title field
+            guide_id=12,
+            title="Fly Fishing in the Florida Keys",
             type="Fishing",
             location="Florida Keys",
             country="USA",
@@ -78,8 +78,8 @@ def seed_services():
             about_guide="Mike is a professional fishing guide with over 10 years of experience."
         ),
         Service(
-            guide_id=3,
-            title="Deep Sea Fishing in the Florida Keys",  # Add title field
+            guide_id=12,
+            title="Deep Sea Fishing in the Florida Keys",
             type="Fishing",
             location="Florida Keys",
             country="USA",
@@ -92,10 +92,10 @@ def seed_services():
             about_guide="Mike is a professional fishing guide with over 10 years of experience."
         ),
 
-        # Sarah Williams
+        # Sarah Williams (guide_id=13)
         Service(
-            guide_id=4,
-            title="Moose Hunt in Alaska",  # Add title field
+            guide_id=13,
+            title="Moose Hunt in Alaska",
             type="Hunting",
             location="Alaska",
             country="USA",
@@ -108,8 +108,8 @@ def seed_services():
             about_guide="Sarah is a seasoned hunter with over 12 years of experience."
         ),
         Service(
-            guide_id=4,
-            title="Bear Tracking in Alaska",  # Add title field
+            guide_id=13,
+            title="Bear Tracking in Alaska",
             type="Hunting",
             location="Alaska",
             country="USA",
@@ -122,8 +122,8 @@ def seed_services():
             about_guide="Sarah is a seasoned hunter with over 12 years of experience."
         ),
         Service(
-            guide_id=4,
-            title="Backcountry Survival Training in Alaska",  # Add title field
+            guide_id=13,
+            title="Backcountry Survival Training in Alaska",
             type="Backpacking",
             location="Alaska",
             country="USA",
@@ -136,10 +136,10 @@ def seed_services():
             about_guide="Sarah is a seasoned hunter with over 12 years of experience."
         ),
 
-        # Tom Brown
+        # Tom Brown (guide_id=14)
         Service(
-            guide_id=5,
-            title="Fishing in Alaska",  # Add title field
+            guide_id=14,
+            title="Fishing in Alaska",
             type="Fishing",
             location="Alaska",
             country="USA",
@@ -152,10 +152,10 @@ def seed_services():
             about_guide="Tom is an expert fisherman with over 15 years of experience."
         ),
 
-        # Emily Davis
+        # Emily Davis (guide_id=15)
         Service(
-            guide_id=6,
-            title="Rock Climbing in Yosemite",  # Add title field
+            guide_id=15,
+            title="Rock Climbing in Yosemite",
             type="Climbing",
             location="Yosemite National Park",
             country="USA",
@@ -168,8 +168,8 @@ def seed_services():
             about_guide="Emily is a professional climber with over 10 years of experience."
         ),
         Service(
-            guide_id=6,
-            title="Advanced Traditional Climbing Course",  # Add title field
+            guide_id=15,
+            title="Advanced Traditional Climbing Course",
             type="Climbing",
             location="Yosemite National Park",
             country="USA",
@@ -182,10 +182,10 @@ def seed_services():
             about_guide="Emily is a professional climber with over 10 years of experience."
         ),
 
-        # David Miller
+        # David Miller (guide_id=16)
         Service(
-            guide_id=7,
-            title="Rock Climbing in Zion National Park",  # Add title field
+            guide_id=16,
+            title="Rock Climbing in Zion National Park",
             type="Climbing",
             location="Zion National Park",
             country="USA",
@@ -198,10 +198,10 @@ def seed_services():
             about_guide="David is an experienced climber with over 12 years of experience."
         ),
 
-        # Laura Wilson
+        # Laura Wilson (guide_id=17)
         Service(
-            guide_id=8,
-            title="Backpacking in Glacier National Park",  # Add title field
+            guide_id=17,
+            title="Backpacking in Glacier National Park",
             type="Backpacking",
             location="Glacier National Park",
             country="USA",
@@ -214,8 +214,8 @@ def seed_services():
             about_guide="Laura is an experienced backpacker with over 8 years of experience."
         ),
         Service(
-            guide_id=8,
-            title="Winter Survival Expedition in Glacier National Park",  # Add title field
+            guide_id=17,
+            title="Winter Survival Expedition in Glacier National Park",
             type="Backpacking",
             location="Glacier National Park",
             country="USA",
@@ -228,11 +228,11 @@ def seed_services():
             about_guide="Laura is an experienced backpacker with over 8 years of experience."
         ),
 
-        # Chris Moore
+        # Chris Moore (guide_id=18)
         Service(
-            guide_id=9,
-            title="White Water Rafting on the Colorado River",  # Add title field
-            type="Water Sports",  
+            guide_id=18,
+            title="White Water Rafting on the Colorado River",
+            type="Water Sports",
             location="Colorado River",
             country="USA",
             state="CO",
@@ -240,15 +240,15 @@ def seed_services():
             cost=350.00,
             images="http://example.com/rafting.jpg",
             reviews="Amazing experience!",
-            experience_requirement="No Experience", 
+            experience_requirement="No Experience",
             about_guide="Chris has been guiding rafting trips for over 10 years."
         ),
         
-        # Anna Taylor
+        # Anna Taylor (guide_id=19)
         Service(
-            guide_id=10,
-            title="White Water Kayaking on the Salmon River",  # Add title field
-            type="Water Sports",  
+            guide_id=19,
+            title="White Water Kayaking on the Salmon River",
+            type="Water Sports",
             location="Salmon River",
             country="USA",
             state="ID",
@@ -256,15 +256,15 @@ def seed_services():
             cost=620.00,
             images="http://example.com/kayaking.jpg",
             reviews="A thrilling adventure!",
-            experience_requirement="Weekend Warrior",  
+            experience_requirement="Weekend Warrior",
             about_guide="Anna is an expert kayaker with over 8 years of experience."
         ),
 
-        # James Anderson
+        # James Anderson (guide_id=20)
         Service(
-            guide_id=11,
-            title="Spear Fishing in Baja California",  # Add title field
-            type="Fishing",  
+            guide_id=20,
+            title="Spear Fishing in Baja California",
+            type="Fishing",
             location="Baja California",
             country="Mexico",
             state="BCS",
@@ -272,15 +272,15 @@ def seed_services():
             cost=1200.00,
             images="http://example.com/spearfishing.jpg",
             reviews="An unforgettable experience!",
-            experience_requirement="Pro",  
+            experience_requirement="Pro",
             about_guide="James is a professional spear fisherman with over 15 years of experience."
         ),
 
-        # Olivia Martinez
+        # Olivia Martinez (guide_id=21)
         Service(
-            guide_id=12,
-            title="Fly Fishing in Lake Wakatipu",  # Add title field
-            type="Fishing", 
+            guide_id=21,
+            title="Fly Fishing in Lake Wakatipu",
+            type="Fishing",
             location="Lake Wakatipu",
             country="New Zealand",
             state="OTG",
@@ -288,12 +288,12 @@ def seed_services():
             cost=1000.00,
             images="http://example.com/flyfishing.jpg",
             reviews="A peaceful and rewarding experience.",
-            experience_requirement="No Experience",  
+            experience_requirement="No Experience",
             about_guide="Olivia is a passionate fly fisher with over 5 years of experience."
         ),
         Service(
-            guide_id=12,
-            title="Saltwater Fly Casting Workshop",  # Add title field
+            guide_id=21,
+            title="Saltwater Fly Casting Workshop",
             type="Other",
             location="Lake Wakatipu",
             country="New Zealand",
@@ -302,15 +302,15 @@ def seed_services():
             cost=400.00,
             images="http://example.com/workshop.jpg",
             reviews="Very informative and fun.",
-            experience_requirement="No Experience", 
+            experience_requirement="No Experience",
             about_guide="Olivia is a passionate fly fisher with over 5 years of experience."
         ),
 
-        # Ethan Thomas
+        # Ethan Thomas (guide_id=22)
         Service(
-            guide_id=13,
-            title="Fly Fishing in the Gallatin River",  # Add title field
-            type="Fishing", 
+            guide_id=22,
+            title="Fly Fishing in the Gallatin River",
+            type="Fishing",
             location="Gallatin River",
             country="USA",
             state="MT",
@@ -318,15 +318,15 @@ def seed_services():
             cost=400.00,
             images="http://example.com/montanaflyfishing.jpg",
             reviews="A fantastic fishing trip!",
-            experience_requirement="No Experience",  
+            experience_requirement="No Experience",
             about_guide="Ethan is an experienced fly fishing guide with over 7 years of experience."
         ),
 
-        # Sophia White
+        # Sophia White (guide_id=23)
         Service(
-            guide_id=14,
-            title="Backcountry Skiing in Whitefish Mountain",  # Add title field
-            type="Snow Sports",  
+            guide_id=23,
+            title="Backcountry Skiing in Whitefish Mountain",
+            type="Snow Sports",
             location="Whitefish Mountain",
             country="USA",
             state="MT",
@@ -334,13 +334,13 @@ def seed_services():
             cost=250.00,
             images="http://example.com/skiing.jpg",
             reviews="An exhilarating experience!",
-            experience_requirement="Pro", 
+            experience_requirement="Pro",
             about_guide="Sophia is a professional skier with over 10 years of experience."
         ),
         Service(
-            guide_id=14,
-            title="Avalanche Safety Training",  
-            type="Training",  
+            guide_id=23,
+            title="Avalanche Safety Training",
+            type="Training",
             location="Whitefish Mountain",
             country="USA",
             state="MT",
@@ -348,15 +348,15 @@ def seed_services():
             cost=200.00,
             images="http://example.com/avalanchetraining.jpg",
             reviews="Very educational and important.",
-            experience_requirement="No Experience", 
+            experience_requirement="No Experience",
             about_guide="Sophia is a professional skier with over 10 years of experience."
         ),
 
-        # Tenzing Norgay
+        # Tenzing Norgay (guide_id=24)
         Service(
-            guide_id=15,
-            title="Mount Everest Expedition",  
-            type="Mountaineering",  
+            guide_id=24,
+            title="Mount Everest Expedition",
+            type="Mountaineering",
             location="Mount Everest",
             country="Nepal",
             state="Bagmati",
@@ -364,13 +364,13 @@ def seed_services():
             cost=5000.00,
             images="http://example.com/everest.jpg",
             reviews="A once-in-a-lifetime experience!",
-            experience_requirement="Pro",  
+            experience_requirement="Pro",
             about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
         ),
         Service(
-            guide_id=15,
-            title="High Altitude Training Camp", 
-            type="Other",  
+            guide_id=24,
+            title="High Altitude Training Camp",
+            type="Other",
             location="Mount Everest",
             country="Nepal",
             state="Bagmati",
@@ -378,13 +378,13 @@ def seed_services():
             cost=3000.00,
             images="http://example.com/highaltitudetraining.jpg",
             reviews="Extremely helpful for high altitude acclimatization.",
-            experience_requirement="Pro",  
+            experience_requirement="Pro",
             about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
         ),
         Service(
-            guide_id=15,
-            title="Base Camp Preparation",  
-            type="Other",  
+            guide_id=24,
+            title="Base Camp Preparation",
+            type="Other",
             location="Mount Everest",
             country="Nepal",
             state="Bagmati",
@@ -392,13 +392,13 @@ def seed_services():
             cost=3000.00,
             images="http://example.com/basecamppreparation.jpg",
             reviews="Essential for a successful climb.",
-            experience_requirement="Weekend Warrior",  
+            experience_requirement="Weekend Warrior",
             about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
         ),
         Service(
-            guide_id=15,
-            title="Sherpa-led Cultural Tours",  
-            type="Other",  
+            guide_id=24,
+            title="Sherpa-led Cultural Tours",
+            type="Other",
             location="Mount Everest",
             country="Nepal",
             state="Bagmati",
@@ -406,7 +406,7 @@ def seed_services():
             cost=2000.00,
             images="http://example.com/culturaltour.jpg",
             reviews="A fascinating cultural experience.",
-            experience_requirement="No Experience",  
+            experience_requirement="No Experience",
             about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
         )
     ]

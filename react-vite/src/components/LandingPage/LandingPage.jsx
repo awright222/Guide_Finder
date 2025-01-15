@@ -4,20 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { useModal } from '../../context/Modal';
-import { SignupFormModal } from '../SignupFormModal';
+import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import landingStyles from './LandingPage.module.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
-  //const loading = useSelector((state) => state.session.loading);
+  const userRole = useSelector((state) => state.session.userRole); 
   const { setModalContent } = useModal();
 
   useEffect(() => {
     if (user) {
-      navigate('/user-dashboard');
+      const routeMap = {
+        user: '/user-dashboard',
+        guide: '/guide-dashboard',
+        manager: '/manager-dashboard',
+      };
+      navigate(routeMap[userRole] || '/user-dashboard');
     }
-  }, [user, navigate]);
+  }, [user, userRole, navigate]);
 
   const openSignupModal = () => {
     setModalContent(<SignupFormModal />);

@@ -1,47 +1,43 @@
 import { useState } from "react";
-import { useDispatch} from "react-redux";
-import { login } from "../../redux/session";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../redux/session";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import DemoButtonStyles from "./DemoButton.module.css";
 
 const demoUsers = [
-  {
-    username: "demo-client",
-    email: "demo-client@aa.io",
-    password: "password",
-  },
-  {
-    username: "demo-manager",
-    email: "demo-manager@aa.io",
-    password: "password",
-  },
-  {
-    username: "demo-guide",
-    email: "demo-guide@aa.io",
-    password: "password",
-  },
+  { username: "Demo Client", email: "demo-client@aa.io", password: "password" },
+  { username: "Demo Guide", email: "demo-guide@aa.io", password: "password" },
+  { username: "Demo Manager", email: "demo-manager@aa.io", password: "password" }
 ];
 
 const DemoButton = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const csrfToken = useSelector(state => state.session.csrfToken); 
 
-
-  const handleDemoLogin = (email, password) => {
-    dispatch(login({ email, password }));
+  const handleDemoLogin = async (email, password) => {
+    const serverResponse = await dispatch(login({ email, password }));
     setIsDropdownOpen(false);
-    navigate("/");
+
+    if (serverResponse.type === "session/login/fulfilled") {
+      const user = serverResponse.payload;
+      const userRole = user.is_guide ? 'guide' : user.is_manager ? 'manager' : 'user';
+      const routeMap = {
+        user: '/user-dashboard',
+        guide: '/guide-dashboard',
+        manager: '/manager-dashboard',
+      };
+      navigate(routeMap[userRole] || "/");
+    }
   };
 
   return (
     <div className={DemoButtonStyles.demoButton}>
       <button
         className={DemoButtonStyles.dropdownButton}
-        onClick={() => setIsDropdownOpen(true)} 
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         Demo
       </button>

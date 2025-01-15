@@ -1,7 +1,6 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .services import seed_services, undo_services
-from .guides import seed_guides, undo_guides
 from .bookings import seed_bookings, undo_bookings
 from .reviews import seed_reviews, undo_reviews
 from .messages import seed_messages, undo_messages
@@ -21,15 +20,13 @@ def seed():
         # command, which will truncate all tables prefixed with 
         # the schema name (see comment in users.py undo_users function).
         undo_users()
-        undo_services()
-        undo_guides()
+        undo_services() 
         undo_bookings()
         undo_reviews()
         undo_messages()
         undo_favorites()
     seed_users()
-    seed_services()
-    seed_guides()
+    seed_services() 
     seed_bookings()
     seed_reviews()
     seed_messages()
@@ -41,7 +38,6 @@ def seed():
 def undo():
     undo_bookings()
     undo_services()
-    undo_guides()
     undo_users()
     undo_reviews()
     undo_messages()

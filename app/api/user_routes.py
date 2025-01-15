@@ -5,10 +5,8 @@ from app.models import User, db
 
 user_routes = Blueprint('users', __name__)
 
-
 def auth_required():
     return jsonify({"message": "Authentication required"}), 401
-
 
 def forbidden():
     return jsonify({"message": "Forbidden"}), 403
@@ -83,6 +81,7 @@ def update_user(id):
     user.username = data.get('username', user.username)
     user.password = data.get('password', user.password)
     user.is_manager = data.get('is_manager', user.is_manager)
+    user.is_guide = data.get('is_guide', user.is_guide)
 
     try:
         db.session.commit()

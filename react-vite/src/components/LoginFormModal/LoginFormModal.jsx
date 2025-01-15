@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
-import * as sessionActions from "../../redux/session";
-import loginFormStyles from "./LoginForm.module.css";
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useModal } from '../../context/Modal';
+import * as sessionActions from '../../redux/session';
+import { useNavigate } from 'react-router-dom';
+import styles from './LoginForm.module.css';
 
-function LoginFormModal({ navigate }) {
+const LoginFormModal = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { closeModal } = useModal();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const [userRole, setUserRole] = useState(null); 
-  const { closeModal } = useModal();
+  const [userRole, setUserRole] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-console.log("LOGIN RAN")
+    console.log("LOGIN RAN");
     const serverResponse = await dispatch(
       sessionActions.login({ email, password })
     );
@@ -24,13 +26,12 @@ console.log("LOGIN RAN")
       setErrors(serverResponse.payload.errors || {});
     } else {
       setLoginSuccess(true);
-      setUserRole(serverResponse.payload?.user?.role); 
+      setUserRole(serverResponse.payload?.user?.role);
       setErrors({});
       closeModal();
     }
   };
 
-  
   useEffect(() => {
     if (loginSuccess) {
       const routeMap = {
@@ -40,46 +41,41 @@ console.log("LOGIN RAN")
       };
       navigate(routeMap[userRole] || "/");
     }
-  }, [loginSuccess, userRole, navigate]); 
+  }, [loginSuccess, userRole, navigate]);
 
   return (
-    <div className={loginFormStyles.loginModalContainer}>
-      <div className={loginFormStyles.loginModalBackground} onClick={closeModal} />
-      <div className={loginFormStyles.loginModalContent}>
-        <h1 className={loginFormStyles.modalTitle}>Log In</h1>
-        <form onSubmit={handleSubmit} className={loginFormStyles.modalForm}>
-          <div>
-            <label htmlFor="email" className={loginFormStyles.modalLabel}>Email</label>
+    <div className={styles.loginModal}>
+      <div className={styles.loginModalBackground} onClick={closeModal}></div>
+      <div className={styles.loginModalContent}>
+        <h2 className={styles.modalTitle}>Login</h2>
+        <form className={styles.modalForm} onSubmit={handleSubmit}>
+          <label className={styles.modalLabel}>
+            Email
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={loginFormStyles.modalInput}
-              autoComplete="email"
+              className={styles.modalInput}
               required
             />
-            {errors.payload?.email && <p className={loginFormStyles.modalError}>{errors.payload?.email}</p>}
-          </div>
-          <div>
-            <label htmlFor="password" className={loginFormStyles.modalLabel}>Password</label>
+          </label>
+          {errors.email && <p className={styles.modalError}>{errors.email}</p>}
+          <label className={styles.modalLabel}>
+            Password
             <input
               type="password"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={loginFormStyles.modalInput}
-              autoComplete="current-password"
+              className={styles.modalInput}
               required
             />
-            {errors.payload?.password && <p className={loginFormStyles.modalError}>{errors.payload?.password}</p>}
-          </div>
-          {errors.general && <p className={loginFormStyles.modalError}>{errors.general}</p>}
-          <button type="submit" className={loginFormStyles.modalButton}>Login</button>
+          </label>
+          {errors.password && <p className={styles.modalError}>{errors.password}</p>}
+          <button type="submit" className={styles.modalButton}>Login</button>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default LoginFormModal;

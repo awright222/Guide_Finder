@@ -10,7 +10,7 @@ const UserDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.session.user);
-  const favorites = useSelector(state => state.favorites);
+  const favorites = useSelector(state => state.favorites.items);
   const bookings = useSelector(state => state.bookings.items);
 
   useEffect(() => {

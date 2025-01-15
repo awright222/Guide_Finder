@@ -1,3 +1,208 @@
+### Guide_Route
+from flask import Blueprint, jsonify, request
+from flask_login import login_required, current_user
+from app.models import Guide, db
+from app.forms import GuideForm
+
+guide_routes = Blueprint('guides', __name__)
+
+# Sign Up a Guide
+@guide_routes.route('/signup', methods=['POST'])
+def sign_up():
+    form = GuideForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        guide = Guide(
+            firstname=form.data['firstname'],
+            lastname=form.data['lastname'],
+            email=form.data['email'],
+            phone_num=form.data['phone_num'],
+            address=form.data['address'],
+            city=form.data['city'],
+            state=form.data['state'],
+            zip=form.data['zip'],
+            businessname=form.data['businessname'],
+            insurance_provider_name=form.data['insurance_provider_name'],
+            insurance_number=form.data['insurance_number'],
+            services=form.data['services'],
+            username=form.data['username'],
+            password=form.data['password']
+        )
+        db.session.add(guide)
+        db.session.commit()
+        return jsonify(guide.to_dict()), 201
+    return jsonify(form.errors), 400
+
+# Update a Guide
+@guide_routes.route('/<int:id>', methods=['PUT'])
+@login_required
+def update_guide(id):
+    form = GuideForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    guide = Guide.query.get(id)
+    if not guide:
+        return jsonify({"message": "Guide not found"}), 404
+
+    if form.validate_on_submit():
+        guide.firstname = form.data['firstname']
+        guide.lastname = form.data['lastname']
+        guide.email = form.data['email']
+        guide.phone_num = form.data['phone_num']
+        guide.address = form.data['address']
+        guide.city = form.data['city']
+        guide.state = form.data['state']
+        guide.zip = form.data['zip']
+        guide.businessname = form.data['businessname']
+        guide.insurance_provider_name = form.data['insurance_provider_name']
+        guide.insurance_number = form.data['insurance_number']
+        guide.services = form.data['services']
+        guide.username = form.data['username']
+        guide.password = form.data['password']
+
+        db.session.commit()
+        return jsonify(guide.to_dict()), 200
+    return jsonify(form.errors), 400
+
+# Delete a Guide
+@guide_routes.route('/<int:id>', methods=['DELETE'])
+@login_required
+def delete_guide(id):
+    guide = Guide.query.get(id)
+    if not guide:
+        return jsonify({"message": "Guide not found"}), 404
+
+    db.session.delete(guide)
+    db.session.commit()
+    return jsonify({"message": "Guide successfully deleted"}), 200
+
+# Get Guide Details
+@guide_routes.route('/<int:id>', methods=['GET'])
+@login_required
+def get_guide(id):
+    guide = Guide.query.get(id)
+    if not guide:
+        return jsonify({"message": "Guide not found"}), 404
+    return jsonify(guide.to_dict()), 200
+
+# Get All Guides
+@guide_routes.route('/', methods=['GET'])
+@login_required
+def get_guides():
+    guides = Guide.query.all()
+    return jsonify([guide.to_dict() for guide in guides]), 200
+
+
+### Guide Form
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, Email, ValidationError
+from app.models import Guide
+
+def guide_exists(form, field):
+    email = field.data
+    guide = Guide.query.filter(Guide.email == email).first()
+    if guide:
+        raise ValidationError('Email address is already in use.')
+
+def username_exists(form, field):
+    username = field.data
+    guide = Guide.query.filter(Guide.username == username).first()
+    if guide:
+        raise ValidationError('Username is already in use.')
+
+class GuideForm(FlaskForm):
+    firstname = StringField('firstname', validators=[DataRequired()])
+    lastname = StringField('lastname', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired(), Email(), guide_exists])
+    phone_num = StringField('phone_num')
+    address = StringField('address')
+    city = StringField('city')
+    state = StringField('state')
+    zip = StringField('zip')
+    businessname = StringField('businessname')
+    insurance_provider_name = StringField('insurance_provider_name')
+    insurance_number = StringField('insurance_number')
+    services = StringField('services')
+    username = StringField('username', validators=[DataRequired(), username_exists])
+    password = PasswordField('password', validators=[DataRequired()])
+
+### Guide login Form
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, Email
+
+class GuideLoginForm(FlaskForm):
+    email = StringField('email', validators=[DataRequired(), Email()])
+    password = PasswordField('password', validators=[DataRequired()])
+
+
+### Guide Model
+from .db import db, environment, SCHEMA, add_prefix_for_prod
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+import jwt
+from datetime import datetime, timedelta
+
+class Guide(db.Model, UserMixin):
+    __tablename__ = 'guides'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
+    id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(50), nullable=False)
+    lastname = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    phone_num = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(255), nullable=True)
+    city = db.Column(db.String(100), nullable=True)
+    state = db.Column(db.String(50), nullable=True)
+    zip = db.Column(db.String(20), nullable=True)
+    businessname = db.Column(db.String(255), nullable=True)
+    insurance_provider_name = db.Column(db.String(255), nullable=True)
+    insurance_number = db.Column(db.String(50), nullable=True)
+    username = db.Column(db.String(40), nullable=False, unique=True)
+    hashed_password = db.Column(db.String(255), nullable=False)
+
+    services = db.relationship('Service', back_populates='guide')
+
+    @property
+    def password(self):
+        return self.hashed_password
+
+    @password.setter
+    def password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
+
+    def generate_auth_token(self, expires_in=600):
+        return jwt.encode(
+            {'id': self.id, 'exp': datetime.utcnow() + timedelta(seconds=expires_in)},
+            'your-secret-key', algorithm='HS256'
+        )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
+            'phone_num': self.phone_num,
+            'address': self.address,
+            'city': self.city,
+            'state': self.state,
+            'zip': self.zip,
+            'businessname': self.businessname,
+            'insurance_provider_name': self.insurance_provider_name,
+            'insurance_number': self.insurance_number,
+            'services': [service.to_dict() for service in self.services],
+            'username': self.username
+        }
+
+
+### Guide Seeds
 from app.models import db, Guide
 
 def seed_guides():

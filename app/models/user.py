@@ -20,8 +20,13 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(50), nullable=True)
     zip = db.Column(db.String(20), nullable=True)
     is_manager = db.Column(db.Boolean, default=False)
+    is_guide = db.Column(db.Boolean, default=False) 
+    businessname = db.Column(db.String(255), nullable=True)
+    insurance_provider_name = db.Column(db.String(255), nullable=True)
+    insurance_number = db.Column(db.String(50), nullable=True)
 
     bookings = db.relationship('Booking', back_populates='client', cascade='all, delete-orphan')
+    services = db.relationship('Service', back_populates='guide') 
 
     @property
     def password(self):
@@ -47,5 +52,10 @@ class User(db.Model, UserMixin):
             'state': self.state,
             'zip': self.zip,
             'is_manager': self.is_manager,
-            'bookings': [booking.to_dict() for booking in self.bookings]
+            'is_guide': self.is_guide,
+            'businessname': self.businessname,
+            'insurance_provider_name': self.insurance_provider_name,
+            'insurance_number': self.insurance_number,
+            'bookings': [booking.to_dict() for booking in self.bookings],
+            'services': [service.to_dict() for service in self.services]
         }

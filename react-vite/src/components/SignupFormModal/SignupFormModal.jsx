@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signup } from "../../redux/session";
 import userSignupStyles from "./SignupForm.module.css";
-import GuideSignupFormModal from "./GuideSignupFormModal";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -18,8 +17,12 @@ function SignupFormModal() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
+  const [isGuide, setIsGuide] = useState(false);
+  const [businessname, setBusinessname] = useState("");
+  const [insuranceProviderName, setInsuranceProviderName] = useState("");
+  const [insuranceNumber, setInsuranceNumber] = useState("");
   const [errors, setErrors] = useState({});
-  const { setModalContent, closeModal } = useModal();
+  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,20 +32,24 @@ function SignupFormModal() {
       return setErrors({ confirmPassword: "Passwords must match." });
     }
 
-    const serverResponse = await dispatch(
-      signup({
-        email,
-        username,
-        password,
-        firstname,
-        lastname,
-        phone_num: phoneNum,
-        address,
-        city,
-        state,
-        zip,
-      })
-    );
+    const userInfo = {
+      email,
+      username,
+      password,
+      firstname,
+      lastname,
+      phone_num: phoneNum,
+      address,
+      city,
+      state,
+      zip,
+      is_guide: isGuide,
+      businessname: isGuide ? businessname : null,
+      insurance_provider_name: isGuide ? insuranceProviderName : null,
+      insurance_number: isGuide ? insuranceNumber : null,
+    };
+
+    const serverResponse = await dispatch(signup(userInfo));
 
     if (serverResponse?.errors) {
       if (Array.isArray(serverResponse.errors)) {
@@ -55,11 +62,6 @@ function SignupFormModal() {
     }
   };
 
-  const openGuideApplicationModal = () => {
-    closeModal();
-    setModalContent(<GuideSignupFormModal />);
-  };
-
   const handleOutsideClick = (e) => {
     if (e.target.className.includes(userSignupStyles.signupModal)) {
       closeModal();
@@ -70,9 +72,6 @@ function SignupFormModal() {
     <div className={userSignupStyles.signupModal} onClick={handleOutsideClick}>
       <div className={userSignupStyles.signupModalContent}>
         <button onClick={closeModal} className={userSignupStyles.closeButton}>X</button>
-        <button onClick={openGuideApplicationModal} className={userSignupStyles.guideApplicationButton}>
-          Guide Application
-        </button>
         <h1>Sign Up</h1>
         {errors.general && <p className={userSignupStyles.modalError}>{errors.general}</p>}
         <form onSubmit={handleSubmit}>
@@ -192,6 +191,50 @@ function SignupFormModal() {
             />
             {errors.zip && <p className={userSignupStyles.modalError}>{errors.zip}</p>}
           </div>
+          <div className={userSignupStyles.formGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={isGuide}
+                onChange={(e) => setIsGuide(e.target.checked)}
+              />
+              Sign up as a guide
+            </label>
+          </div>
+          {isGuide && (
+            <>
+              <div className={userSignupStyles.formGroup}>
+                <label>Business Name</label>
+                <input
+                  type="text"
+                  value={businessname}
+                  onChange={(e) => setBusinessname(e.target.value)}
+                  placeholder="Enter your business name"
+                />
+                {errors.businessname && <p className={userSignupStyles.modalError}>{errors.businessname}</p>}
+              </div>
+              <div className={userSignupStyles.formGroup}>
+                <label>Insurance Provider Name</label>
+                <input
+                  type="text"
+                  value={insuranceProviderName}
+                  onChange={(e) => setInsuranceProviderName(e.target.value)}
+                  placeholder="Enter your insurance provider name"
+                />
+                {errors.insuranceProviderName && <p className={userSignupStyles.modalError}>{errors.insuranceProviderName}</p>}
+              </div>
+              <div className={userSignupStyles.formGroup}>
+                <label>Insurance Number</label>
+                <input
+                  type="text"
+                  value={insuranceNumber}
+                  onChange={(e) => setInsuranceNumber(e.target.value)}
+                  placeholder="Enter your insurance number"
+                />
+                {errors.insuranceNumber && <p className={userSignupStyles.modalError}>{errors.insuranceNumber}</p>}
+              </div>
+            </>
+          )}
           <div className={userSignupStyles.joinButtonContainer}>
             <button type="submit" className={userSignupStyles.joinButton}>Join</button>
           </div>
