@@ -32,55 +32,67 @@ function Navigation() {
     setModalContent(<SignupFormModal />);
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logout());
     navigate('/');
   };
 
   const hideSidePanelRoutes = ["/user-dashboard", "/manager-dashboard", "/guide-dashboard"];
   const isDashboardPage = hideSidePanelRoutes.includes(location.pathname);
 
+  const handleDashboardRedirect = () => {
+    if (userRole === 'guide') {
+      navigate('/guide-dashboard');
+    } else if (userRole === 'user') {
+      navigate('/user-dashboard');
+    } else if (userRole === 'manager') {
+      navigate('/manager-dashboard');
+    }
+  };
+
   return (
     <>
       {user ? (
         <nav className={navStyles.navbar}>
-          <div className={navStyles.navbarContainer}>
-            <NavLink to="/" className={navStyles.navbarLogo}>
-              Guide Finder
-            </NavLink>
-            <ul className={navStyles.navMenu}>
-              <li className={navStyles.navItem}>
-                <NavLink to="/" className={navStyles.navLinks}>
-                  Home
-                </NavLink>
-              </li>
-              {userRole === 'guide' && (
-                <li className={navStyles.navItem}>
-                  <NavLink to="/guide-dashboard" className={navStyles.navLinks}>
-                    Dashboard
-                  </NavLink>
-                </li>
-              )}
-              {userRole === 'user' && (
-                <li className={navStyles.navItem}>
-                  <NavLink to="/user-dashboard" className={navStyles.navLinks}>
-                    Dashboard
-                  </NavLink>
-                </li>
-              )}
-              {userRole === 'manager' && (
-                <li className={navStyles.navItem}>
-                  <NavLink to="/manager-dashboard" className={navStyles.navLinks}>
-                    Dashboard
-                  </NavLink>
-                </li>
-              )}
-              <li className={navStyles.navItem}>
-                <button onClick={handleLogout} className={navStyles.navLinksBtn}>
-                  Logout
-                </button>
-              </li>
-            </ul>
+          <div className={navStyles.navbarLeft}>
+            <button onClick={handleDashboardRedirect} className={navStyles.navbarLogo}>
+              GF
+            </button>
+          </div>
+          <div className={navStyles.navbarCenter}>
+            <button onClick={() => navigate('/search-services')}>
+              <div className={navStyles.iconBox}>
+                <FontAwesomeIcon icon={faLocationDot} />
+              </div>
+              Search
+            </button>
+            <button onClick={() => navigate('/gallery')}>
+              <div className={navStyles.iconBox}>
+                <FontAwesomeIcon icon={faLocationDot} />
+              </div>
+              Gallery
+            </button>
+            <button onClick={() => navigate('/messages')}>
+              <div className={navStyles.iconBox}>
+                <FontAwesomeIcon icon={faLocationDot} />
+              </div>
+              Messages
+            </button>
+            <button onClick={() => navigate('/partners')}>
+              <div className={navStyles.iconBox}>
+                <FontAwesomeIcon icon={faLocationDot} />
+              </div>
+              Partners
+            </button>
+          </div>
+          <div className={navStyles.navbarRight}>
+            <div className={navStyles.profileButton}>
+              Profile
+              <div className={navStyles.profileDropdown}>
+                <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+            </div>
           </div>
         </nav>
       ) : (
@@ -134,6 +146,7 @@ function Navigation() {
                   <div className={navStyles.navItem}>
                     <DemoButton />
                   </div>
+                  <div className={navStyles.divider}></div>
                   <div className={navStyles.navItem}>
                     <NavLink to="/partners" onClick={toggleSidePanel}>
                       <div className={navStyles.iconBox}>

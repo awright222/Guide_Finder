@@ -6,6 +6,7 @@ import GuideDashboard from "../components/GuideDashboard";
 import { Services, ServiceDetail } from "../components/services";
 import SearchServices from '../components/searchServices';
 import DirectMessages from "../components/Messages/DirectMessages";
+import CreateService from "../components/services/CreateService";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "messages",
         element: <DirectMessages />,
+      },
+      {
+        path: "create-service",
+        element: <CreateService />,
       },
     ],
   },

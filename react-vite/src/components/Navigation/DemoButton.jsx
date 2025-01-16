@@ -39,6 +39,9 @@ const DemoButton = () => {
         className={DemoButtonStyles.dropdownButton}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
+        <div className={DemoButtonStyles.iconBox}>
+          <FontAwesomeIcon icon={faLocationDot} />
+        </div>
         Demo
       </button>
       {isDropdownOpen && (

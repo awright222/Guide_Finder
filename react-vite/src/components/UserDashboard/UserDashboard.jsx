@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../redux/session';
-import { getFavoritesThunk } from '../../redux/favorites';
+import { getFavoritesThunk, removeFavorite } from '../../redux/favorites';
 import { fetchBookings } from '../../redux/bookings';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import UserDashboardStyles from './UserDashboard.module.css';
 
 const UserDashboard = () => {
@@ -20,46 +21,16 @@ const UserDashboard = () => {
     }
   }, [dispatch, user]);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logout());
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed!!!!!:', error);
-    }
-  };
-
   const handleFavoriteClick = (serviceId) => {
     navigate(`/services/${serviceId}`);
   };
 
-  const handleSearchClick = () => {
-    navigate('/search-services');
+  const handleRemoveFavorite = (favoriteId) => {
+    dispatch(removeFavorite(favoriteId));
   };
 
   return (
     <div className={UserDashboardStyles.userDashboard}>
-      <nav className={UserDashboardStyles.navbar}>
-        <div className={UserDashboardStyles.navbarLeft}>
-          <a href="/user-dashboard">GF</a>
-        </div>
-        <div className={UserDashboardStyles.navbarCenter}>
-          <button onClick={handleSearchClick}>Search</button>
-          <button>Gallery</button>
-          <button>Messages</button>
-          <button>Partners</button>
-        </div>
-        <div className={UserDashboardStyles.navbarRight}>
-          <div className={UserDashboardStyles.profileButton}>
-            Profile
-            <div className={UserDashboardStyles.profileDropdown}>
-              <button>Edit Profile</button>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <div className={UserDashboardStyles.content}>
         <div className={UserDashboardStyles.sloganBox}>
           <h2>Guide Finder.</h2>
@@ -71,9 +42,12 @@ const UserDashboard = () => {
           <div className={UserDashboardStyles.favoritesList}>
             {favorites.length > 0 ? (
               favorites.map(favorite => (
-                <div key={favorite.id} className={UserDashboardStyles.favoriteItem} onClick={() => handleFavoriteClick(favorite.service_id)}>
-                  <img src={favorite.image} alt={favorite.title} />
-                  <p>{favorite.title}</p>
+                <div key={favorite.id} className={UserDashboardStyles.favoriteItem}>
+                  <img src={favorite.service_image} alt={favorite.service_title} onClick={() => handleFavoriteClick(favorite.service_id)} />
+                  <p onClick={() => handleFavoriteClick(favorite.service_id)}>{favorite.service_title}</p>
+                  <button className={UserDashboardStyles.removeButton} onClick={() => handleRemoveFavorite(favorite.id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </div>
               ))
             ) : (
@@ -91,7 +65,7 @@ const UserDashboard = () => {
               </div>
             ))
           ) : (
-            <p>No trips booked at this time.</p>
+              <p>No trips booked at this time.</p>
           )}
         </div>
       </div>

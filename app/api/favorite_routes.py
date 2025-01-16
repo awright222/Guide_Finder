@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_required
-from ..models import db, Favorite
+from ..models import db, Favorite, Service
 
 favorite_routes = Blueprint('favorites', __name__)
 
@@ -13,21 +13,29 @@ def add_favorite():
     favorite = Favorite(user_id=current_user.id, service_id=service_id)
     db.session.add(favorite)
     db.session.commit()
-    return jsonify(favorite.to_dict()), 201
+    response = jsonify(favorite.to_dict())
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response, 201
 
-@favorite_routes.route('/<int:service_id>', methods=['DELETE'])
+@favorite_routes.route('/<int:favorite_id>', methods=['DELETE'])
 @login_required
-def remove_favorite(service_id):
-    favorite = Favorite.query.filter_by(user_id=current_user.id, service_id=service_id).first()
+def remove_favorite(favorite_id):
+    favorite = Favorite.query.filter_by(id=favorite_id, user_id=current_user.id).first()
     if not favorite:
-        return jsonify({"message": "Favorite not found"}), 404
+        response = jsonify({"message": "Favorite not found"})
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response, 404
 
     db.session.delete(favorite)
     db.session.commit()
-    return jsonify({"message": "Favorite successfully removed"}), 200
+    response = jsonify({"message": "Favorite successfully removed"})
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response, 200
 
 @favorite_routes.route('/', methods=['GET'])
 @login_required
 def get_favorites():
-    favorites = Favorite.query.filter_by(user_id=current_user.id).all()
-    return jsonify([favorite.to_dict() for favorite in favorites]), 200
+    favorites = Favorite.query.filter_by(user_id=current_user.id).join(Service).all()
+    response = jsonify([favorite.to_dict() for favorite in favorites])
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response, 200

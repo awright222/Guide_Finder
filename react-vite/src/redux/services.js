@@ -23,6 +23,11 @@ export const fetchService = createAsyncThunk('services/fetchService', async (ser
     return response.data;
 });
 
+export const createService = createAsyncThunk('services/createService', async (formData) => {
+    const response = await axios.post('/api/services', formData);
+    return response.data;
+});
+
 export const updateService = createAsyncThunk('services/updateService', async ({ serviceId, formData }) => {
     const response = await axios.put(`/api/services/${serviceId}`, formData);
     return response.data;
@@ -53,7 +58,7 @@ const servicesSlice = createSlice({
             })
             .addCase(fetchServices.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.items = Array.isArray(action.payload) ? action.payload : [];
+                state.items = action.payload;
             })
             .addCase(fetchServices.rejected, (state, action) => {
                 state.status = 'failed';
@@ -66,6 +71,9 @@ const servicesSlice = createSlice({
                 } else {
                     state.items.push(action.payload);
                 }
+            })
+            .addCase(createService.fulfilled, (state, action) => {
+                state.items.push(action.payload);
             })
             .addCase(updateService.fulfilled, (state, action) => {
                 const index = state.items.findIndex(service => service.id === action.payload.id);
