@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import { signup } from "../../redux/session";
 import userSignupStyles from "./SignupForm.module.css";
 
-function SignupFormModal() {
+function SignupFormModal({ navigate }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({}); 
 
     if (password !== confirmPassword) {
       return setErrors({ confirmPassword: "Passwords must match." });
@@ -59,6 +59,7 @@ function SignupFormModal() {
       }
     } else {
       closeModal();
+      navigate('/dashboard');
     }
   };
 

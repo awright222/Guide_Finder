@@ -19,15 +19,6 @@ const GuideDashboard = () => {
     }
   }, [dispatch, user]);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logout());
-      navigate('/');
-    } catch (error) {
-      console.error('Logout failed!!!!!:', error);
-    }
-  };
-
   const handleBookingClick = (bookingId) => {
     navigate(`/bookings/${bookingId}`);
   };

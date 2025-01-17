@@ -42,7 +42,7 @@ const ServiceDetail = () => {
 
   if (!service) return <p>Loading...</p>;
 
-  const isOwner = currentUser && service && currentUser.id === service.ownerId;
+  const isOwner = currentUser && service && currentUser.id === service.guide_id;
   const isFavorite = favorites.some(fav => fav.service_id === service.id);
 
   return (

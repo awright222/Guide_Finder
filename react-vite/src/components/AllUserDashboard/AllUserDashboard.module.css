@@ -1,0 +1,151 @@
+:root {
+    --deep-charcoal-gray: #37474F;
+    --muted-sky-blue: #90CAF9;
+    --soft-olive-green: #A5D6A7;
+    --off-white: #F5F5F5;
+  }
+  
+  .dashboard {
+    background-color: var(--off-white);
+    color: var(--deep-charcoal-gray);
+    padding: 20px;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .sloganBox {
+    flex: 1;
+    background-color: var(--soft-olive-green);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 300px; 
+    margin-right: auto;
+  }
+  
+  .sloganBox h2 {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin: 0;
+    color: var(--deep-charcoal-gray);
+    text-align: left;
+  }
+  
+  .sloganBox p {
+    font-size: 3em;
+    margin: 0;
+    color: var(--deep-charcoal-gray);
+    text-align: left; 
+  }
+  
+  .favoritesBox, .tripsBox, .servicesBox {
+    flex: 1;
+    background-color: var(--deep-charcoal-gray);
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--off-white);
+  }
+  
+  .favoritesList, .servicesGrid {
+    background-color: var(--off-white);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--deep-charcoal-gray);
+    margin-top: 10px;
+  }
+  
+  .favoritesList {
+    max-height: 400px; 
+    overflow-y: auto;
+  }
+  
+  .favoritesList::-webkit-scrollbar {
+    width: 15px;
+  }
+  
+  .favoritesList::-webkit-scrollbar-track {
+    background: var(--off-white);
+    border-radius: 10px;
+  }
+  
+  .favoritesList::-webkit-scrollbar-thumb {
+    background-color: var(--muted-sky-blue);
+    border-radius: 10px;
+    border: 3px solid var(--deep-charcoal-gray);
+  }
+  
+  .favoritesList::-webkit-scrollbar-thumb:hover {
+    background-color: var(--soft-olive-green);
+  }
+  
+  .favoriteItem, .tripItem, .serviceItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--off-white);
+    color: var(--deep-charcoal-gray);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+  }
+  
+  .favoriteItem:hover, .tripItem:hover, .serviceItem:hover {
+    background-color: var(--muted-sky-blue);
+  }
+  
+  .favoriteItem img, .serviceItem img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+  }
+  
+  .favoriteItem p, .tripItem p, .serviceItem p {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--deep-charcoal-gray);
+  }
+  
+  .removeButton {
+    background: none;
+    border: none;
+    color: var(--deep-charcoal-gray);
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .removeButton:hover {
+    color: var(--muted-sky-blue);
+  }
+  
+  .breakLine {
+    width: 50%; 
+    height: 1px;
+    background-color: var(--deep-charcoal-gray);
+    margin: 10px auto;
+  }
+  
+  .servicesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .createServiceButton {
+    background-color: var(--muted-sky-blue);
+    border: none;
+    color: var(--off-white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .createServiceButton:hover {
+    background-color: var(--soft-olive-green);
+  }

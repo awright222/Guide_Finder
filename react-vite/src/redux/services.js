@@ -5,9 +5,7 @@ import axios from 'axios';
 export const fetchServices = createAsyncThunk('services/fetchServices', async (filters = {}) => {
     console.log('Fetching services from API with filters:', filters);
     const query = new URLSearchParams(filters).toString();
-
-    
-    const response = await axios.get(`/api/services/search?${query}`);
+    const response = await axios.get(`/api/services/search?${query}`, { withCredentials: true });
     
     // Flatten
     const services = Array.isArray(response.data) 
@@ -19,22 +17,22 @@ export const fetchServices = createAsyncThunk('services/fetchServices', async (f
 });
 
 export const fetchService = createAsyncThunk('services/fetchService', async (serviceId) => {
-    const response = await axios.get(`/api/services/${serviceId}`);
+    const response = await axios.get(`/api/services/${serviceId}`, { withCredentials: true });
     return response.data;
 });
 
 export const createService = createAsyncThunk('services/createService', async (formData) => {
-    const response = await axios.post('/api/services', formData);
+    const response = await axios.post('/api/services', formData, { withCredentials: true });
     return response.data;
 });
 
 export const updateService = createAsyncThunk('services/updateService', async ({ serviceId, formData }) => {
-    const response = await axios.put(`/api/services/${serviceId}`, formData);
+    const response = await axios.put(`/api/services/${serviceId}`, formData, { withCredentials: true });
     return response.data;
 });
 
 export const deleteService = createAsyncThunk('services/deleteService', async (serviceId) => {
-    await axios.delete(`/api/services/${serviceId}`);
+    await axios.delete(`/api/services/${serviceId}`, { withCredentials: true });
     return serviceId;
 });
 

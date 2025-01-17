@@ -15,11 +15,21 @@ if (import.meta.env.MODE !== "production") {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ReduxProvider store={store}>
-      <ModalProvider>
-        <RouterProvider router={router} />
-        <Modal />
-      </ModalProvider>
-    </ReduxProvider>
-  </React.StrictMode>
+  <ReduxProvider store={store}>
+    <ModalProvider>
+      <RouterProvider router={router} />
+      <Modal />
+    </ModalProvider>
+  </ReduxProvider>
+</React.StrictMode>
+//   <React.StrictMode>
+//   <ReduxProvider store={store}>
+//     <ModalProvider>
+//       <RouterProvider router={router}>
+//         <Modal />
+//       </RouterProvider>
+//     </ModalProvider>
+//   </ReduxProvider>
+// </React.StrictMode>
 );
+

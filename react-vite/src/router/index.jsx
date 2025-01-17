@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from './Layout'; 
 import LandingPage from "../components/LandingPage";
-import UserDashboard from "../components/UserDashboard";
-import GuideDashboard from "../components/GuideDashboard";
+// import UserDashboard from "../components/UserDashboard";
+// import GuideDashboard from "../components/GuideDashboard";
 import { Services, ServiceDetail } from "../components/services";
 import SearchServices from '../components/searchServices';
 import DirectMessages from "../components/Messages/DirectMessages";
 import CreateService from "../components/services/CreateService";
+import AllUserDashboard from "../components/AllUserDashboard";
 
 const router = createBrowserRouter([
   {
@@ -17,13 +18,17 @@ const router = createBrowserRouter([
         path: "/",
         element: <LandingPage />,
       },
+      // {
+      //   path: "user-dashboard",
+      //   element: <UserDashboard />,
+      // },
+      // {
+      //   path: "guide-dashboard",
+      //   element: <GuideDashboard />,
+      // },
       {
-        path: "user-dashboard",
-        element: <UserDashboard />,
-      },
-      {
-        path: "guide-dashboard",
-        element: <GuideDashboard />,
+        path: "dashboard",
+        element: <AllUserDashboard />,
       },
       {
         path: "services", 

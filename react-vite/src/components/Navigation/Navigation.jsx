@@ -10,18 +10,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import navStyles from "./Navigation.module.css";
+import EditProfileModal from "../EditProfileModal";
 
 function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const user = useSelector((state) => state.session.user);
-  const userRole = useSelector((state) => state.session.userRole);
+ // const userRole = user ? (user.is_guide ? 'guide' : user.is_manager ? 'manager' : 'user') : null;
   const { setModalContent } = useModal();
 
   const toggleSidePanel = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
   const openLoginModal = (initialEmail = "", initialPassword = "") => {
@@ -29,7 +35,7 @@ function Navigation() {
   };
 
   const openSignupModal = () => {
-    setModalContent(<SignupFormModal />);
+    setModalContent(<SignupFormModal navigate={navigate} />);
   };
 
   const handleLogout = async () => {
@@ -37,17 +43,15 @@ function Navigation() {
     navigate('/');
   };
 
-  const hideSidePanelRoutes = ["/user-dashboard", "/manager-dashboard", "/guide-dashboard"];
+  const openEditProfileModal = () => {
+    setModalContent(<EditProfileModal navigate={navigate} />);
+  };
+
+  const hideSidePanelRoutes = ["/dashboard"];
   const isDashboardPage = hideSidePanelRoutes.includes(location.pathname);
 
   const handleDashboardRedirect = () => {
-    if (userRole === 'guide') {
-      navigate('/guide-dashboard');
-    } else if (userRole === 'user') {
-      navigate('/user-dashboard');
-    } else if (userRole === 'manager') {
-      navigate('/manager-dashboard');
-    }
+    navigate('/dashboard');
   };
 
   return (
@@ -86,10 +90,10 @@ function Navigation() {
             </button>
           </div>
           <div className={navStyles.navbarRight}>
-            <div className={navStyles.profileButton}>
+            <div className={navStyles.profileButton} onClick={toggleProfileDropdown}>
               Profile
-              <div className={navStyles.profileDropdown}>
-                <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+              <div className={`${navStyles.profileDropdown} ${isProfileDropdownOpen ? navStyles.open : ''}`}>
+                <button onClick={openEditProfileModal}>Edit Profile</button>
                 <button onClick={handleLogout}>Logout</button>
               </div>
             </div>
@@ -144,7 +148,7 @@ function Navigation() {
                     </NavLink>
                   </div>
                   <div className={navStyles.navItem}>
-                    <DemoButton />
+                    <DemoButton navigate={navigate} />
                   </div>
                   <div className={navStyles.divider}></div>
                   <div className={navStyles.navItem}>

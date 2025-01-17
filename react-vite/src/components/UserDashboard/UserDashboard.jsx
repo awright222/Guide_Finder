@@ -41,13 +41,16 @@ const UserDashboard = () => {
           <h2>Favorites</h2>
           <div className={UserDashboardStyles.favoritesList}>
             {favorites.length > 0 ? (
-              favorites.map(favorite => (
-                <div key={favorite.id} className={UserDashboardStyles.favoriteItem}>
-                  <img src={favorite.service_image} alt={favorite.service_title} onClick={() => handleFavoriteClick(favorite.service_id)} />
-                  <p onClick={() => handleFavoriteClick(favorite.service_id)}>{favorite.service_title}</p>
-                  <button className={UserDashboardStyles.removeButton} onClick={() => handleRemoveFavorite(favorite.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
+              favorites.map((favorite, index) => (
+                <div key={favorite.id}>
+                  <div className={UserDashboardStyles.favoriteItem}>
+                    <img src={favorite.service_image} alt={favorite.service_title} onClick={() => handleFavoriteClick(favorite.service_id)} />
+                    <p onClick={() => handleFavoriteClick(favorite.service_id)}>{favorite.service_title}</p>
+                    <button className={UserDashboardStyles.removeButton} onClick={() => handleRemoveFavorite(favorite.id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
+                  {index < favorites.length - 1 && <div className={UserDashboardStyles.breakLine}></div>}
                 </div>
               ))
             ) : (
@@ -65,7 +68,7 @@ const UserDashboard = () => {
               </div>
             ))
           ) : (
-              <p>No trips booked at this time.</p>
+            <p>No trips booked at this time.</p>
           )}
         </div>
       </div>

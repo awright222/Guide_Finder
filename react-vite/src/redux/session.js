@@ -1,3 +1,5 @@
+
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -78,6 +80,40 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const updateProfile = createAsyncThunk(
+  "session/updateProfile",
+  async (userInfo, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/users/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInfo),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Update failed.");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "session/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Delete failed.");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const sessionSlice = createSlice({
   name: "session",
   initialState,
@@ -96,25 +132,36 @@ const sessionSlice = createSlice({
       .addCase(restoreUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.userRole = action.payload.is_guide ? 'guide' : 'user';  
+        state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user';  
       })
       .addCase(restoreUser.rejected, setError)
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.userRole = action.payload.is_guide ? 'guide' : 'user'; 
+        state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user'; 
       })
       .addCase(login.rejected, setError)
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.userRole = action.payload.is_guide ? 'guide' : 'user';  
+        state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user';  
       })
       .addCase(signup.rejected, setError)
       .addCase(logout.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
         state.userRole = null;  
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user';
+      })
+      .addCase(updateProfile.rejected, setError)
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.userRole = null;
       })
       .addCase(logout.rejected, setError);
   },

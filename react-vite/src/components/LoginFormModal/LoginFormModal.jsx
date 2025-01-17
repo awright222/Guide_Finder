@@ -2,31 +2,27 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../redux/session';
-import { useNavigate } from 'react-router-dom';
 import styles from './LoginForm.module.css';
 
-const LoginFormModal = () => {
+const LoginFormModal = ({ navigate }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { closeModal } = useModal();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  const [isGuide, setIsGuide] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("LOGIN RAN");
     const serverResponse = await dispatch(
       sessionActions.login({ email, password })
     );
-
     if (serverResponse.type === "session/login/rejected") {
       setErrors(serverResponse.payload.errors || {});
     } else {
       setLoginSuccess(true);
-      setUserRole(serverResponse.payload?.user?.role);
+      setIsGuide(serverResponse.payload?.user?.is_guide);
       setErrors({});
       closeModal();
     }
@@ -34,14 +30,9 @@ const LoginFormModal = () => {
 
   useEffect(() => {
     if (loginSuccess) {
-      const routeMap = {
-        user: '/user-dashboard',
-        guide: '/guide-dashboard',
-        manager: '/manager-dashboard',
-      };
-      navigate(routeMap[userRole] || "/");
+      navigate('/dashboard');
     }
-  }, [loginSuccess, userRole, navigate]);
+  }, [loginSuccess, isGuide, navigate]);
 
   return (
     <div className={styles.loginModal}>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/session";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
@@ -12,8 +11,7 @@ const demoUsers = [
   { username: "Demo Manager", email: "demo-manager@aa.io", password: "password" }
 ];
 
-const DemoButton = () => {
-  const navigate = useNavigate();
+const DemoButton = ({ navigate }) => {
   const dispatch = useDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -23,13 +21,8 @@ const DemoButton = () => {
 
     if (serverResponse.type === "session/login/fulfilled") {
       const user = serverResponse.payload;
-      const userRole = user.is_guide ? 'guide' : user.is_manager ? 'manager' : 'user';
-      const routeMap = {
-        user: '/user-dashboard',
-        guide: '/guide-dashboard',
-        manager: '/manager-dashboard',
-      };
-      navigate(routeMap[userRole] || "/");
+      const isGuide = user.is_guide;
+      navigate('/dashboard');
     }
   };
 

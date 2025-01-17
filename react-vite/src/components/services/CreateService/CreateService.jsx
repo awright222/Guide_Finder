@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createService } from '../../../redux/services';
+import { createService, fetchServices } from '../../../redux/services';
 import CreateServiceStyles from './CreateService.module.css';
+
+const serviceTypes = ['Hunting', 'Fishing', 'Climbing', 'Backpacking', 'Mountaineering', 'Water Sports', 'Training', 'Other'];
+const experienceLevels = ['No Experience', 'Weekend Warrior', 'Pro'];
 
 const CreateService = () => {
   const dispatch = useDispatch();
@@ -31,12 +34,22 @@ const CreateService = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      alert('You must be logged in to create a service.');
+      navigate('/login');
+      return;
+    }
     const newService = {
       ...formData,
       guide_id: user.id
     };
-    await dispatch(createService(newService));
-    navigate('/guide-dashboard');
+    try {
+      await dispatch(createService(newService));
+      await dispatch(fetchServices());
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error creating service:', error);
+    }
   };
 
   return (
@@ -49,7 +62,12 @@ const CreateService = () => {
         </label>
         <label>
           Type:
-          <input type="text" name="type" value={formData.type} onChange={handleChange} placeholder="Enter service type" required />
+          <select name="type" value={formData.type} onChange={handleChange} required>
+            <option value="">Select service type</option>
+            {serviceTypes.map((type) => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
         </label>
         <label>
           Location:
@@ -77,7 +95,12 @@ const CreateService = () => {
         </label>
         <label>
           Experience Requirement:
-          <input type="text" name="experience_requirement" value={formData.experience_requirement} onChange={handleChange} placeholder="Enter experience requirement" required />
+          <select name="experience_requirement" value={formData.experience_requirement} onChange={handleChange} required>
+            <option value="">Select experience level</option>
+            {experienceLevels.map((level) => (
+              <option key={level} value={level}>{level}</option>
+            ))}
+          </select>
         </label>
         <label>
           About Guide:

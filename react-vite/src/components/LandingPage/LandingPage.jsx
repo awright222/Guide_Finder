@@ -16,11 +16,11 @@ const LandingPage = () => {
   useEffect(() => {
     if (user) {
       const routeMap = {
-        user: '/user-dashboard',
-        guide: '/guide-dashboard',
-        manager: '/manager-dashboard',
+        user: '/dashboard',
+        guide: '/dashboard',
+        manager: '/dashboard',
       };
-      navigate(routeMap[userRole] || '/user-dashboard');
+      navigate(routeMap[userRole] || '/dashboard');
     }
   }, [user, userRole, navigate]);
 
