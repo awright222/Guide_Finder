@@ -22,7 +22,8 @@ const CreateService = () => {
     cost: '',
     images: '',
     experience_requirement: '',
-    about_guide: ''
+    about_guide: '',
+    csrf_token: ''
   });
 
   const handleChange = (e) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchService, deleteService } from '../../redux/services';
+import { fetchService, deleteService, updateService } from '../../redux/services';
 import { addFavorite, removeFavorite } from '../../redux/favorites';
 import EditServiceModal from './EditServiceModal';
 import serviceDetailStyles from './ServiceDetail.module.css';
@@ -24,10 +24,10 @@ const ServiceDetail = () => {
     }
   }, [dispatch, serviceId]);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this service?")) {
-      dispatch(deleteService(serviceId));
-      navigate('/services');
+      await dispatch(deleteService(serviceId));
+      navigate('/dashboard');
     }
   };
 
@@ -38,6 +38,11 @@ const ServiceDetail = () => {
     } else {
       dispatch(addFavorite(service.id));
     }
+  };
+
+  const handleEdit = async (formData) => {
+    await dispatch(updateService({ serviceId, formData }));
+    setShowEditModal(false);
   };
 
   if (!service) return <p>Loading...</p>;
@@ -80,8 +85,10 @@ const ServiceDetail = () => {
       </div>
       {showEditModal && (
         <EditServiceModal
+          service={service} 
           serviceId={service.id}
           onClose={() => setShowEditModal(false)}
+          onSave={handleEdit}
         />
       )}
     </div>

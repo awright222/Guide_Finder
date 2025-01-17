@@ -22,7 +22,7 @@ export const fetchService = createAsyncThunk('services/fetchService', async (ser
 });
 
 export const createService = createAsyncThunk('services/createService', async (formData) => {
-    const response = await axios.post('/api/services', formData, { withCredentials: true });
+    const response = await axios.post('/api/services/', formData, { withCredentials: true });
     return response.data;
 });
 

@@ -38,6 +38,7 @@ def search_services():
 @login_required
 def create_service():
     form = ServiceForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         service = Service(
             guide_id=current_user.id,
@@ -56,3 +57,38 @@ def create_service():
         db.session.commit()
         return service.to_dict(), 201
     return jsonify({'errors': form.errors}), 400
+
+@service_routes.route('/<int:service_id>', methods=['PUT'])
+@login_required
+def update_service(service_id):
+    service = Service.query.get(service_id)
+    if service and service.guide_id == current_user.id:
+        form = ServiceForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+        if form.validate_on_submit():
+            service.title = form.data['title']
+            service.type = form.data['type']
+            service.location = form.data['location']
+            service.country = form.data['country']
+            service.state = form.data['state']
+            service.description = form.data['description']
+            service.cost = form.data['cost']
+            service.images = form.data['images']
+            service.experience_requirement = form.data['experience_requirement']
+            service.about_guide = form.data['about_guide']
+            db.session.commit()
+            return service.to_dict(), 200
+        else:
+            print("Form errors:", form.errors)
+        return jsonify({'errors': form.errors}), 400
+    return jsonify({'error': 'Service not found or unauthorized'}), 404
+
+@service_routes.route('/<int:service_id>', methods=['DELETE'])
+@login_required
+def delete_service(service_id):
+    service = Service.query.get(service_id)
+    if service and service.guide_id == current_user.id:
+        db.session.delete(service)
+        db.session.commit()
+        return jsonify({'message': 'Service deleted successfully'}), 200
+    return jsonify({'error': 'Service not found or unauthorized'}), 404
