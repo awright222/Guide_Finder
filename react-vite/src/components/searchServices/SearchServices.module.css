@@ -133,3 +133,13 @@ table tbody tr:nth-child(even) {
 .serviceCard button.favorited {
   color: var(--muted-sky-blue);
 }
+
+.filledStar {
+  color: gold;
+  font-size: 1.5rem;
+}
+
+.emptyStar {
+  color: #ccc;
+  font-size: 1.5rem;
+}

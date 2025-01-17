@@ -14,7 +14,8 @@ def create_review():
     if form.validate_on_submit():
         new_review = Review(
             service_id=form.service_id.data,
-            user_id=form.user_id.data,
+            user_id=current_user.id,
+            title=form.title.data,
             review=form.review.data,
             rating=form.rating.data
         )
@@ -38,8 +39,7 @@ def update_review(id):
         if review.user_id != current_user.id:
             return jsonify({"message": "Forbidden"}), 403
 
-        review.service_id = form.service_id.data
-        review.user_id = form.user_id.data
+        review.title = form.title.data
         review.review = form.review.data
         review.rating = form.rating.data
         db.session.commit()

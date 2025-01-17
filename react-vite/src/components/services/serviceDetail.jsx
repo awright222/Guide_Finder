@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchService, deleteService, updateService } from '../../redux/services';
+import { fetchReviews, deleteReview } from '../../redux/reviews';
 import { addFavorite, removeFavorite } from '../../redux/favorites';
 import EditServiceModal from './EditServiceModal';
+import ReviewModal from '../Reviews';
 import serviceDetailStyles from './ServiceDetail.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
@@ -14,13 +16,18 @@ const ServiceDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const service = useSelector(state => state.services.items.find(s => s.id === parseInt(serviceId)));
+  const reviews = useSelector(state => state.reviews.items.filter(r => r.service_id === parseInt(serviceId)));
+  const averageRating = useSelector(state => state.reviews.averageRatings[serviceId]);
   const currentUser = useSelector(state => state.session.user);
   const favorites = useSelector(state => state.favorites.items);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [editReview, setEditReview] = useState(null);
 
   useEffect(() => {
     if (serviceId) {
       dispatch(fetchService(serviceId));
+      dispatch(fetchReviews(serviceId));
     }
   }, [dispatch, serviceId]);
 
@@ -45,6 +52,14 @@ const ServiceDetail = () => {
     setShowEditModal(false);
   };
 
+  const handleReviewDelete = async (reviewId) => {
+    if (window.confirm("Are you sure you want to delete this review?")) {
+      await dispatch(deleteReview(reviewId));
+      // Refetch reviews after deleting a review
+      await dispatch(fetchReviews(serviceId));
+    }
+  };
+
   if (!service) return <p>Loading...</p>;
 
   const isOwner = currentUser && service && currentUser.id === service.guide_id;
@@ -67,7 +82,7 @@ const ServiceDetail = () => {
             </button>
           </>
         )}
-        {currentUser && (
+        {currentUser && !currentUser.is_guide && (
           <button 
             className={isFavorite ? serviceDetailStyles.favorited : ''} 
             onClick={handleFavoriteClick}
@@ -82,6 +97,28 @@ const ServiceDetail = () => {
         <p><strong>Cost:</strong> ${service.cost}</p>
         <p><strong>Location:</strong> {service.location}</p>
         <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
+        <p><strong>Average Rating:</strong> {averageRating !== undefined ? averageRating.toFixed(1) : 'No ratings yet'} ★</p>
+      </div>
+      <button onClick={() => setShowReviewModal(true)}>Leave a Review</button>
+      <div className={serviceDetailStyles.reviewsSection}>
+        <h2>Reviews</h2>
+        {reviews.map(review => (
+          <div key={review.id} className={serviceDetailStyles.review}>
+            <h3>{review.title}</h3>
+            <p>{review.review}</p>
+            <div className={serviceDetailStyles.rating}>
+              {[...Array(5)].map((star, index) => (
+                <span key={index} className={index < review.rating ? serviceDetailStyles.filledStar : serviceDetailStyles.emptyStar}>★</span>
+              ))}
+            </div>
+            {currentUser && currentUser.id === review.user_id && (
+              <div className={serviceDetailStyles.reviewActions}>
+                <button onClick={() => { setEditReview(review); setShowReviewModal(true); }}>Edit</button>
+                <button onClick={() => handleReviewDelete(review.id)}>Delete</button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
       {showEditModal && (
         <EditServiceModal
@@ -89,6 +126,13 @@ const ServiceDetail = () => {
           serviceId={service.id}
           onClose={() => setShowEditModal(false)}
           onSave={handleEdit}
+        />
+      )}
+      {showReviewModal && (
+        <ReviewModal
+          serviceId={service.id}
+          review={editReview}
+          onClose={() => { setShowReviewModal(false); setEditReview(null); }}
         />
       )}
     </div>

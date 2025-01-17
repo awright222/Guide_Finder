@@ -5,6 +5,7 @@ import favoritesReducer from "./favorites";
 import bookingsReducer from "./bookings";
 import servicesReducer from "./services";
 import messagesReducer from "./messages";  
+import reviewReducer from "./reviews";
 
 const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
     favorites: favoritesReducer,
     bookings: bookingsReducer,
     services: servicesReducer,
-    messages: messagesReducer,  
+    messages: messagesReducer,
+    reviews: reviewReducer,
   },
   middleware: (getDefaultMiddleware) => {
     const middlewares = getDefaultMiddleware();
