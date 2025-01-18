@@ -6,9 +6,17 @@ export const fetchReviews = createAsyncThunk('reviews/fetchReviews', async (serv
   return { serviceId, reviews: response.data };
 });
 
-export const createReview = createAsyncThunk('reviews/createReview', async (reviewData) => {
-  const response = await axios.post('/api/reviews/', reviewData);
-  return response.data;
+export const createReview = createAsyncThunk('reviews/createReview', async (reviewData, { rejectWithValue }) => {
+  try {
+    const response = await axios.post('/api/reviews/', reviewData);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+    throw error;
+  }
 });
 
 export const updateReview = createAsyncThunk('reviews/updateReview', async ({ reviewId, reviewData }) => {
@@ -33,7 +41,7 @@ const reviewsSlice = createSlice({
     items: [],
     status: 'idle',
     error: null,
-    averageRatings: {}, // Store average ratings for each service
+    averageRatings: {}, 
   },
   reducers: {},
   extraReducers: (builder) => {

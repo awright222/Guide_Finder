@@ -55,7 +55,6 @@ const ServiceDetail = () => {
   const handleReviewDelete = async (reviewId) => {
     if (window.confirm("Are you sure you want to delete this review?")) {
       await dispatch(deleteReview(reviewId));
-      // Refetch reviews after deleting a review
       await dispatch(fetchReviews(serviceId));
     }
   };

@@ -19,17 +19,18 @@ const ReviewModal = ({ serviceId, review, onClose }) => {
       review: reviewText,
       rating,
     };
-
-    if (review) {
-      await dispatch(updateReview({ reviewId: review.id, reviewData }));
-    } else {
-      await dispatch(createReview(reviewData));
+  
+    try {
+      if (review) {
+        await dispatch(updateReview({ reviewId: review.id, reviewData }));
+      } else {
+        await dispatch(createReview(reviewData));
+      }
+      await dispatch(fetchReviews(serviceId));
+      onClose();
+    } catch (error) {
+      console.error('Failed to submit review:', error);
     }
-
-    // Refetch reviews after creating or updating a review
-    await dispatch(fetchReviews(serviceId));
-
-    onClose();
   };
 
   return (

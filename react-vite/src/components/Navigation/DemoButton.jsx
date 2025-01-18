@@ -20,8 +20,6 @@ const DemoButton = ({ navigate }) => {
     setIsDropdownOpen(false);
 
     if (serverResponse.type === "session/login/fulfilled") {
-      const user = serverResponse.payload;
-      const isGuide = user.is_guide;
       navigate('/dashboard');
     }
   };
