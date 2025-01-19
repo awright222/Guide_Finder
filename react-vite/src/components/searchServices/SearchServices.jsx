@@ -9,8 +9,6 @@ import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import searchServicesStyles from './SearchServices.module.css'; 
 
-
-
 const SearchServices = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();

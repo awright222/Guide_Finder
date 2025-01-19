@@ -45,19 +45,15 @@ def update_profile():
     if not user:
         return jsonify({"message": "User not found"}), 404
 
-    
     email = data.get('email', user.email)
     existing_user = User.query.filter(User.email == email).first()
     if existing_user and existing_user.id != user.id:
         return jsonify({"message": "Email address is already in use."}), 400
 
-   
     phone_num = data.get('phone_num')
-    
     if phone_num and not phone_num.isnumeric():
         return jsonify({"message": "Invalid phone number format."}), 400
 
-   
     user.firstname = data.get('firstname', user.firstname)
     user.lastname = data.get('lastname', user.lastname)
     user.email = email
@@ -129,11 +125,15 @@ def update_user(id):
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
-    
-    if not current_user.is_manager:
+    # Allow manager to delete any user
+    if current_user.is_manager:
+        user = User.query.get(id)
+    # Allow the logged-in user to delete their own account
+    elif current_user.id == id:
+        user = User.query.get(id)
+    else:
         return forbidden()
 
-    user = User.query.get(id)
     if not user:
         return jsonify({"message": "User not found"}), 404
 
@@ -144,3 +144,4 @@ def delete_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
+

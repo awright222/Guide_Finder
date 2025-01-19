@@ -126,11 +126,23 @@ export const updateProfile = createAsyncThunk(
   "session/updateProfile",
   async (userInfo, { rejectWithValue }) => {
     try {
+      // Extract the CSRF token from the cookies
+      const csrfToken = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("csrf_token="))
+        ?.split("=")[1];
+
+      // Perform the fetch request to update the profile
       const res = await fetch("/api/users/profile", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken, // Send the CSRF token
+        },
         body: JSON.stringify(userInfo),
+        credentials: "include", 
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Update failed.");
       return data;
@@ -140,12 +152,14 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+
 export const deleteUser = createAsyncThunk(
   "session/deleteUser",
   async (userId, { rejectWithValue }) => {
     try {
       const res = await fetch(`/api/users/${userId}`, {
         method: "DELETE",
+        credentials: "include", 
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Delete failed.");

@@ -25,6 +25,9 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
   // Form validation state
   const [errors, setErrors] = useState({});
 
+  // Password visibility state
+  const [showPassword, setShowPassword] = useState(false);
+
   // Redux state for user
   const user = useSelector(state => state.session.user);
 
@@ -124,13 +127,22 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
           <div className={userSignupStyles.formGroup}>
             <label>Password</label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Create a password"
               required
             />
             {errors.password && <p className={userSignupStyles.modalError}>{errors.password}</p>}
+          </div>
+          <div className={userSignupStyles.formGroup}>
+            <input
+              type="checkbox"
+              id="showPassword"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <label htmlFor="showPassword">Show Password</label>
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>First Name</label>

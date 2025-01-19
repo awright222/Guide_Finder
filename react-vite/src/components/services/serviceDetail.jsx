@@ -98,7 +98,9 @@ const ServiceDetail = () => {
         <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
         <p><strong>Average Rating:</strong> {averageRating !== undefined ? averageRating.toFixed(1) : 'No ratings yet'} ★</p>
       </div>
-      <button onClick={() => setShowReviewModal(true)}>Leave a Review</button>
+      {currentUser && (
+        <button onClick={() => setShowReviewModal(true)}>Leave a Review</button>
+      )}
       <div className={serviceDetailStyles.reviewsSection}>
         <h2>Reviews</h2>
         {reviews.map(review => (

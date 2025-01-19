@@ -1,9 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchReviews = createAsyncThunk('reviews/fetchReviews', async (serviceId) => {
-  const response = await axios.get(`/api/reviews/service/${serviceId}`);
-  return { serviceId, reviews: response.data };
+export const fetchReviews = createAsyncThunk('reviews/fetchReviews', async (serviceId, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`/api/reviews/service/${serviceId}`);
+    return { serviceId, reviews: response.data };
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      // Handle unauthorized error gracefully
+      return rejectWithValue('Unauthorized access');
+    }
+    throw error;
+  }
 });
 
 export const createReview = createAsyncThunk('reviews/createReview', async (reviewData, { rejectWithValue }) => {
@@ -57,7 +65,7 @@ const reviewsSlice = createSlice({
       })
       .addCase(fetchReviews.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload || action.error.message;
       })
       .addCase(createReview.fulfilled, (state, action) => {
         state.items.push(action.payload);

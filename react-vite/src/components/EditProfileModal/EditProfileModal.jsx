@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { updateProfile } from "../../redux/session";
+import { updateProfile, deleteUser } from "../../redux/session";
 import editModalStyles from "./EditProfileModal.module.css";
 
 const EditProfileModal = ({ navigate }) => {
@@ -9,40 +9,68 @@ const EditProfileModal = ({ navigate }) => {
   const { closeModal } = useModal();
   const user = useSelector((state) => state.session.user);
 
-  const [email, setEmail] = useState(user.email);
-  const [username, setUsername] = useState(user.username);
-  const [firstname, setFirstname] = useState(user.firstname);
-  const [lastname, setLastname] = useState(user.lastname);
-  const [phoneNum, setPhoneNum] = useState(user.phone_num);
-  const [address, setAddress] = useState(user.address);
-  const [city, setCity] = useState(user.city);
-  const [state, setState] = useState(user.state);
-  const [zip, setZip] = useState(user.zip);
-  const [isGuide] = useState(user.is_guide); 
-  const [businessname, setBusinessname] = useState(user.businessname);
-  const [insuranceProviderName, setInsuranceProviderName] = useState(user.insurance_provider_name);
-  const [insuranceNumber, setInsuranceNumber] = useState(user.insurance_number);
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [isGuide, setIsGuide] = useState(false);
+  const [businessname, setBusinessname] = useState("");
+  const [insuranceProviderName, setInsuranceProviderName] = useState("");
+  const [insuranceNumber, setInsuranceNumber] = useState("");
   const [errors, setErrors] = useState({});
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email || "");
+      setUsername(user.username || "");
+      setFirstname(user.firstname || "");
+      setLastname(user.lastname || "");
+      setPhoneNum(user.phone_num || "");
+      setAddress(user.address || "");
+      setCity(user.city || "");
+      setState(user.state || "");
+      setZip(user.zip || "");
+      setIsGuide(user.is_guide || false);
+      setBusinessname(user.businessname || "");
+      setInsuranceProviderName(user.insurance_provider_name || "");
+      setInsuranceNumber(user.insurance_number || "");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); 
+    setErrors({});
 
-    const updatedUserInfo = {
-      email,
-      username,
-      firstname,
-      lastname,
-      phone_num: phoneNum,
-      address,
-      city,
-      state,
-      zip,
-      is_guide: isGuide,
-      businessname: isGuide ? businessname : null,
-      insurance_provider_name: isGuide ? insuranceProviderName : null,
-      insurance_number: isGuide ? insuranceNumber : null,
-    };
+
+const sanitizedPhoneNum = phoneNum.replace(/\D/g, '');
+
+
+if (sanitizedPhoneNum.length < 9 || sanitizedPhoneNum.length > 15) {
+  setErrors({ phoneNum: "Invalid phone number. Please use a valid format." });
+  return; 
+}
+
+const updatedUserInfo = {
+  email,
+  username,
+  firstname,
+  lastname,
+  phone_num: sanitizedPhoneNum,
+  address,
+  city,
+  state,
+  zip,
+  is_guide: isGuide,
+  businessname: isGuide ? businessname : null,
+  insurance_provider_name: isGuide ? insuranceProviderName : null,
+  insurance_number: isGuide ? insuranceNumber : null,
+};
 
     const serverResponse = await dispatch(updateProfile(updatedUserInfo));
 
@@ -50,8 +78,14 @@ const EditProfileModal = ({ navigate }) => {
       setErrors(serverResponse.errors);
     } else {
       closeModal();
-      navigate('/dashboard'); 
+      navigate("/dashboard");
     }
+  };
+
+  const handleDeleteAccount = async () => {
+    await dispatch(deleteUser(user.id));
+    closeModal();
+    navigate("/"); // Redirect to home page after account deletion
   };
 
   return (
@@ -172,7 +206,6 @@ const EditProfileModal = ({ navigate }) => {
                   type="text"
                   value={insuranceNumber}
                   onChange={(e) => setInsuranceNumber(e.target.value)}
-                  placeholder="Enter your insurance number"
                 />
                 {errors.insuranceNumber && <p className={editModalStyles.error}>{errors.insuranceNumber}</p>}
               </div>
@@ -182,7 +215,17 @@ const EditProfileModal = ({ navigate }) => {
             <button type="submit" className={editModalStyles.submitButton}>Save</button>
           </div>
         </form>
+        <button onClick={() => setShowDeleteConfirmation(true)} className={editModalStyles.deleteButton}>Delete Account</button>
       </div>
+      {showDeleteConfirmation && (
+        <div className={editModalStyles.confirmationModal}>
+          <div className={editModalStyles.confirmationModalContent}>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <button onClick={handleDeleteAccount} className={editModalStyles.confirmButton}>Yes</button>
+            <button onClick={() => setShowDeleteConfirmation(false)} className={editModalStyles.cancelButton}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
