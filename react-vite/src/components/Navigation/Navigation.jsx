@@ -19,8 +19,7 @@ function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const user = useSelector((state) => state.session.user);
- // const userRole = user ? (user.is_guide ? 'guide' : user.is_manager ? 'manager' : 'user') : null;
-  const { setModalContent } = useModal();
+  const { setModalContent, closeModal } = useModal();
 
   const toggleSidePanel = () => {
     setIsOpen(!isOpen);
@@ -31,11 +30,11 @@ function Navigation() {
   };
 
   const openLoginModal = (initialEmail = "", initialPassword = "") => {
-    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} navigate={navigate} />);
+    setModalContent(<LoginFormModal initialEmail={initialEmail} initialPassword={initialPassword} navigate={navigate} closeModal={closeModal} />);
   };
 
   const openSignupModal = () => {
-    setModalContent(<SignupFormModal navigate={navigate} />);
+    setModalContent(<SignupFormModal navigate={navigate} closeModal={closeModal} />);
   };
 
   const handleLogout = async () => {
@@ -44,7 +43,7 @@ function Navigation() {
   };
 
   const openEditProfileModal = () => {
-    setModalContent(<EditProfileModal navigate={navigate} />);
+    setModalContent(<EditProfileModal navigate={navigate} closeModal={closeModal} />);
   };
 
   const hideSidePanelRoutes = ["/dashboard"];

@@ -12,22 +12,24 @@ export const restoreUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       console.log("Attempting to restore user...");
-      const res = await fetch("/api/auth/");
+      const res = await fetch("/api/auth/", {
+        credentials: "include"
+      });
       const data = await res.json();
-
+      
       if (!res.ok) {
         console.log("Failed to restore user:", data);
         return rejectWithValue(data);
       }
-
+      
       console.log("User restored successfully:", data);
       return data;
-    } catch (error) {
+      } catch (error) {
       console.log("Error restoring user:", error.message);
       return rejectWithValue(error.message || "Trouble getting current user");
-    }
-  }
-);
+      }
+      }
+      );
 
 export const login = createAsyncThunk(
   "session/login",
@@ -55,46 +57,50 @@ export const login = createAsyncThunk(
   }
 );
 
+
+
+
 export const signup = createAsyncThunk(
   "session/signup",
   async (userInfo, { rejectWithValue }) => {
-    try {
-      console.log("Attempting to sign up...");
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userInfo),
-        credentials: 'include',
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("Signup failed:", data);
-        throw new Error(data.message || "Signup failed.");
-      }
+    const csrfToken = document.cookie
+      .split("; ")
+      .find(row => row.startsWith("csrf_token="))
+      ?.split("=")[1];
 
-      console.log("Signup successful:", data);
-      return data;
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify(userInfo),
+      credentials: "include",
+    });
+
+    console.log("Server response status:", res.status);
+    console.log("Server response headers:", res.headers);
+
+    let data;
+    try {
+      data = await res.json();
     } catch (error) {
-      console.log("Error signing up:", error.message);
-      return rejectWithValue(error.message);
+      console.error("Error parsing JSON response:", error);
+      return rejectWithValue({ general: "An unexpected error occurred. Please try again." });
     }
+
+    console.log("Server response data:", data);
+
+    if (!res.ok) {
+      console.error("Signup failed with status:", res.status);
+      console.error("Signup error details:", data.errors);  
+      return rejectWithValue(data.errors || data);
+    }
+
+    return data;
   }
 );
 
-// export const logout = createAsyncThunk(
-//   "session/logout",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       console.log("Attempting to log out...");
-//       await fetch("/api/auth/logout");
-//       console.log("Logout successful");
-//       return;
-//     } catch (error) {
-//       console.log("Error logging out:", error.message);
-//       return rejectWithValue(error.message || "Logout failed");
-//     }
-//   }
-// );
 
 export const logout = createAsyncThunk(
   "session/logout",
@@ -103,7 +109,7 @@ export const logout = createAsyncThunk(
       console.log("Attempting to log out...");
       await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include",  // Ensure cookies are handled correctly
+        credentials: "include",  
       });
       console.log("Logout successful");
 
@@ -175,15 +181,18 @@ const sessionSlice = createSlice({
       .addCase(restoreUser.rejected, setError)
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user; // Ensure user data is being set correctly
-        state.userRole = action.payload.role; // Set userRole correctly based on the payload
+        state.user = action.payload.user; 
+        state.userRole = action.payload.role; 
         console.log("Login fulfilled:", action.payload);
       })
       .addCase(login.rejected, setError)
       .addCase(signup.fulfilled, (state, action) => {
-        state.loading = false;
         state.user = action.payload;
-        state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user';  
+        state.errors = null;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.errors = action.payload;
+      
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
@@ -197,9 +206,6 @@ const sessionSlice = createSlice({
         state.userRole = null;
         console.log("Logout fulfilled");
       })
-      .addCase(signup.rejected, setError)
-      // .addCase(logout.fulfilled, (state) => {
-      //   Object.assign(state, initialState); // Reset the entire state using initialState
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.userRole = null;

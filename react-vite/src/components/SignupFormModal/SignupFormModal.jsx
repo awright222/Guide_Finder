@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../redux/session";
 import userSignupStyles from "./SignupForm.module.css";
 
-function SignupFormModal({ navigate }) {
+const SignUpFormModal = ({ closeModal, navigate }) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
+
+  // Form state
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstname, setFirstname] = useState(""); 
-  const [lastname, setLastname] = useState(""); 
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -21,15 +21,23 @@ function SignupFormModal({ navigate }) {
   const [businessname, setBusinessname] = useState("");
   const [insuranceProviderName, setInsuranceProviderName] = useState("");
   const [insuranceNumber, setInsuranceNumber] = useState("");
-  const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
 
+  // Form validation state
+  const [errors, setErrors] = useState({});
+
+  // Redux state for user
+  const user = useSelector(state => state.session.user);
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); 
+    setErrors({}); // Reset errors at the start
 
-    if (password !== confirmPassword) {
-      return setErrors({ confirmPassword: "Passwords must match." });
+    // Check if password meets the requirements
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setErrors({ password: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
+      return;
     }
 
     const userInfo = {
@@ -49,29 +57,44 @@ function SignupFormModal({ navigate }) {
       insurance_number: isGuide ? insuranceNumber : null,
     };
 
+    console.log("Submitting signup form with userInfo:", userInfo);
+
     const serverResponse = await dispatch(signup(userInfo));
 
-    if (serverResponse?.errors) {
-      if (Array.isArray(serverResponse.errors)) {
-        setErrors({ general: serverResponse.errors[0] });
-      } else {
-        setErrors(serverResponse.errors);
-      }
-    } else {
+    console.log("Server response:", serverResponse);
+
+    if (serverResponse?.payload?.errors) {
+      // If there are errors returned from the backend, display them
+      console.error("Signup errors:", serverResponse.payload.errors);
+      setErrors(serverResponse.payload.errors);
+      return; // Prevent form submission if there are errors
+    } else if (serverResponse?.payload) {
+      // Only close modal if no errors exist
       closeModal();
-      navigate('/dashboard');
+      navigate("/dashboard"); // Updated navigation
     }
   };
 
-  const handleOutsideClick = (e) => {
-    if (e.target.className.includes(userSignupStyles.signupModal)) {
-      closeModal();
-    }
+  // Clear errors on modal close
+  const handleClose = () => {
+    setErrors({});
+    closeModal();
+  };
+
+  // Redirect if user is already logged in
+  if (user) {
+    navigate("/dashboard"); // Updated navigation
+    return null;
+  }
+
+  // Prevent clicks inside the modal content from closing the modal
+  const handleContentClick = (e) => {
+    e.stopPropagation();
   };
 
   return (
-    <div className={userSignupStyles.signupModal} onClick={handleOutsideClick}>
-      <div className={userSignupStyles.signupModalContent}>
+    <div className={userSignupStyles.signupModal} onClick={handleClose}>
+      <div className={userSignupStyles.signupModalContent} onClick={handleContentClick}>
         <button onClick={closeModal} className={userSignupStyles.closeButton}>X</button>
         <h1>Sign Up</h1>
         {errors.general && <p className={userSignupStyles.modalError}>{errors.general}</p>}
@@ -110,17 +133,6 @@ function SignupFormModal({ navigate }) {
             {errors.password && <p className={userSignupStyles.modalError}>{errors.password}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your password"
-              required
-            />
-            {errors.confirmPassword && <p className={userSignupStyles.modalError}>{errors.confirmPassword}</p>}
-          </div>
-          <div className={userSignupStyles.formGroup}>
             <label>First Name</label>
             <input
               type="text"
@@ -150,7 +162,7 @@ function SignupFormModal({ navigate }) {
               onChange={(e) => setPhoneNum(e.target.value)}
               placeholder="Enter your phone number"
             />
-            {errors.phoneNum && <p className={userSignupStyles.modalError}>{errors.phoneNum}</p>}
+            {errors.phone_num && <p className={userSignupStyles.modalError}>{errors.phone_num}</p>}
           </div>
           <div className={userSignupStyles.formGroup}>
             <label>Address</label>
@@ -222,7 +234,7 @@ function SignupFormModal({ navigate }) {
                   onChange={(e) => setInsuranceProviderName(e.target.value)}
                   placeholder="Enter your insurance provider name"
                 />
-                {errors.insuranceProviderName && <p className={userSignupStyles.modalError}>{errors.insuranceProviderName}</p>}
+                {errors.insurance_provider_name && <p className={userSignupStyles.modalError}>{errors.insurance_provider_name}</p>}
               </div>
               <div className={userSignupStyles.formGroup}>
                 <label>Insurance Number</label>
@@ -232,7 +244,7 @@ function SignupFormModal({ navigate }) {
                   onChange={(e) => setInsuranceNumber(e.target.value)}
                   placeholder="Enter your insurance number"
                 />
-                {errors.insuranceNumber && <p className={userSignupStyles.modalError}>{errors.insuranceNumber}</p>}
+                {errors.insurance_number && <p className={userSignupStyles.modalError}>{errors.insurance_number}</p>}
               </div>
             </>
           )}
@@ -243,6 +255,6 @@ function SignupFormModal({ navigate }) {
       </div>
     </div>
   );
-}
+};
 
-export default SignupFormModal;
+export default SignUpFormModal;

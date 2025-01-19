@@ -1,10 +1,11 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import CheckConstraint
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
-
+    
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
@@ -19,15 +20,29 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(100), nullable=True)
     state = db.Column(db.String(50), nullable=True)
     zip = db.Column(db.String(20), nullable=True)
+    
+    __table_args__ = (
+      
+    )
+    
     is_manager = db.Column(db.Boolean, default=False)
-    is_guide = db.Column(db.Boolean, default=False) 
+    is_guide = db.Column(db.Boolean, default=False)
     businessname = db.Column(db.String(255), nullable=True)
     insurance_provider_name = db.Column(db.String(255), nullable=True)
     insurance_number = db.Column(db.String(50), nullable=True)
 
     bookings = db.relationship('Booking', back_populates='client', cascade='all, delete-orphan')
-    services = db.relationship('Service', back_populates='guide') 
+    services = db.relationship('Service', back_populates='guide')
+    
+    is_manager = db.Column(db.Boolean, default=False)
+    is_guide = db.Column(db.Boolean, default=False)
+    businessname = db.Column(db.String(255), nullable=True)
+    insurance_provider_name = db.Column(db.String(255), nullable=True)
+    insurance_number = db.Column(db.String(50), nullable=True)
 
+    bookings = db.relationship('Booking', back_populates='client', cascade='all, delete-orphan')
+    services = db.relationship('Service', back_populates='guide')
+    
     @property
     def password(self):
         return self.hashed_password

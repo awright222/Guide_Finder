@@ -15,7 +15,7 @@
   position: relative; 
   background-color: var(--deep-charcoal-gray); 
   border-radius: 12px;
-  overflow: hidden;
+  overflow: auto;
   padding: 20px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   max-width: 600px; 
@@ -30,7 +30,9 @@
 }
 
 .signupModalContent form {
+  height: auto;
   width: 100%; 
+  position: relative;
   box-sizing: border-box; 
 }
 
