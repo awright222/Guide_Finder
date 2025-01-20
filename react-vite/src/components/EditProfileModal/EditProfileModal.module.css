@@ -1,7 +1,7 @@
 :root {
   --deep-charcoal-gray: #37474F;
-  --muted-sky-blue: #90CAF9;
-  --soft-olive-green: #A5D6A7;
+  --muted-sky-blue: #a6b5c0;
+  --soft-olive-green: #b4c7b5;
   --off-white: #F5F5F5;
 }
 
@@ -18,7 +18,7 @@
   width: auto;
   height: 70%;
   border-radius: 12px;
-  overflow: auto; 
+  overflow: hidden; 
 }
 
 .editProfileModalContent {
@@ -37,7 +37,8 @@
   color: var(--off-white);
   box-sizing: border-box;
   overflow-y: auto; 
-  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .editProfileModalContent form {
@@ -88,6 +89,30 @@
   background-color: var(--off-white);
   color: var(--deep-charcoal-gray);
 }
+
+.buttonContainer {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Add some space above the buttons */
+}
+
+.saveButton {
+  padding: 10px 20px;
+  background-color: var(--soft-olive-green);
+  color: var(--deep-charcoal-gray);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: transform 0.2s, background-color 0.2s;
+  margin-right: 10px; /* Add some space between the buttons */
+}
+
+.saveButton:hover {
+  transform: scale(1.05);
+  background-color: var(--muted-sky-blue);
+}
+
 .deleteButton {
   background-color: red;
   color: white;
@@ -95,7 +120,8 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 20px;
+  font-size: 1em;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .deleteButton:hover {
@@ -108,11 +134,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1003; /* Ensure this is higher than the z-index of the existing modal */
+  z-index: 1003; 
 }
 
 .confirmationModalContent {

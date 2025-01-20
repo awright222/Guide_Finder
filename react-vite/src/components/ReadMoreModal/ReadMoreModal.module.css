@@ -1,0 +1,110 @@
+:root {
+  --deep-charcoal-gray: #37474F;
+  --muted-sky-blue: #a6b5c0;
+  --soft-olive-green: #b4c7b5;
+  --off-white: #F5F5F5;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: var(--muted-sky-blue);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px; 
+  width: 90%;
+  text-align: center;
+  position: relative;
+  color: var(--deep-charcoal-gray); 
+}
+
+.howItWorksModal {
+  background-color: var(--soft-olive-green);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px; 
+  width: 90%;
+  text-align: center;
+  position: relative;
+  color: var(--deep-charcoal-gray); 
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: var(--deep-charcoal-gray); 
+}
+
+.titleBox {
+  margin-bottom: 20px;
+  padding: 10px;
+  color: var(--deep-charcoal-gray); 
+}
+
+.contentBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  padding: 10px;
+}
+
+.imageBox {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textBox {
+  flex: 1;
+  padding: 10px;
+  color: var(--deep-charcoal-gray); 
+  font-size: 1.2em; 
+}
+
+.modalImage {
+  max-width: 100%;
+  height: 100%; 
+  object-fit: cover; 
+  display: block;
+  margin: 0 auto;
+}
+
+.adventureButtonBox {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.aboutAdventureButton {
+  padding: 10px 20px;
+  background-color: var(--deep-charcoal-gray);
+  color: var(--off-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.aboutAdventureButton:hover {
+  transform: scale(1.05);
+  background-color: var(--soft-olive-green);
+}

@@ -5,13 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { useModal } from '../../context/Modal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import ReadMoreModal from '../ReadMoreModal';
 import landingStyles from './LandingPage.module.css';
+import logo from '../../../public/Logos/Logo.png';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
-  const userRole = useSelector((state) => state.session.userRole); 
-  const { setModalContent } = useModal();
+  const userRole = useSelector((state) => state.session.userRole);
+  const { setModalContent, closeModal } = useModal();
 
   useEffect(() => {
     if (user) {
@@ -25,43 +27,65 @@ const LandingPage = () => {
   }, [user, userRole, navigate]);
 
   const openSignupModal = () => {
-    setModalContent(<SignupFormModal />);
+    setModalContent(<SignupFormModal closeModal={closeModal} />);
+  };
+
+  const navigateToSearchServices = () => {
+    navigate('/search-services');
+  };
+
+  const openReadMoreModal = (content) => {
+    setModalContent(<ReadMoreModal closeModal={closeModal} content={content} />);
+  };
+
+  const aboutContent = {
+    title: 'About Us',
+    text: 'We are here to make sure access never holds you back from finding your adventure. Our mission is to connect you with the best guides and experiences around the world. Whether you are a beginner or a seasoned adventurer, we have something for everyone. Too many times people are held back from doing what they love due to lack of knowledge, access, or not having someone to do it with. We got your back',
+    image: 'https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw94381e4f/sports/surfing/f24-surf-hero-mackinnon_a_0335.jpg'
+  };
+
+  const howItWorksContent = {
+    title: 'How It Works',
+    text: 'Its easy! Sign up. Its FREE! Find your adventure of interest on our explore page, reach out to the guide to learn more about it or book it right there with our booking feature! Payment is secure and easy. Enjoy your adventure!',
+    image: 'https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dwe1d369bd/sports/climbing/F24-climb-hero.jpg'
   };
 
   return (
     <div className={landingStyles.container}>
       <div className={landingStyles.headerSection}>
-        <div className={landingStyles.headerContentBox}>
-          <h1 className={landingStyles.title}>Guide Finder</h1>
-          <h2 className={landingStyles.subtitle}>From summit to sea, find your adventure</h2>
-          <button className={landingStyles.button} onClick={openSignupModal}>Start Your Adventure</button>
+        <div className={landingStyles.headerWrapper}>
+          <img src={logo} alt="Guide Finder Logo" className={landingStyles.logo} />
+          <div className={landingStyles.headerContentBox}>
+            <h1 className={landingStyles.title}>Guide Finder</h1>
+            <h2 className={landingStyles.subtitle}>From summit to sea, find your adventure</h2>
+          </div>
         </div>
       </div>
-
-      <hr className={landingStyles.sectionDivider} />
 
       <div className={landingStyles.section}>
         <div className={landingStyles.aboutContainer}>
           <div className={landingStyles.imageBox}></div>
           <div className={landingStyles.aboutBox}>
             <h2 className={landingStyles.sectionTitle}>About Guide Finder</h2>
-            <p> bla bla bla </p>
-            <button className={landingStyles.readMoreButton}>Read More</button>
+            <p>We&apos;re here to make sure access never holds you back from finding your adventure.</p>
+            <button className={landingStyles.readMoreButton} onClick={() => openReadMoreModal(aboutContent)}>Read More</button>
           </div>
         </div>
         <div className={landingStyles.infoContainer}>
           <div className={landingStyles.exploreBox}>
-            <h3 className={landingStyles.sectionTitle}>
+            <p>Check out all our available adventures. We&apos;re quickly growing and so are our offerings! Newbie? No problem we have something for you. Pro? We got you too.</p>
+            <button className={landingStyles.exploreButton} onClick={navigateToSearchServices}>
               <FontAwesomeIcon icon={faCompass} /> Explore
-            </h3>
-            <p>Short description about checking out the services.</p>
-            <button className={landingStyles.readMoreButton}>Read More</button>
+            </button>
           </div>
           <div className={landingStyles.howItWorksBox}>
             <h3 className={landingStyles.sectionTitle}>How It Works</h3>
-            <p>Short description about how it works.</p>
-            <button className={landingStyles.readMoreButton}>Read More</button>
+            <p>Not sure about the logistics? Let us explain how it works.</p>
+            <button className={landingStyles.readMoreButton} onClick={() => openReadMoreModal(howItWorksContent)}>Read More</button>
           </div>
+        </div>
+        <div className={landingStyles.adventureSection}>
+          
         </div>
       </div>
     </div>

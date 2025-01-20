@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBookings } from '../../redux/bookings';
@@ -55,6 +56,14 @@ const AllUserDashboard = () => {
 
   return (
     <div className={AllUserDashboardStyles.dashboard}>
+      <div className={AllUserDashboardStyles.header}>
+        <img src="https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw26f45e6d/sports/mountain-biking/f24_mtb-hero-smith_dave_0028.jpg?" alt="Mountain Biking" />
+        <img src="https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw53531c85/sports/snow/f24_collections-shop-snow-hero.jpg?" alt="Snow" />
+        <img src="https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw94381e4f/sports/surfing/f24-surf-hero-mackinnon_a_0335.jpg" alt="Surfing" />
+        <img src="https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dwe1d369bd/sports/climbing/F24-climb-hero.jpg" alt="Climbing" />
+        <img src="https://www.patagonia.com/dw/image/v2/bdjb_PRD/on/demandware.static/-/Library-Sites-PatagoniaShared/default/dw247d3078/sports/fly-fishing/F24-collections_fly-fish-hero.jpg?" alt="Fly Fishing" />
+        <img src="https://www.stoneglacier.com/cdn/shop/files/built-for-bowhunters_1000x.jpg?v=1736204937" alt="Bowhunting" />
+      </div>
       <div className={AllUserDashboardStyles.content}>
         <div className={AllUserDashboardStyles.sloganBox}>
           <h2>Guide Finder.</h2>

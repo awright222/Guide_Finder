@@ -8,6 +8,7 @@ import { logout } from "../../redux/session";
 import DemoButton from './DemoButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import navStyles from "./Navigation.module.css";
 import EditProfileModal from "../EditProfileModal";
@@ -69,12 +70,12 @@ function Navigation() {
               </div>
               Search
             </button>
-            <button onClick={() => navigate('/gallery')}>
+            {/* <button onClick={() => navigate('/gallery')}>
               <div className={navStyles.iconBox}>
                 <FontAwesomeIcon icon={faLocationDot} />
               </div>
               Gallery
-            </button>
+            </button> */}
             <button onClick={() => navigate('/messages')}>
               <div className={navStyles.iconBox}>
                 <FontAwesomeIcon icon={faLocationDot} />
@@ -90,7 +91,7 @@ function Navigation() {
           </div>
           <div className={navStyles.navbarRight}>
             <div className={navStyles.profileButton} onClick={toggleProfileDropdown}>
-              Profile
+            <FontAwesomeIcon icon={faCompass} />
               <div className={`${navStyles.profileDropdown} ${isProfileDropdownOpen ? navStyles.open : ''}`}>
                 <button onClick={openEditProfileModal}>Edit Profile</button>
                 <button onClick={handleLogout}>Logout</button>
@@ -105,6 +106,7 @@ function Navigation() {
               <button onClick={toggleSidePanel} className={`${navStyles.menuButton} ${isOpen ? navStyles.open : ""}`}>
                 ☰
               </button>
+              <div className={`${navStyles.overlay} ${isOpen ? navStyles.open : ""}`} onClick={toggleSidePanel}></div>
               <div className={`${navStyles.sidePanel} ${isOpen ? navStyles.open : ""}`}>
                 <button onClick={toggleSidePanel} className={`${navStyles.closeButton} ${isOpen ? navStyles.open : ""}`}>
                   &times;

@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from './Layout'; 
 import LandingPage from "../components/LandingPage";
-// import UserDashboard from "../components/UserDashboard";
-// import GuideDashboard from "../components/GuideDashboard";
+import Partners from "../components/Partners";
 import { Services, ServiceDetail } from "../components/services";
 import SearchServices from '../components/searchServices';
 import DirectMessages from "../components/Messages/DirectMessages";
@@ -18,14 +17,6 @@ const router = createBrowserRouter([
         path: "/",
         element: <LandingPage />,
       },
-      // {
-      //   path: "user-dashboard",
-      //   element: <UserDashboard />,
-      // },
-      // {
-      //   path: "guide-dashboard",
-      //   element: <GuideDashboard />,
-      // },
       {
         path: "dashboard",
         element: <AllUserDashboard />,
@@ -49,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "create-service",
         element: <CreateService />,
+      },
+      {
+        path: "partners",
+        element: <Partners />,
       },
     ],
   },

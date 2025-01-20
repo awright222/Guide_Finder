@@ -39,9 +39,9 @@ const ServiceDetail = () => {
   };
 
   const handleFavoriteClick = () => {
-    const isFavorite = favorites.some(fav => fav.service_id === service.id);
-    if (isFavorite) {
-      dispatch(removeFavorite(service.id));
+    const favorite = favorites.find(fav => fav.service_id === service.id);
+    if (favorite) {
+      dispatch(removeFavorite(favorite.id));
     } else {
       dispatch(addFavorite(service.id));
     }
@@ -66,7 +66,17 @@ const ServiceDetail = () => {
 
   return (
     <div className={serviceDetailStyles.serviceDetailPage}>
-      <h1>{service.title}</h1>
+      <div className={serviceDetailStyles.serviceDetailHeader}>
+        <h1>{service.title}</h1>
+        {currentUser && !currentUser.is_guide && (
+          <button 
+            className={`${serviceDetailStyles.likeButton} ${isFavorite ? serviceDetailStyles.favorited : ''}`} 
+            onClick={handleFavoriteClick}
+          >
+            <FontAwesomeIcon icon={isFavorite ? solidHeart : regularHeart} />
+          </button>
+        )}
+      </div>
       <div className={serviceDetailStyles.optionsButtons}>
         {isOwner && (
           <>
@@ -81,25 +91,23 @@ const ServiceDetail = () => {
             </button>
           </>
         )}
-        {currentUser && !currentUser.is_guide && (
-          <button 
-            className={isFavorite ? serviceDetailStyles.favorited : ''} 
-            onClick={handleFavoriteClick}
-          >
-            <FontAwesomeIcon icon={isFavorite ? solidHeart : regularHeart} />
-          </button>
-        )}
       </div>
-      <img src={service.images} alt={service.title} className={serviceDetailStyles.serviceImage} />
-      <div className={serviceDetailStyles.serviceDetails}>
-        <p><strong>Description:</strong> {service.description}</p>
-        <p><strong>Cost:</strong> ${service.cost}</p>
-        <p><strong>Location:</strong> {service.location}</p>
-        <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
-        <p><strong>Average Rating:</strong> {averageRating !== undefined ? averageRating.toFixed(1) : 'No ratings yet'} ★</p>
+      <div className={serviceDetailStyles.serviceDetailHeader}>
+        <div className={serviceDetailStyles.imageBox}>
+          <img src={service.images} alt={service.title} className={serviceDetailStyles.serviceImage} />
+        </div>
+        <div className={serviceDetailStyles.detailsBox}>
+          <p><strong>Description:</strong> {service.description}</p>
+          <p><strong>Cost:</strong> ${service.cost}</p>
+          <p><strong>Location:</strong> {service.location}</p>
+          <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
+          <p><strong>Average Rating:</strong> {averageRating !== undefined ? averageRating.toFixed(1) : 'No ratings yet'} ★</p>
+        </div>
       </div>
       {currentUser && (
-        <button onClick={() => setShowReviewModal(true)}>Leave a Review</button>
+        <button className={serviceDetailStyles.reviewButton} onClick={() => setShowReviewModal(true)}>
+          Leave a Review
+        </button>
       )}
       <div className={serviceDetailStyles.reviewsSection}>
         <h2>Reviews</h2>

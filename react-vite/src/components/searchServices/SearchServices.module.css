@@ -1,7 +1,7 @@
 :root {
   --deep-charcoal-gray: #37474F;
-  --muted-sky-blue: #90CAF9;
-  --soft-olive-green: #A5D6A7;
+  --muted-sky-blue: #a6b5c0;
+  --soft-olive-green: #b4c7b5;
   --off-white: #F5F5F5;
 }
 
@@ -13,7 +13,7 @@
 .title {
   text-align: center;
   font-size: 2em;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   color: var(--deep-charcoal-gray);
 }
 
@@ -51,10 +51,13 @@
 }
 
 .searchBar input, .searchBar select {
+  flex: 1 1 auto;
+  max-width: 100%;
   padding: 10px;
   border: 1px solid var(--deep-charcoal-gray);
   border-radius: 4px;
   font-size: 1em;
+  box-sizing: border-box; 
 }
 
 .divider {
@@ -65,8 +68,8 @@
 }
 
 .serviceGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 

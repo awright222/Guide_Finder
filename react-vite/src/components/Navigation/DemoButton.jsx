@@ -8,7 +8,7 @@ import DemoButtonStyles from "./DemoButton.module.css";
 const demoUsers = [
   { username: "Demo Client", email: "demo-client@aa.io", password: "password" },
   { username: "Demo Guide", email: "demo-guide@aa.io", password: "password" },
-  { username: "Demo Manager", email: "demo-manager@aa.io", password: "password" }
+  // { username: "Demo Manager", email: "demo-manager@aa.io", password: "password" }
 ];
 
 const DemoButton = ({ navigate }) => {

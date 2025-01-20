@@ -47,30 +47,28 @@ const EditProfileModal = ({ navigate }) => {
     e.preventDefault();
     setErrors({});
 
+    const sanitizedPhoneNum = phoneNum.replace(/\D/g, '');
 
-const sanitizedPhoneNum = phoneNum.replace(/\D/g, '');
+    if (sanitizedPhoneNum.length < 9 || sanitizedPhoneNum.length > 15) {
+      setErrors({ phoneNum: "Invalid phone number. Please use a valid format." });
+      return; 
+    }
 
-
-if (sanitizedPhoneNum.length < 9 || sanitizedPhoneNum.length > 15) {
-  setErrors({ phoneNum: "Invalid phone number. Please use a valid format." });
-  return; 
-}
-
-const updatedUserInfo = {
-  email,
-  username,
-  firstname,
-  lastname,
-  phone_num: sanitizedPhoneNum,
-  address,
-  city,
-  state,
-  zip,
-  is_guide: isGuide,
-  businessname: isGuide ? businessname : null,
-  insurance_provider_name: isGuide ? insuranceProviderName : null,
-  insurance_number: isGuide ? insuranceNumber : null,
-};
+    const updatedUserInfo = {
+      email,
+      username,
+      firstname,
+      lastname,
+      phone_num: sanitizedPhoneNum,
+      address,
+      city,
+      state,
+      zip,
+      is_guide: isGuide,
+      businessname: isGuide ? businessname : null,
+      insurance_provider_name: isGuide ? insuranceProviderName : null,
+      insurance_number: isGuide ? insuranceNumber : null,
+    };
 
     const serverResponse = await dispatch(updateProfile(updatedUserInfo));
 
@@ -85,7 +83,7 @@ const updatedUserInfo = {
   const handleDeleteAccount = async () => {
     await dispatch(deleteUser(user.id));
     closeModal();
-    navigate("/"); // Redirect to home page after account deletion
+    navigate("/");
   };
 
   return (
@@ -211,11 +209,11 @@ const updatedUserInfo = {
               </div>
             </>
           )}
-          <div className={editModalStyles.submitButtonContainer}>
-            <button type="submit" className={editModalStyles.submitButton}>Save</button>
+          <div className={editModalStyles.buttonContainer}>
+            <button type="submit" className={editModalStyles.saveButton}>Save</button>
+            <button type="button" onClick={() => setShowDeleteConfirmation(true)} className={editModalStyles.deleteButton}>Delete Account</button>
           </div>
         </form>
-        <button onClick={() => setShowDeleteConfirmation(true)} className={editModalStyles.deleteButton}>Delete Account</button>
       </div>
       {showDeleteConfirmation && (
         <div className={editModalStyles.confirmationModal}>

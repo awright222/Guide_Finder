@@ -47,6 +47,7 @@ const LoginFormModal = ({ navigate }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.modalInput}
+              placeholder="Enter your email"
               required
             />
           </label>
@@ -58,6 +59,7 @@ const LoginFormModal = ({ navigate }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={styles.modalInput}
+              placeholder="Enter your password"
               required
             />
           </label>

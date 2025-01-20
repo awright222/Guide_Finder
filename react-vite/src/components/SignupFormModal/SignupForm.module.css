@@ -7,8 +7,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7); 
-  z-index: 1000; 
+  background-color: rgba(244, 238, 238, 0.1); 
+  z-index: 1001; 
 }
 
 .signupModalContent {
@@ -35,7 +35,6 @@
   position: relative;
   box-sizing: border-box; 
 }
-
 
 .signupModalContent::-webkit-scrollbar {
   width: 15px;
@@ -104,6 +103,27 @@
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.formGroupInline {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  margin-bottom: 15px;
+  width: auto; 
+}
+
+.formGroupInline input[type="checkbox"] {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 10px; 
+}
+
+.formGroupInline label {
+  display: flex;
+  align-items: center; 
+  color: var(--off-white); 
+  padding: 7px;
 }
 
 .joinButtonContainer {

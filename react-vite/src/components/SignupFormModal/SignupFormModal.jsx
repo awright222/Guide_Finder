@@ -135,7 +135,7 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
             />
             {errors.password && <p className={userSignupStyles.modalError}>{errors.password}</p>}
           </div>
-          <div className={userSignupStyles.formGroup}>
+          <div className={userSignupStyles.formGroupInline}>
             <input
               type="checkbox"
               id="showPassword"
@@ -216,15 +216,14 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
             />
             {errors.zip && <p className={userSignupStyles.modalError}>{errors.zip}</p>}
           </div>
-          <div className={userSignupStyles.formGroup}>
-            <label>
-              <input
-                type="checkbox"
-                checked={isGuide}
-                onChange={(e) => setIsGuide(e.target.checked)}
-              />
-              Sign up as a guide
-            </label>
+          <div className={userSignupStyles.formGroupInline}>
+            <input
+              type="checkbox"
+              id="isGuide"
+              checked={isGuide}
+              onChange={(e) => setIsGuide(e.target.checked)}
+            />
+            <label htmlFor="isGuide">Sign up as a guide</label>
           </div>
           {isGuide && (
             <>
