@@ -11,24 +11,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  height: 100vh; /* Full viewport height */
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.messagesContainer {
-  display: flex;
-  gap: 20px;
-  width: 80%; /* Adjust width as needed */
-  max-width: 1200px; /* Adjust max-width as needed */
-  background-color: var(--off-white);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100vh;
 }
 
 .conversationsList {
@@ -36,20 +19,40 @@
   background-color: var(--deep-charcoal-gray);
   padding: 20px;
   border-radius: 8px;
-  color: var(--off-white);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .conversationsList h2 {
   font-size: 2em;
   margin-bottom: 10px;
+  color: var(--off-white);
+  text-align: center;
+  text-shadow: none;
+}
+
+.conversationsInnerBox {
+  background-color: var(--off-white);
+  color: var(--deep-charcoal-gray);
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .conversationsList ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .conversationsList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
@@ -61,12 +64,30 @@
   color: var(--deep-charcoal-gray);
 }
 
+.thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.trashIcon {
+  color: var(--deep-charcoal-gray);
+  cursor: pointer;
+}
+
+.trashIcon:hover {
+  color: var(--muted-sky-blue);
+}
+
 .chatArea {
   flex: 2;
   background-color: var(--off-white);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .chatArea h2 {
@@ -75,7 +96,7 @@
 }
 
 .messagesContainer {
-  max-height: 400px;
+  flex: 1;
   overflow-y: auto;
   margin-bottom: 20px;
 }
@@ -89,13 +110,13 @@
 
 .sentMessage {
   background-color: var(--muted-sky-blue);
-  color: var (--deep-charcoal-gray);
+  color: var(--deep-charcoal-gray);
   align-self: flex-end;
 }
 
 .receivedMessage {
   background-color: var(--soft-olive-green);
-  color: var (--deep-charcoal-gray);
+  color: var(--deep-charcoal-gray);
   align-self: flex-start;
 }
 
@@ -114,7 +135,7 @@ textarea {
 
 button[type="submit"] {
   background-color: var(--soft-olive-green);
-  color: var (--deep-charcoal-gray);
+  color: var(--deep-charcoal-gray);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -124,4 +145,52 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: var(--muted-sky-blue);
+}
+
+.scrollableBox {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.serviceDropdown {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.toField {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toField label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.toField span {
+  font-size: 1em;
+  color: var(--deep-charcoal-gray);
+}
+
+.serviceDropdown {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: var(--deep-charcoal-gray);
+  color: var(--off-white);
+}
+
+.serviceDropdown option {
+  background-color: var(--deep-charcoal-gray);
+  color: var(--off-white);
 }

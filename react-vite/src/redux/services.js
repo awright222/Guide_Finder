@@ -57,10 +57,12 @@ const servicesSlice = createSlice({
             .addCase(fetchServices.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.items = action.payload;
+                console.log('Redux state updated with services:', state.items);
             })
             .addCase(fetchServices.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
+                console.error('Failed to fetch services:', action.error.message);
             })
             .addCase(fetchService.fulfilled, (state, action) => {
                 const index = state.items.findIndex(service => service.id === action.payload.id);

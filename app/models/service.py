@@ -20,6 +20,7 @@ class Service(db.Model):
     guide = db.relationship('User', back_populates='services')
     bookings = db.relationship('Booking', back_populates='service', cascade='all, delete-orphan')
     favorites = db.relationship('Favorite', back_populates='service', cascade='all, delete-orphan')
+    messages = db.relationship('Message', back_populates='service', cascade='all, delete-orphan') 
 
     def to_dict(self, exclude_bookings=False):
         service_dict = {

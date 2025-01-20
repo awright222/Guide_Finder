@@ -6,6 +6,7 @@ def seed_messages():
         Message(
             user_id=1,
             guide_id=3,
+            service_id=1,
             message="Hello, I have a question about your service.",
             timestamp=datetime.utcnow(),
             read=False,
@@ -14,6 +15,7 @@ def seed_messages():
         Message(
             user_id=1,  
             guide_id=3,  
+            service_id=1,
             message="Can you provide more details?",
             timestamp=datetime.utcnow(),
             read=False,
@@ -22,6 +24,7 @@ def seed_messages():
         Message(
             user_id=3,
             guide_id=1, 
+            service_id=1,
             message="Sure, what would you like to know?",
             timestamp=datetime.utcnow(),
             read=False,
@@ -30,6 +33,7 @@ def seed_messages():
         Message(
             user_id=1,
             guide_id=3, 
+            service_id=1,
             message="Is this service available next week?",
             timestamp=datetime.utcnow(),
             read=False,
@@ -38,6 +42,7 @@ def seed_messages():
         Message(
             user_id=3,
             guide_id=1, 
+            service_id=1,
             message="Yes, it is available next week.",
             timestamp=datetime.utcnow(),
             read=False,
