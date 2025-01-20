@@ -27,9 +27,9 @@ export const fetchConversations = createAsyncThunk(
 
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",
-  async (guideId, { rejectWithValue }) => {
+  async ({ userId, guideId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/messages/conversation/${guideId}`);
+      const response = await fetch(`/api/messages/conversation/${userId}/${guideId}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(`Error fetching messages: ${data.message}`);

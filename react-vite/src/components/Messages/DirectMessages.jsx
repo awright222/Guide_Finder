@@ -2,31 +2,30 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchConversations, sendMessage, fetchMessages } from '../../redux/messages'; 
 import styles from './DirectMessages.module.css'; 
+import { useLocation } from 'react-router-dom';
 
 const DirectMessages = () => {
   const dispatch = useDispatch();
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const location = useLocation();
+  const [selectedConversation, setSelectedConversation] = useState(location.state || null);
   const [message, setMessage] = useState('');
   
-  // Fetch the list of conversations for the current user
   const conversations = useSelector((state) => state.messages?.conversations || []); 
   const messages = useSelector((state) => state.messages?.messages || []);
   const currentUser = useSelector((state) => state.session?.user); 
   
-  // Fetch conversations when the component mounts
   useEffect(() => {
     dispatch(fetchConversations());
   }, [dispatch]);
 
-  // Fetch messages when a conversation is selected
   useEffect(() => {
-    if (selectedUserId) {
-      dispatch(fetchMessages(selectedUserId));
+    if (selectedConversation) {
+      dispatch(fetchMessages(selectedConversation));
     }
-  }, [dispatch, selectedUserId]);
+  }, [dispatch, selectedConversation]);
 
-  const handleConversationClick = (userId) => {
-    setSelectedUserId(userId);
+  const handleConversationClick = (conversation) => {
+    setSelectedConversation(conversation);
   };
 
   const handleChange = (e) => {
@@ -36,7 +35,12 @@ const DirectMessages = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
-      dispatch(sendMessage({ userId: selectedUserId, message }));
+      const messageData = {
+        message,
+        userId: currentUser.is_guide ? selectedConversation.userId : null,
+        guideId: currentUser.is_guide ? null : selectedConversation.guideId,
+      };
+      dispatch(sendMessage(messageData));
       setMessage('');
     }
   };
@@ -48,7 +52,7 @@ const DirectMessages = () => {
           <div
             key={conversation.id}
             className={styles.conversation}
-            onClick={() => handleConversationClick(conversation.userId)}
+            onClick={() => handleConversationClick(conversation)}
           >
             <p>{conversation.username}</p>
           </div>

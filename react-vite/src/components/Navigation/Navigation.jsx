@@ -12,6 +12,7 @@ import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import navStyles from "./Navigation.module.css";
 import EditProfileModal from "../EditProfileModal";
+import logo from '../../../public/Logos/Logo.png';
 
 function Navigation() {
   const navigate = useNavigate();
@@ -59,9 +60,9 @@ function Navigation() {
       {user ? (
         <nav className={navStyles.navbar}>
           <div className={navStyles.navbarLeft}>
-            <button onClick={handleDashboardRedirect} className={navStyles.navbarLogo}>
-              GF
-            </button>
+          <button onClick={handleDashboardRedirect} className={navStyles.navbarLogo}>
+  <img src={logo} alt="Logo" className={navStyles.logoImage} />
+</button>
           </div>
           <div className={navStyles.navbarCenter}>
             <button onClick={() => navigate('/search-services')}>

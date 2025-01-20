@@ -89,7 +89,7 @@ const EditProfileModal = ({ navigate }) => {
   return (
     <div className={editModalStyles.editProfileModal}>
       <div className={editModalStyles.editProfileModalContent}>
-        <div className={editModalStyles.header}>
+        <div className={editModalStyles.modalHeader}>
           <h2>Profile Information</h2>
         </div>
         <form onSubmit={handleSubmit}>

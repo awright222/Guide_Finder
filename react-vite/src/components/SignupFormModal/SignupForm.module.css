@@ -148,3 +148,7 @@
   background-color: var(--soft-olive-green);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
+.signupModalContent h1 {
+  color: var(--off-white); 
+  text-shadow: none; 
+}

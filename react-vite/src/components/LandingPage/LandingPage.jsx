@@ -26,9 +26,9 @@ const LandingPage = () => {
     }
   }, [user, userRole, navigate]);
 
-  const openSignupModal = () => {
-    setModalContent(<SignupFormModal closeModal={closeModal} />);
-  };
+  // const openSignupModal = () => {
+  //   setModalContent(<SignupFormModal closeModal={closeModal} />);
+  // };
 
   const navigateToSearchServices = () => {
     navigate('/search-services');

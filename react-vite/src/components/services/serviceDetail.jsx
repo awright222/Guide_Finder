@@ -59,6 +59,10 @@ const ServiceDetail = () => {
     }
   };
 
+  const handleMessageClick = () => {
+    navigate('/messages', { state: { guideId: service.guide_id, guideName: service.guide_name } });
+  };
+
   if (!service) return <p>Loading...</p>;
 
   const isOwner = currentUser && service && currentUser.id === service.guide_id;
@@ -105,9 +109,16 @@ const ServiceDetail = () => {
         </div>
       </div>
       {currentUser && (
-        <button className={serviceDetailStyles.reviewButton} onClick={() => setShowReviewModal(true)}>
-          Leave a Review
-        </button>
+        <div className={serviceDetailStyles.buttonContainer}>
+          <button className={serviceDetailStyles.reviewButton} onClick={() => setShowReviewModal(true)}>
+            Leave a Review
+          </button>
+          {currentUser && !currentUser.is_guide && (
+            <button className={serviceDetailStyles.messageButton} onClick={handleMessageClick}>
+              Message Guide
+            </button>
+          )}
+        </div>
       )}
       <div className={serviceDetailStyles.reviewsSection}>
         <h2>Reviews</h2>

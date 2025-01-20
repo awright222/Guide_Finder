@@ -9,6 +9,8 @@ class Message(db.Model):
     guide_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     message = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    read = db.Column(db.Boolean, default=False) 
+    deleted = db.Column(db.Boolean, default=False)  
 
     def to_dict(self):
         return {
@@ -16,5 +18,7 @@ class Message(db.Model):
             'user_id': self.user_id,
             'guide_id': self.guide_id,
             'message': self.message,
-            'timestamp': self.timestamp.isoformat()
+            'timestamp': self.timestamp.isoformat(),
+            'read': self.read,  
+            'deleted': self.deleted  
         }

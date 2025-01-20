@@ -19,7 +19,7 @@ def seed_services():
         ),
         Service(
             guide_id=10,
-            title="Elk Tracking in Wyoming",
+            title="Elk Hunting in Wyoming",
             type="Hunting",
             location="Wyoming",
             country="USA",
@@ -109,7 +109,7 @@ def seed_services():
         ),
         Service(
             guide_id=13,
-            title="Bear Tracking in Alaska",
+            title="Bear Hunting in Alaska",
             type="Hunting",
             location="Alaska",
             country="USA",

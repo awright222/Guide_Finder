@@ -12,19 +12,24 @@ def send_message():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        # Ensure that either guide_id or user_id is provided, not both
+        if not form.user_id.data and not form.guide_id.data:
+            return jsonify({"message": "Either user_id or guide_id must be provided."}), 400
+
         if form.user_id.data and form.guide_id.data:
-            return jsonify({"message": "Invalid recipient. Messages must be sent between a user and a guide."}), 400
-        
-        # If the message is being sent to a guide
-        if form.guide_id.data:
+            return jsonify({"message": "Only one of user_id or guide_id should be provided."}), 400
+
+        if form.user_id.data:
             new_message = Message(
-                user_id=current_user.id,  # Automatically set the current logged-in user's ID
-                guide_id=form.guide_id.data,  # Set the guide ID from the form (populated from the service page)
+                user_id=form.user_id.data,
+                guide_id=current_user.id,
                 message=form.message.data
             )
         else:
-            return jsonify({"message": "Guide_id must be provided."}), 400
+            new_message = Message(
+                user_id=current_user.id,
+                guide_id=form.guide_id.data,
+                message=form.message.data
+            )
 
         db.session.add(new_message)
         db.session.commit()
