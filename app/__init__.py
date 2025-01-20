@@ -15,7 +15,7 @@ from .api.favorite_routes import favorite_routes
 from .seeds import seed_commands
 from .config import Config
 
-
+print(f"Using schema: {os.getenv('SCHEMA')}")
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
 

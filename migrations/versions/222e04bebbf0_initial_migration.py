@@ -116,5 +116,5 @@ def downgrade():
     op.drop_table('bookings')
     op.drop_table('services')
     op.drop_table('users')
-    op.execute(f"DROP SCHEMA IF EXISTS {SCHEMA} CASCADE")
+    op.execute("DROP SCHEMA IF EXISTS guide_finder_schema")
     # ### end Alembic commands ###
