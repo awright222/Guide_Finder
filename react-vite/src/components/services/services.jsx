@@ -23,11 +23,16 @@ const Services = () => {
   return (
     <div className={servicesStyles.servicesPage}>
       <h1>Your Services</h1>
-      <div className={servicesStyles.servicesList}>
+      <div className={servicesStyles.serviceGrid}>
         {services.length > 0 ? (
           services.map(service => (
-            <div key={service.id} className={servicesStyles.serviceItem} onClick={() => handleServiceClick(service.id)}>
-              <p>{service.title}</p>
+            <div key={service.id} className={servicesStyles.serviceCard} onClick={() => handleServiceClick(service.id)}>
+              <img src={service.images} alt={service.title} className={servicesStyles.serviceImage} />
+              <h3 className={servicesStyles.serviceTitle}>{service.title}</h3>
+              <p className={servicesStyles.serviceDescription}>{service.description}</p>
+              <p><strong>Location:</strong> {service.location}</p>
+              <p><strong>Experience Level:</strong> {service.experience_requirement}</p>
+              <p><strong>Cost:</strong> ${service.cost}</p>
             </div>
           ))
         ) : (

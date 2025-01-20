@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Configure Axios to include credentials with each request
+
 axios.defaults.withCredentials = true;
 
-// Thunks with Authorization header
+
 export const getFavoritesThunk = createAsyncThunk('favorites/getFavorites', async () => {
   const response = await axios.get('/api/favorites/');
   return response.data;

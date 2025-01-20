@@ -12,6 +12,7 @@ import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import navStyles from "./Navigation.module.css";
 import EditProfileModal from "../EditProfileModal";
+import UnderConstructionModal from "../UnderConstructionModal";
 import logo from '../../../public/Logos/Logo.png';
 
 function Navigation() {
@@ -20,6 +21,7 @@ function Navigation() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const user = useSelector((state) => state.session.user);
   const { setModalContent, closeModal } = useModal();
 
@@ -48,6 +50,11 @@ function Navigation() {
     setModalContent(<EditProfileModal navigate={navigate} closeModal={closeModal} />);
   };
 
+  const handleMessagesClick = () => {
+    navigate('/messages');
+    setShowModal(true);
+  };
+
   const hideSidePanelRoutes = ["/dashboard"];
   const isDashboardPage = hideSidePanelRoutes.includes(location.pathname);
 
@@ -57,12 +64,13 @@ function Navigation() {
 
   return (
     <>
+      {showModal && <UnderConstructionModal closeModal={() => setShowModal(false)} />}
       {user ? (
         <nav className={navStyles.navbar}>
           <div className={navStyles.navbarLeft}>
-          <button onClick={handleDashboardRedirect} className={navStyles.navbarLogo}>
-  <img src={logo} alt="Logo" className={navStyles.logoImage} />
-</button>
+            <button onClick={handleDashboardRedirect} className={navStyles.navbarLogo}>
+              <img src={logo} alt="Logo" className={navStyles.logoImage} />
+            </button>
           </div>
           <div className={navStyles.navbarCenter}>
             <button onClick={() => navigate('/search-services')}>
@@ -77,7 +85,7 @@ function Navigation() {
               </div>
               Gallery
             </button> */}
-            <button onClick={() => navigate('/messages')}>
+            <button onClick={handleMessagesClick}>
               <div className={navStyles.iconBox}>
                 <FontAwesomeIcon icon={faLocationDot} />
               </div>
@@ -92,7 +100,7 @@ function Navigation() {
           </div>
           <div className={navStyles.navbarRight}>
             <div className={navStyles.profileButton} onClick={toggleProfileDropdown}>
-            <FontAwesomeIcon icon={faCompass} />
+              <FontAwesomeIcon icon={faCompass} />
               <div className={`${navStyles.profileDropdown} ${isProfileDropdownOpen ? navStyles.open : ''}`}>
                 <button onClick={openEditProfileModal}>Edit Profile</button>
                 <button onClick={handleLogout}>Logout</button>

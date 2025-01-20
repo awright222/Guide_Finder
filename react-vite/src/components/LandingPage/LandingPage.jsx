@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-regular-svg-icons';
 import { useModal } from '../../context/Modal';
-import SignupFormModal from '../SignupFormModal/SignupFormModal';
+//import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import ReadMoreModal from '../ReadMoreModal';
 import landingStyles from './LandingPage.module.css';
 import logo from '../../../public/Logos/Logo.png';

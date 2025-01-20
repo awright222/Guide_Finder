@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   user: null,
   userRole: null, 
+  csrfToken: null, 
   loading: false,
   errors: null,
 };
@@ -15,21 +16,44 @@ export const restoreUser = createAsyncThunk(
       const res = await fetch("/api/auth/", {
         credentials: "include"
       });
-      const data = await res.json();
-      
+
       if (!res.ok) {
-        console.log("Failed to restore user:", data);
-        return rejectWithValue(data);
+        const errorText = await res.text(); 
+        console.log("Failed to restore user:", errorText);
+        return rejectWithValue(errorText);
       }
-      
+
+      const data = await res.json();
       console.log("User restored successfully:", data);
       return data;
-      } catch (error) {
+    } catch (error) {
       console.log("Error restoring user:", error.message);
       return rejectWithValue(error.message || "Trouble getting current user");
+    }
+  }
+);
+
+export const fetchCsrfToken = createAsyncThunk(
+  "session/fetchCsrfToken",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch("/api/auth/csrf/restore");
+      console.log('CSRF token fetch response status:', response.status); 
+      console.log('CSRF token fetch response headers:', response.headers); 
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
       }
-      }
-      );
+      const result = await response.json();
+      console.log('CSRF token fetched successfully:', result); 
+      return result;
+    } catch (error) {
+      console.error('Error fetching CSRF token:', error.message); 
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const login = createAsyncThunk(
   "session/login",
@@ -40,6 +64,7 @@ export const login = createAsyncThunk(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include"
       });
       const data = await res.json();
 
@@ -56,9 +81,6 @@ export const login = createAsyncThunk(
     }
   }
 );
-
-
-
 
 export const signup = createAsyncThunk(
   "session/signup",
@@ -101,7 +123,6 @@ export const signup = createAsyncThunk(
   }
 );
 
-
 export const logout = createAsyncThunk(
   "session/logout",
   async (_, { rejectWithValue }) => {
@@ -113,7 +134,7 @@ export const logout = createAsyncThunk(
       });
       console.log("Logout successful");
 
-      // Reset the Redux state
+  
       return { user: null, userRole: null };
     } catch (error) {
       console.log("Error logging out:", error.message);
@@ -126,18 +147,16 @@ export const updateProfile = createAsyncThunk(
   "session/updateProfile",
   async (userInfo, { rejectWithValue }) => {
     try {
-      // Extract the CSRF token from the cookies
       const csrfToken = document.cookie
         .split("; ")
         .find(row => row.startsWith("csrf_token="))
         ?.split("=")[1];
 
-      // Perform the fetch request to update the profile
       const res = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken, // Send the CSRF token
+          "X-CSRFToken": csrfToken, 
         },
         body: JSON.stringify(userInfo),
         credentials: "include", 
@@ -151,7 +170,6 @@ export const updateProfile = createAsyncThunk(
     }
   }
 );
-
 
 export const deleteUser = createAsyncThunk(
   "session/deleteUser",
@@ -186,13 +204,23 @@ const sessionSlice = createSlice({
     };
 
     builder
+      .addCase(restoreUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(restoreUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user'; 
-        console.log("!!!!!!!!!!!!!!!!!!!!!HERERestore user fulfilled:", action.payload); 
+        console.log("Restore user fulfilled:", action.payload); 
       })
       .addCase(restoreUser.rejected, setError)
+      .addCase(fetchCsrfToken.fulfilled, (state, action) => {
+        state.csrfToken = action.payload.csrf_token;
+      })
+      .addCase(fetchCsrfToken.rejected, setError)
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user; 
@@ -200,13 +228,20 @@ const sessionSlice = createSlice({
         console.log("Login fulfilled:", action.payload);
       })
       .addCase(login.rejected, setError)
+      .addCase(signup.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(signup.fulfilled, (state, action) => {
+        state.loading = false;
         state.user = action.payload;
         state.errors = null;
       })
       .addCase(signup.rejected, (state, action) => {
+        state.loading = false;
         state.errors = action.payload;
-      
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
@@ -214,11 +249,18 @@ const sessionSlice = createSlice({
         state.userRole = action.payload.is_guide ? 'guide' : action.payload.is_manager ? 'manager' : 'user';
       })
       .addCase(updateProfile.rejected, setError)
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(deleteUser.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
         state.userRole = null;
         console.log("Logout fulfilled");
+      })
+      .addCase(deleteUser.rejected, setError)
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;

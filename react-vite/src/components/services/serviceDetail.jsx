@@ -23,6 +23,7 @@ const ServiceDetail = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [editReview, setEditReview] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     if (serviceId) {
@@ -61,6 +62,11 @@ const ServiceDetail = () => {
 
   const handleMessageClick = () => {
     navigate('/messages', { state: { guideId: service.guide_id, guideName: service.guide_name } });
+  };
+
+  const handleBookingClick = () => {
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 3000);
   };
 
   if (!service) return <p>Loading...</p>;
@@ -114,10 +120,20 @@ const ServiceDetail = () => {
             Leave a Review
           </button>
           {currentUser && !currentUser.is_guide && (
-            <button className={serviceDetailStyles.messageButton} onClick={handleMessageClick}>
-              Message Guide
-            </button>
+            <>
+              <button className={serviceDetailStyles.bookingButton} onClick={handleBookingClick}>
+                Booking
+              </button>
+              <button className={serviceDetailStyles.messageButton} onClick={handleMessageClick}>
+                Message Guide
+              </button>
+            </>
           )}
+        </div>
+      )}
+      {showNotification && (
+        <div className={serviceDetailStyles.notificationBox}>
+          Feature coming soon!
         </div>
       )}
       <div className={serviceDetailStyles.reviewsSection}>

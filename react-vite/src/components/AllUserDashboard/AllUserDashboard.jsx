@@ -49,7 +49,7 @@ const AllUserDashboard = () => {
   };
 
   if (!user) {
-    return <div>Loading...</div>; // or any other loading indicator
+    return <div>Loading...</div>; 
   }
 
   const ownedServices = services.filter(service => service.guide_id === user.id);

@@ -103,7 +103,7 @@ const SearchServices = () => {
                 {search(services).map(service => {
                     const isFavorite = favorites.some(fav => fav.service_id === service.id);
                     const averageRating = averageRatings[service.id] || 0;
-                    console.log(`Service ID: ${service.id}, Average Rating: ${averageRating}`); // Debugging line
+                    console.log(`Service ID: ${service.id}, Average Rating: ${averageRating}`);
                     return (
                         <div key={service.id} className={searchServicesStyles.serviceCard} onClick={() => handleServiceClick(service.id)}>
                             <img src={service.images} alt={service.title} className={searchServicesStyles.serviceImage} />

@@ -22,14 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </ModalProvider>
   </ReduxProvider>
 </React.StrictMode>
-//   <React.StrictMode>
-//   <ReduxProvider store={store}>
-//     <ModalProvider>
-//       <RouterProvider router={router}>
-//         <Modal />
-//       </RouterProvider>
-//     </ModalProvider>
-//   </ReduxProvider>
-// </React.StrictMode>
 );
 

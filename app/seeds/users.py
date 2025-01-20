@@ -1,7 +1,7 @@
 from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
 
-# Adds demo users with detailed information
+
 def seed_users():
     demo_client = User(
         username='demo-client',
@@ -147,7 +147,7 @@ def seed_users():
         is_guide=False
     )
 
-    # Adding guides
+ 
     guide1 = User(
         username='JohnDoe',
         email='john.doe@gmail.com',
@@ -411,7 +411,7 @@ def seed_users():
 
     db.session.commit()
 
-# Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't have a built-in method to do this.
+
 def undo_users():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")

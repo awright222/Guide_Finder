@@ -89,14 +89,14 @@ button:hover {
   background-color: var(--muted-sky-blue);
   color: var(--deep-charcoal-gray);
   overflow: hidden;
-  padding: 20px; /* Added padding for more space around text */
-  box-sizing: border-box; /* Ensure padding is included in the height */
+  padding: 20px; 
+  box-sizing: border-box; 
 }
 
 .aboutBox p {
-  font-size: 1.2em; /* Increase the font size */
-  margin-bottom: 20px; /* Add space between text and button */
-  text-align: center; /* Center the text */
+  font-size: 1.2em;
+  margin-bottom: 20px; 
+  text-align: center;
 }
 
 .infoContainer {
@@ -126,30 +126,30 @@ button:hover {
 }
 
 .exploreBox p, .howItWorksBox p {
-  font-size: 1.2em; /* Increase the font size */
+  font-size: 1.2em; 
 }
 
 .exploreButton {
-  background-color: var(--off-white); /* Changed to off-white */
+  background-color: var(--off-white); 
   border: none;
-  color: var(--deep-charcoal-gray); /* Changed to dark gray */
+  color: var(--deep-charcoal-gray); 
   font-size: 1.5em;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 20px; /* Added padding for better appearance */
-  border-radius: 5px; /* Added border-radius for rounded corners */
+  padding: 10px 20px; 
+  border-radius: 5px; 
   transition: transform 0.2s, background-color 0.2s;
 }
 
 .exploreButton:hover {
   transform: scale(1.05); 
-  background-color: var(--soft-olive-green); /* Change background color on hover */
+  background-color: var(--soft-olive-green); 
 }
 
 .readMoreButton {
-  padding: 10px 20px; /* Increased padding for more space around text */
+  padding: 10px 20px; 
   background-color: var(--off-white); 
   color: var(--deep-charcoal-gray); 
   border: none;

@@ -125,10 +125,10 @@ def update_user(id):
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
-    # Allow manager to delete any user
+    
     if current_user.is_manager:
         user = User.query.get(id)
-    # Allow the logged-in user to delete their own account
+ 
     elif current_user.id == id:
         user = User.query.get(id)
     else:

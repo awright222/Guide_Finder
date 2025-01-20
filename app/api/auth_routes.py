@@ -4,14 +4,19 @@ from app.models import User, db
 from app.forms import LoginForm, SignUpForm
 from flask_wtf.csrf import generate_csrf
 from werkzeug.security import generate_password_hash
+import logging
 
 auth_routes = Blueprint('auth', __name__)
 
 @auth_routes.route('/')
+@login_required
 def authenticate():
+    logging.info('Authenticating user')
     if current_user.is_authenticated:
-        return current_user.to_dict()
-    return {'errors': {'message': 'Unauthorized'}}, 401
+        logging.info('User is authenticated: %s', current_user.to_dict())
+        return jsonify(current_user.to_dict())
+    logging.warning('User is not authenticated')
+    return jsonify({"message": "User is not authenticated"}), 401
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
@@ -21,7 +26,7 @@ def login():
         email = form.data['email']
         password = form.data['password']
         
-        # Check if the email belongs to a user
+        
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             login_user(user)
@@ -34,17 +39,19 @@ def login():
 @auth_routes.route('/logout', methods=['POST'])
 def logout():
     try:
-        logout_user()  # Clear the user session
-        session.clear()  # Clear server-side session data
-        response = jsonify({'message': 'User logged out'})
-        # cookie is deleted
-        response.delete_cookie('session', path='/', httponly=True)  
-        print("Session cookie deleted.")
-        return response
+        if current_user.is_authenticated:
+            logout_user()  
+            session.clear()  
+            response = jsonify({'message': 'User logged out'})
+            response.delete_cookie('session', path='/', httponly=True)  
+            logging.info("User logged out and session cookie deleted.")
+            return response
+        else:
+            logging.warning("Logout attempted without an authenticated user.")
+            return jsonify({'error': 'No user is currently logged in.'}), 400
     except Exception as e:
-        print(f"Error during logout: {e}")
+        logging.error(f"Error during logout: {e}")
         return jsonify({'error': str(e)}), 500
-
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
@@ -87,4 +94,5 @@ def unauthorized():
 
 @auth_routes.route('/csrf/restore', methods=['GET'])
 def restore_csrf():
+    logging.info('Restoring CSRF token')
     return jsonify({'csrf_token': generate_csrf()})

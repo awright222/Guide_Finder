@@ -7,6 +7,7 @@ import SearchServices from '../components/searchServices';
 import DirectMessages from "../components/Messages/DirectMessages";
 import CreateService from "../components/services/CreateService";
 import AllUserDashboard from "../components/AllUserDashboard";
+import UnderConstructionModal from "../components/UnderConstructionModal";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,12 @@ const router = createBrowserRouter([
       },
       {
         path: "messages",
-        element: <DirectMessages />,
+        element: (
+          <>
+            <DirectMessages />
+            <UnderConstructionModal /> 
+          </>
+        ),
       },
       {
         path: "create-service",

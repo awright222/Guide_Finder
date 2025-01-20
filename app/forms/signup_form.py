@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import User
 import re
 
-# Custom validation functions
+#
 def user_exists(form, field):
     email = field.data
     user = User.query.filter(User.email == email).first()
@@ -17,7 +17,7 @@ def username_exists(form, field):
     if user:
         raise ValidationError('Username is already in use.')
 
-# Custom password complexity validation
+
 def password_complexity(form, field):
     password = field.data
     if not re.search(r'[A-Z]', password):
@@ -29,13 +29,13 @@ def password_complexity(form, field):
     if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
         raise ValidationError('Password must contain at least one special character.')
 
-# Custom phone number validation
+
 def valid_phone_number(form, field):
     phone_number = re.sub(r'\D', '', field.data) 
     if len(phone_number) < 9 or len(phone_number) > 15:
         raise ValidationError('Invalid phone number. Please use a valid format.')
 
-# Conditional field validation for 'is_guide'
+
 def is_guide_required(form, field):
     if field.data and not form.businessname.data:
         raise ValidationError('Business name is required if you are a guide.')

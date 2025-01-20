@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchConversations, sendMessage, fetchMessages, deleteConversation } from '../../redux/messages';
-import { fetchServices } from '../../redux/services'; // Import fetchServices action
+import {
+  fetchConversations,
+  sendMessage,
+  fetchMessages,
+  deleteConversation,
+} from '../../redux/messages';
+import { fetchServices } from '../../redux/services';
+import { restoreUser, fetchCsrfToken } from '../../redux/session';
 import styles from './DirectMessages.module.css';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,141 +16,181 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 const DirectMessages = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const currentUser = useSelector((state) => state.session.user); // Get currentUser from Redux store
+  const currentUser = useSelector((state) => state.session.user);
+  const csrfToken = useSelector((state) => state.session.csrfToken);
   const [selectedConversation, setSelectedConversation] = useState(location.state || null);
   const [message, setMessage] = useState('');
-  const [selectedServiceId, setSelectedServiceId] = useState(location.state?.serviceId || ''); 
-  const [selectedServiceName, setSelectedServiceName] = useState(''); // New state for selected service name
+  const [selectedServiceId, setSelectedServiceId] = useState(location.state?.serviceId || '');
+  const [selectedServiceName, setSelectedServiceName] = useState('');
   const conversations = useSelector((state) => state.messages?.conversations || []);
   const messages = useSelector((state) => state.messages?.messages || []);
   const services = useSelector((state) => state.services?.items || []);
+  const loading = useSelector((state) => state.session.loading);
 
   useEffect(() => {
+    dispatch(restoreUser());
+    dispatch(fetchCsrfToken());
     dispatch(fetchConversations());
-    dispatch(fetchServices()); // Dispatch fetchServices action
+    dispatch(fetchServices());
   }, [dispatch]);
 
   useEffect(() => {
     if (selectedConversation) {
       const { user_id, guide_id } = selectedConversation;
-      console.log('Fetching messages for conversation:', selectedConversation); // Log selected conversation
       dispatch(fetchMessages({ userId: user_id, guideId: guide_id }));
     }
   }, [dispatch, selectedConversation]);
 
-  useEffect(() => {
-    console.log('Services in component:', services); // Log services in the component
-    services.forEach(service => {
-      console.log('Service:', service); // Log each service object
-    });
-  }, [services]);
-
-  useEffect(() => {
-    console.log('Initial selectedServiceId:', selectedServiceId); // Log initial selectedServiceId
-  }, [selectedServiceId]);
-
   const handleConversationClick = (conversation) => {
     setSelectedConversation(conversation);
     setSelectedServiceId(conversation.serviceId || '');
-    console.log('Selected conversation:', conversation); // Log selected conversation
+    dispatch(fetchMessages({ userId: conversation.user_id, guideId: conversation.guide_id }));
   };
 
   const handleDropdownChange = (e) => {
     const serviceId = e.target.value;
     setSelectedServiceId(serviceId);
     const selectedService = services.find((service) => service.id === parseInt(serviceId, 10));
-    setSelectedServiceName(selectedService ? selectedService.name : ''); // Set the selected service name
-    console.log('Selected service ID:', serviceId); // Log selected service ID
-    console.log('Selected service:', selectedService); // Log selected service
+    setSelectedServiceName(selectedService ? selectedService.title : '');
   };
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (message.trim() && selectedConversation) {
+    if (!currentUser) {
+      console.error('User is not authenticated');
+      return;
+    }
+    if (message.trim() && selectedServiceId) {
+      const selectedService = services.find((service) => service.id === parseInt(selectedServiceId, 10));
       const messageData = {
         message,
-        userId: currentUser.is_guide ? selectedConversation.user_id : null,
-        guideId: currentUser.is_guide ? null : selectedConversation.guide_id,
+        userId: currentUser.is_guide ? selectedConversation.user_id : currentUser.id,
+        guideId: currentUser.is_guide ? currentUser.id : selectedService.guide_id,
+        serviceId: selectedService.id,
       };
-      dispatch(sendMessage(messageData));
+      try {
+        await dispatch(sendMessage({ ...messageData, csrfToken })).unwrap();
+      } catch (error) {
+        console.error('Failed to send message:', error);
+      }
       setMessage('');
-      console.log('Message sent:', messageData); // Log message data
     }
   };
 
   const handleDeleteConversation = (conversationId) => {
     if (window.confirm("Are you sure you want to delete this conversation?")) {
       dispatch(deleteConversation(conversationId));
-      console.log('Deleted conversation ID:', conversationId); // Log deleted conversation ID
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!currentUser) {
+    return <div>User is not authenticated</div>;
+  }
+
   return (
     <div className={styles.messagesPage}>
-      <div className={styles.conversationsList}>
-        <h2>Conversations</h2>
-        <div className={styles.conversationsInnerBox}>
-          <ul>
-            {conversations.map((conversation) => (
-              <li
-                key={conversation.id}
-                className={selectedConversation?.id === conversation.id ? styles.selected : ''}
-                onClick={() => handleConversationClick(conversation)}
-              >
-                <img src={conversation.serviceImage} alt={conversation.serviceName} className={styles.thumbnail} />
-                <span>{conversation.serviceName}</span>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className={styles.trashIcon}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteConversation(conversation.id);
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
+      <div className={styles.boxContainer}>
+        <div className={styles.conversationsBox}>
+          <h2>Conversations</h2>
+          <div className={styles.conversationsInnerBox}>
+            <ul className={styles.conversationsList}>
+              {conversations.map((conversation) => (
+                <li
+                  key={conversation.id}
+                  className={
+                    selectedConversation?.id === conversation.id
+                      ? styles.selected
+                      : ''
+                  }
+                  onClick={() => handleConversationClick(conversation)}
+                >
+                  <div className={styles.conversationDetails}>
+                    <div className={styles.thumbnailBox}>
+                      <img
+                        src={conversation.serviceImage}
+                        alt={conversation.serviceName}
+                        className={styles.thumbnail}
+                      />
+                    </div>
+                    <div className={styles.detailsBox}>
+                      <span>{conversation.serviceName}</span>
+                      <span className={styles.guideName}>{conversation.guideName}</span>
+                    </div>
+                    <div className={styles.trashBox}>
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className={styles.trashIcon}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteConversation(conversation.id);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className={styles.messageThreadBox}>
+          <h2>Message Thread</h2>
+          <div className={styles.conversationsInnerBox}>
+            {selectedConversation && (
+              <div className={styles.scrollableBox}>
+                {messages.length === 0 ? (
+                  <p>No messages to display</p>
+                ) : (
+                  messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={
+                        msg.user_id === currentUser.id
+                          ? styles.sentMessage
+                          : styles.receivedMessage
+                      }
+                    >
+                      <p>{msg.message}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <div className={styles.chatArea}>
         <h2>Messages</h2>
 
-        {/* Dropdown for selecting services */}
         <select
           value={selectedServiceId}
           onChange={handleDropdownChange}
           className={styles.serviceDropdown}
         >
-          <option value="" disabled>Select a service...</option>
+          <option value="" disabled>
+            Select a service...
+          </option>
           {services.length > 0 ? (
             services.map((service) => (
               <option key={service.id} value={service.id}>
-                {service.name}
+                {service.title}
               </option>
             ))
           ) : (
-            <option value="" disabled>No services available</option>
+            <option value="" disabled>
+              No services available
+            </option>
           )}
         </select>
-
-        {/* Scrollable Messages Box */}
-        {selectedConversation && (
-          <div className={styles.scrollableBox}>
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={msg.user_id === currentUser.id ? styles.sentMessage : styles.receivedMessage}
-              >
-                <p>{msg.message}</p>
-              </div>
-            ))}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className={styles.messageForm}>
           <div className={styles.toField}>
@@ -158,7 +204,7 @@ const DirectMessages = () => {
             required
             className={styles.messageInput}
           />
-          <button type="submit" disabled={!message.trim() || !selectedConversation}>
+          <button type="submit" disabled={!message.trim() || !selectedServiceId}>
             Send
           </button>
         </form>

@@ -15,5 +15,5 @@ class Favorite(db.Model):
             'user_id': self.user_id,
             'service_id': self.service_id,
             'service_title': self.service.title,
-            'service_image': self.service.images.split(',')[0]  # Assuming images are stored as a comma-separated string
+            'service_image': self.service.images.split(',')[0]
         }

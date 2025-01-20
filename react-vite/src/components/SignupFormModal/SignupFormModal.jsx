@@ -6,7 +6,7 @@ import userSignupStyles from "./SignupForm.module.css";
 const SignUpFormModal = ({ closeModal, navigate }) => {
   const dispatch = useDispatch();
 
-  // Form state
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,21 +22,20 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
   const [insuranceProviderName, setInsuranceProviderName] = useState("");
   const [insuranceNumber, setInsuranceNumber] = useState("");
 
-  // Form validation state
+
   const [errors, setErrors] = useState({});
 
-  // Password visibility state
+ 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redux state for user
+ 
   const user = useSelector(state => state.session.user);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Reset errors at the start
+    setErrors({}); 
 
-    // Check if password meets the requirements
+
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     if (!passwordRegex.test(password)) {
       setErrors({ password: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
@@ -67,30 +66,30 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
     console.log("Server response:", serverResponse);
 
     if (serverResponse?.payload?.errors) {
-      // If there are errors returned from the backend, display them
+     
       console.error("Signup errors:", serverResponse.payload.errors);
       setErrors(serverResponse.payload.errors);
-      return; // Prevent form submission if there are errors
+      return; 
     } else if (serverResponse?.payload) {
-      // Only close modal if no errors exist
+     
       closeModal();
-      navigate("/dashboard"); // Updated navigation
+      navigate("/dashboard"); 
     }
   };
 
-  // Clear errors on modal close
+  
   const handleClose = () => {
     setErrors({});
     closeModal();
   };
 
-  // Redirect if user is already logged in
+ 
   if (user) {
-    navigate("/dashboard"); // Updated navigation
+    navigate("/dashboard"); 
     return null;
   }
 
-  // Prevent clicks inside the modal content from closing the modal
+
   const handleContentClick = (e) => {
     e.stopPropagation();
   };

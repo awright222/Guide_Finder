@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Thunks
+
 export const fetchServices = createAsyncThunk('services/fetchServices', async (filters = {}) => {
     console.log('Fetching services from API with filters:', filters);
     const query = new URLSearchParams(filters).toString();
     const response = await axios.get(`/api/services/search?${query}`, { withCredentials: true });
     
-    // Flatten
+    
     const services = Array.isArray(response.data) 
         ? response.data 
         : response.data.services || [];
@@ -36,7 +36,7 @@ export const deleteService = createAsyncThunk('services/deleteService', async (s
     return serviceId;
 });
 
-// Slice
+
 const servicesSlice = createSlice({
     name: 'services',
     initialState: {

@@ -7,7 +7,7 @@ export const fetchReviews = createAsyncThunk('reviews/fetchReviews', async (serv
     return { serviceId, reviews: response.data };
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      // Handle unauthorized error gracefully
+    
       return rejectWithValue('Unauthorized access');
     }
     throw error;
