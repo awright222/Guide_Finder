@@ -18,6 +18,7 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 RUN pip install email-validator
 
+
 COPY . .
 
 RUN flask db upgrade
