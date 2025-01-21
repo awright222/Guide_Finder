@@ -56,5 +56,9 @@ def seed_messages():
     db.session.commit()
 
 def undo_messages():
-    db.session.execute("DELETE FROM messages")
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.messages RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM messages"))
+
     db.session.commit()

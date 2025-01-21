@@ -417,5 +417,9 @@ def seed_services():
     db.session.commit()
 
 def undo_services():
-    db.session.execute("DELETE FROM services")
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM services"))
+
     db.session.commit()
