@@ -24,7 +24,7 @@ const SearchServices = () => {
         name: '',
         state: '',
         country: '',
-        experience_level: ''
+        experience_requirement: ''
     });
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const SearchServices = () => {
                     <input type="text" name="name" placeholder="Service Name" value={filters.name} onChange={handleChange} />
                     <input type="text" name="state" placeholder="State" value={filters.state} onChange={handleChange} />
                     <input type="text" name="country" placeholder="Country" value={filters.country} onChange={handleChange} />
-                    <select name="experience_level" value={filters.experience_level} onChange={handleChange}>
+                    <select name="experience_requirement" value={filters.experience_requirement} onChange={handleChange}>
                         <option value="">Select Experience Level</option>
                         {experienceLevels.map(level => (
                             <option key={level} value={level}>{level}</option>
