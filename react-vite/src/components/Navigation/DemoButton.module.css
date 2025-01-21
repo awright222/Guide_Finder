@@ -10,6 +10,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  box-shadow: none;
 }
 
 .dropdownButton .iconBox {
@@ -35,6 +36,7 @@
   display: flex;
   align-items: center;
   color: var(--off-white);
+  box-shadow: none;
 }
 
 .dropdownContent button:hover {
