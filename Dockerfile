@@ -10,6 +10,12 @@ ARG DATABASE_URL
 ARG SCHEMA
 ARG SECRET_KEY
 
+# ENV FLASK_APP=${FLASK_APP}
+# ENV FLASK_ENV=${FLASK_ENV}
+# ENV DATABASE_URL=${DATABASE_URL}
+# ENV SCHEMA=guide_finder_schema
+# ENV SECRET_KEY=${SECRET_KEY}
+
 WORKDIR /var/www
 
 COPY requirements.txt .
@@ -17,6 +23,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install psycopg2
 RUN pip install email-validator
+
 
 
 COPY . .
