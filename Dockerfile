@@ -21,6 +21,8 @@ RUN pip install email-validator
 
 COPY . .
 
+COPY create_schema.py .
+
 RUN flask db upgrade
 RUN python create_schema.py
 RUN flask seed all
