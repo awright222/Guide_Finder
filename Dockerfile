@@ -22,7 +22,7 @@ RUN pip install email-validator
 COPY . .
 
 RUN flask db upgrade
-RUN flask shell -c "from alembic import op; op.execute('CREATE SCHEMA IF NOT EXISTS guide_finder_schema')"
+RUN python create_schema.py
 RUN flask seed all
 
 CMD gunicorn app:app
