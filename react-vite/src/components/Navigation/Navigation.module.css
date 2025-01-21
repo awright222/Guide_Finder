@@ -299,3 +299,9 @@
 .navbar button {
   box-shadow: none; 
 }
+
+
+.sidePanel button {
+  box-shadow: none;
+  outline: none;
+}

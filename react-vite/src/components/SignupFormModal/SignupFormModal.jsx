@@ -6,7 +6,6 @@ import userSignupStyles from "./SignupForm.module.css";
 const SignUpFormModal = ({ closeModal, navigate }) => {
   const dispatch = useDispatch();
 
-
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,19 +21,20 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
   const [insuranceProviderName, setInsuranceProviderName] = useState("");
   const [insuranceNumber, setInsuranceNumber] = useState("");
 
-
   const [errors, setErrors] = useState({});
-
- 
   const [showPassword, setShowPassword] = useState(false);
 
- 
   const user = useSelector(state => state.session.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); 
+    setErrors({});
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrors({ email: "Invalid email address." });
+      return;
+    }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -66,29 +66,24 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
     console.log("Server response:", serverResponse);
 
     if (serverResponse?.payload?.errors) {
-     
       console.error("Signup errors:", serverResponse.payload.errors);
       setErrors(serverResponse.payload.errors);
-      return; 
+      return;
     } else if (serverResponse?.payload) {
-     
       closeModal();
-      navigate("/dashboard"); 
+      navigate("/dashboard");
     }
   };
 
-  
   const handleClose = () => {
     setErrors({});
     closeModal();
   };
 
- 
   if (user) {
-    navigate("/dashboard"); 
+    navigate("/dashboard");
     return null;
   }
-
 
   const handleContentClick = (e) => {
     e.stopPropagation();
@@ -132,6 +127,9 @@ const SignUpFormModal = ({ closeModal, navigate }) => {
               placeholder="Create a password"
               required
             />
+            <p className={userSignupStyles.passwordRequirements}>
+              Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+            </p>
             {errors.password && <p className={userSignupStyles.modalError}>{errors.password}</p>}
           </div>
           <div className={userSignupStyles.formGroupInline}>
