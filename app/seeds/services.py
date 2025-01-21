@@ -1,4 +1,5 @@
-from app.models import db, Service
+from app.models import db, Service, environment, SCHEMA
+from sqlalchemy import text
 
 def seed_services():
     services = [

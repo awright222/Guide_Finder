@@ -1,4 +1,5 @@
-from app.models import db, Message
+from app.models import db, Message, environment, SCHEMA
+from sqlalchemy import text
 from datetime import datetime
 
 def seed_messages():

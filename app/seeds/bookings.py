@@ -1,4 +1,5 @@
-from app.models import db, Booking
+from app.models import db, Booking, environment, SCHEMA
+from sqlalchemy import text
 from datetime import datetime, timedelta
 
 def seed_bookings():

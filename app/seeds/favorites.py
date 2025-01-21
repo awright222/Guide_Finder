@@ -1,4 +1,5 @@
-from app.models import db, Favorite
+from app.models import db, Favorite, environment, SCHEMA
+from sqlalchemy import text
 
 def seed_favorites():
     favorite1 = Favorite(user_id=1, service_id=1)

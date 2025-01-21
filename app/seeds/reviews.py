@@ -1,4 +1,5 @@
-from app.models import db, Review
+from app.models import db, Review, environment, SCHEMA
+from sqlalchemy import text
 
 def seed_reviews():
     reviews = [
