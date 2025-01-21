@@ -16,12 +16,12 @@ seed_commands = AppGroup('seed')
 def seed():
     if environment == 'production':
 
-        undo_users()
-        undo_services() 
-        undo_bookings()
-        undo_reviews()
-        undo_messages()
         undo_favorites()
+        undo_messages()
+        undo_reviews()
+        undo_bookings()
+        undo_services() 
+        undo_users()
     seed_users()
     seed_services() 
     seed_bookings()
@@ -33,9 +33,9 @@ def seed():
 
 @seed_commands.command('undo')
 def undo():
-    undo_bookings()
-    undo_services()
-    undo_users()
-    undo_reviews()
-    undo_messages()
     undo_favorites()
+    undo_messages()
+    undo_reviews()
+    undo_users()
+    undo_services()
+    undo_bookings()
