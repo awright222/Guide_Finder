@@ -152,7 +152,7 @@ main, always keeping it up to date.
 
 ## Database Schema Design
 
-![alt text](image.png)
+![Database Schema](guide-finder.png)
 
 ## API Documentation
 
