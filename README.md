@@ -8,6 +8,18 @@ This is a full-stack built with React, Redux-Toolkit, Python, PostgreSQL and AWS
 
 The frontend was built with React, Redux-Toolkit (with normalized data), and CSS. The backend was built with Python, PostgreSQL and the AWS S3 buckets for image upload.
 
+The idea behind this application is to help everyone access the outdoors. If you want to find a new hobby and don't know where to start, if you're traveling and don't know where to go, If you're experienced and just want to go with someone else, you can find your path to access the outdoors.
+
+![Guide Finder Landing Page](landing.png)
+![Guide Finder User Dashboard](dashboard.png)
+![Guide Finder Search](search.png)
+
+
+
+# Find Me!
+[Portfolio](https://www.alexwrightportfolio.com/)  | [Project](https://guide-finder.onrender.com/)  | [LinkedIn](www.linkedin.com/in/alexgwright2)  | [GitHub](https://github.com/awright222)
+
+
 ## Getting started
 
 1. Clone this repository (only this branch).
