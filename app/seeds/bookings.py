@@ -1,32 +1,80 @@
-from app.models import db, Booking, Service, environment, SCHEMA
+from app.models import db, Booking, environment, SCHEMA
 from sqlalchemy import text
 from datetime import datetime, timedelta
 
 def seed_bookings():
-    services = Service.query.all()
-    bookings = []
-
-    for i, service in enumerate(services, start=1):
-        start_date = datetime.now() + timedelta(days=10 + i)
-        if service.booking_length:
-            end_date = start_date + timedelta(days=service.booking_length)
-            cost = service.cost
-        elif service.daily_rate:
-            days = 5 
-            end_date = start_date + timedelta(days=days)
-            cost = service.daily_rate * days
-        else:
-            end_date = start_date + timedelta(days=1)  
-            cost = 300.00 
-
-        booking = Booking(
-            client_id=i, 
-            service_id=service.id,
-            start_date=start_date,
-            end_date=end_date,
-            cost=cost
+    bookings = [
+        Booking(
+            client_id=1,
+            service_id=1,
+            start_date=datetime.now() + timedelta(days=10),
+            end_date=datetime.now() + timedelta(days=15),
+            cost=300.00
+        ),
+        Booking(
+            client_id=2,
+            service_id=2,
+            start_date=datetime.now() + timedelta(days=11),
+            end_date=datetime.now() + timedelta(days=16),
+            cost=350.00
+        ),
+        Booking(
+            client_id=3,
+            service_id=3,
+            start_date=datetime.now() + timedelta(days=12),
+            end_date=datetime.now() + timedelta(days=17),
+            cost=250.00
+        ),
+        Booking(
+            client_id=4,
+            service_id=4,
+            start_date=datetime.now() + timedelta(days=13),
+            end_date=datetime.now() + timedelta(days=18),
+            cost=300.00
+        ),
+        Booking(
+            client_id=5,
+            service_id=5,
+            start_date=datetime.now() + timedelta(days=14),
+            end_date=datetime.now() + timedelta(days=19),
+            cost=400.00
+        ),
+        Booking(
+            client_id=6,
+            service_id=6,
+            start_date=datetime.now() + timedelta(days=15),
+            end_date=datetime.now() + timedelta(days=20),
+            cost=500.00
+        ),
+        Booking(
+            client_id=7,
+            service_id=7,
+            start_date=datetime.now() + timedelta(days=16),
+            end_date=datetime.now() + timedelta(days=21),
+            cost=450.00
+        ),
+        Booking(
+            client_id=8,
+            service_id=8,
+            start_date=datetime.now() + timedelta(days=17),
+            end_date=datetime.now() + timedelta(days=22),
+            cost=350.00
+        ),
+        Booking(
+            client_id=9,
+            service_id=9,
+            start_date=datetime.now() + timedelta(days=18),
+            end_date=datetime.now() + timedelta(days=23),
+            cost=400.00
+        ),
+        Booking(
+            client_id=10,
+            service_id=10,
+            start_date=datetime.now() + timedelta(days=19),
+            end_date=datetime.now() + timedelta(days=24),
+            cost=300.00
         )
-        bookings.append(booking)
+    ]
 
     for booking in bookings:
         db.session.add(booking)

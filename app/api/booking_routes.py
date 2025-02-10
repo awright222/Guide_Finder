@@ -58,16 +58,8 @@ def create_booking():
         form.end_date.data = datetime.fromisoformat(data.get('end_date'))
         form.cost.data = data.get('cost')
 
-        service = Service.query.get(form.service_id.data)
-        if not service:
-            return jsonify({"error": "Service not found"}), 404
-
-        if service.booking_length:
-            form.end_date.data = form.start_date.data + timedelta(days=service.booking_length)
-            form.cost.data = service.cost
-        elif service.daily_rate:
-            days = (form.end_date.data - form.start_date.data).days
-            form.cost.data = service.daily_rate * days
+        print(f"Parsed start_date: {form.start_date.data}")
+        print(f"Parsed end_date: {form.end_date.data}")
 
         if form.validate_on_submit():
             new_booking = Booking(
@@ -99,16 +91,8 @@ def update_booking(id):
         form.end_date.data = datetime.fromisoformat(data.get('end_date'))
         form.cost.data = data.get('cost')
 
-        service = Service.query.get(form.service_id.data)
-        if not service:
-            return jsonify({"error": "Service not found"}), 404
-
-        if service.booking_length:
-            form.end_date.data = form.start_date.data + timedelta(days=service.booking_length)
-            form.cost.data = service.cost
-        elif service.daily_rate:
-            days = (form.end_date.data - form.start_date.data).days
-            form.cost.data = service.daily_rate * days
+        print(f"Parsed start_date: {form.start_date.data}")
+        print(f"Parsed end_date: {form.end_date.data}")
 
         if form.validate_on_submit():
             booking = Booking.query.get(id)
