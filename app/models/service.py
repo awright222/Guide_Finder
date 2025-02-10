@@ -16,6 +16,8 @@ class Service(db.Model):
     reviews = db.Column(db.Text)
     experience_requirement = db.Column(db.String(50), nullable=False)
     about_guide = db.Column(db.Text, nullable=False)
+    booking_length = db.Column(db.Integer, nullable=True)  # Number of days for fixed-length services
+    daily_rate = db.Column(db.Float, nullable=True)  # Daily rate for services charged per day
 
     guide = db.relationship('User', back_populates='services')
     bookings = db.relationship('Booking', back_populates='service', cascade='all, delete-orphan')
@@ -36,7 +38,9 @@ class Service(db.Model):
             'images': self.images,
             'reviews': self.reviews,
             'experience_requirement': self.experience_requirement,
-            'about_guide': self.about_guide
+            'about_guide': self.about_guide,
+            'booking_length': self.booking_length,
+            'daily_rate': self.daily_rate
         }
 
         if not exclude_bookings:

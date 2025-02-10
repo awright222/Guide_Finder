@@ -15,3 +15,5 @@ class ServiceForm(FlaskForm):
     reviews = TextAreaField('reviews')
     experience_requirement = StringField('experience_requirement', validators=[DataRequired()])
     about_guide = TextAreaField('about_guide', validators=[DataRequired()])
+    booking_length = IntegerField('booking_length', validators=[NumberRange(min=1)], default=None)
+    daily_rate = FloatField('daily_rate', validators=[NumberRange(min=0)], default=None)

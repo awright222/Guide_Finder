@@ -16,7 +16,8 @@ def seed_services():
             images="https://sportsafield.com/wp-content/uploads/2020/09/NEW-LEAD_mule-deer-buck-QWERT-2017.jpg",
             reviews="An unforgettable hunting experience!",
             experience_requirement="Weekend Warrior",
-            about_guide="John has been guiding hunts for over 20 years."
+            about_guide="John has been guiding hunts for over 20 years.",
+            booking_length=5
         ),
         Service(
             guide_id=10,
@@ -30,7 +31,8 @@ def seed_services():
             images="https://www.coloradoan.com/gcdn/presto/2022/03/23/PFTC/a27cc1cb-257e-4e7d-8624-7b8dbe52c65f-big_boy.jpg",
             reviews="A challenging and rewarding expedition.",
             experience_requirement="Pro",
-            about_guide="John has been guiding hunts for over 20 years."
+            about_guide="John has been guiding hunts for over 20 years.",
+            booking_length=4
         ),
         
         # Jane Smith (guide_id=11)
@@ -42,11 +44,12 @@ def seed_services():
             country="USA",
             state="CA",
             description="Experience the thrill of climbing in Yosemite National Park.",
-            cost=4000.00,
+            cost=500.00,
             images="https://www.nps.gov/yose/planyourvisit/images/13072881_1006486406066308_4142589400643061469_o.jpg",
             reviews="An exhilarating climbing adventure!",
             experience_requirement="Pro",
-            about_guide="Jane is a professional climber with over 15 years of experience."
+            about_guide="Jane is a professional climber with over 15 years of experience.",
+            daily_rate=500.00
         ),
         Service(
             guide_id=11,
@@ -60,7 +63,8 @@ def seed_services():
             images="https://cdn.outsideonline.com/wp-content/uploads/2021/06/21/at-guide-lead_h.jpg",
             reviews="A memorable backpacking experience.",
             experience_requirement="Weekend Warrior",
-            about_guide="Jane is an experienced backpacker and guide."
+            about_guide="Jane is an experienced backpacker and guide.",
+            booking_length=7
         ),
 
         # Mike Johnson (guide_id=12)
@@ -76,7 +80,8 @@ def seed_services():
             images="https://www.evergladesguideservices.com/wp-content/uploads/2020/02/3E9AC5F1-6D65-4F9F-B693-940F1F28CC7C.jpeg",
             reviews="A fantastic fishing trip!",
             experience_requirement="No Experience",
-            about_guide="Mike is a professional fishing guide with over 10 years of experience."
+            about_guide="Mike is a professional fishing guide with over 10 years of experience.",
+            daily_rate=450.00
         ),
         Service(
             guide_id=12,
@@ -90,7 +95,8 @@ def seed_services():
             images="https://www.boatsetter.com/boating-resources/wp-content/uploads/2022/12/deep-sea-fishing-in-florida-mahi-mahi.jpg",
             reviews="An exhilarating fishing adventure!",
             experience_requirement="No Experience",
-            about_guide="Mike is a professional fishing guide with over 10 years of experience."
+            about_guide="Mike is a professional fishing guide with over 10 years of experience.",
+            daily_rate=500.00
         ),
 
         # Sarah Williams (guide_id=13)
@@ -106,7 +112,8 @@ def seed_services():
             images="https://freerangeamerican.us/wp-content/uploads/2022/09/MooseLead2.jpg",
             reviews="A once-in-a-lifetime hunting experience!",
             experience_requirement="Pro",
-            about_guide="Sarah is a seasoned hunter with over 12 years of experience."
+            about_guide="Sarah is a seasoned hunter with over 12 years of experience.",
+            booking_length=7
         ),
         Service(
             guide_id=13,
@@ -120,7 +127,8 @@ def seed_services():
             images="https://alaskaoutdoorssupersite.com/images/stories/activities/hunting/brown_bear/brown_bear_home.jpg",
             reviews="A thrilling and educational tour.",
             experience_requirement="Weekend Warrior",
-            about_guide="Sarah is a seasoned hunter with over 12 years of experience."
+            about_guide="Sarah is a seasoned hunter with over 12 years of experience.",
+            booking_length=5
         ),
         Service(
             guide_id=13,
@@ -130,11 +138,12 @@ def seed_services():
             country="USA",
             state="AK",
             description="Learn essential backcountry survival skills.",
-            cost=450.00,
+            cost=1450.00,
             images="https://alaskawild.org/wp-content/uploads/2017/06/Surviving-AK-blog-1.jpg",
             reviews="An invaluable training experience.",
             experience_requirement="No Experience",
-            about_guide="Sarah is a seasoned hunter with over 12 years of experience."
+            about_guide="Sarah is a seasoned hunter with over 12 years of experience.",
+            booking_length=3
         ),
 
         # Tom Brown (guide_id=14)
@@ -150,7 +159,8 @@ def seed_services():
             images="https://www.alaskaluxuryadventures.com/images/Destination_Alaska_2/1d99bef8-810f-46f0-b018-a1fd63056778.webp",
             reviews="An amazing fishing experience!",
             experience_requirement="No Experience",
-            about_guide="Tom is an expert fisherman with over 15 years of experience."
+            about_guide="Tom is an expert fisherman with over 15 years of experience.",
+            daily_rate=400.00
         ),
 
         # Emily Davis (guide_id=15)
@@ -166,7 +176,8 @@ def seed_services():
             images="https://www.travelyosemite.com/media/823902/yosemite-national-park-rock-climbing-anchoring-2.jpg?mode=pad&rnd=133074573020000000",
             reviews="A thrilling climbing experience!",
             experience_requirement="Weekend Warrior",
-            about_guide="Emily is a professional climber with over 10 years of experience."
+            about_guide="Emily is a professional climber with over 10 years of experience.",
+            daily_rate=300.00
         ),
         Service(
             guide_id=15,
@@ -180,7 +191,8 @@ def seed_services():
             images="https://images.squarespace-cdn.com/content/v1/638927954320c12d8056bbbd/1691535504202-CPEWX4SK99GSRFCNQ9CD/Drew+Smith+Yosemite.jpg?format=2500w",
             reviews="An excellent course for advanced climbers.",
             experience_requirement="Pro",
-            about_guide="Emily is a professional climber with over 10 years of experience."
+            about_guide="Emily is a professional climber with over 10 years of experience.",
+            daily_rate=500.00
         ),
 
         # David Miller (guide_id=16)
@@ -196,7 +208,8 @@ def seed_services():
             images="https://cdn.climbing.com/wp-content/uploads/2011/06/kate-rutherford-gets-a-pleasantly-tight.jpg",
             reviews="A breathtaking climbing experience!",
             experience_requirement="Weekend Warrior",
-            about_guide="David is an experienced climber with over 12 years of experience."
+            about_guide="David is an experienced climber with over 12 years of experience.",
+            daily_rate=350.00
         ),
 
         # Laura Wilson (guide_id=17)
@@ -208,11 +221,12 @@ def seed_services():
             country="USA",
             state="MT",
             description="Backpacking through the beautiful Glacier National Park.",
-            cost=450.00,
+            cost=1450.00,
             images="https://www.nps.gov/common/uploads/grid_builder/glac/crop16_9/35C1C409-BA92-67D8-0D8F5AAE09D24DE9.jpg?width=640&quality=90&mode=crop",
             reviews="An unforgettable backpacking adventure!",
             experience_requirement="Weekend Warrior",
-            about_guide="Laura is an experienced backpacker with over 8 years of experience."
+            about_guide="Laura is an experienced backpacker with over 8 years of experience.",
+            booking_length=4
         ),
         Service(
             guide_id=17,
@@ -222,11 +236,12 @@ def seed_services():
             country="USA",
             state="MT",
             description="Winter survival expedition in Glacier National Park.",
-            cost=500.00,
+            cost=1500.00,
             images="https://blog.glaciermt.com/wp-content/uploads/2022/12/Noah-Couser-GNP-Nordic-Ski-215-1024x683.jpg",
             reviews="A challenging and rewarding experience.",
             experience_requirement="Pro",
-            about_guide="Laura is an experienced backpacker with over 8 years of experience."
+            about_guide="Laura is an experienced backpacker with over 8 years of experience.",
+            booking_length=3
         ),
 
         # Chris Moore (guide_id=18)
@@ -242,7 +257,8 @@ def seed_services():
             images="https://www.awanderlustadventure.com/wordpress/wp-content/uploads/2018/11/DSC7974.jpg",
             reviews="Amazing experience!",
             experience_requirement="No Experience",
-            about_guide="Chris has been guiding rafting trips for over 10 years."
+            about_guide="Chris has been guiding rafting trips for over 10 years.",
+            daily_rate=350.00
         ),
         
         # Anna Taylor (guide_id=19)
@@ -258,7 +274,8 @@ def seed_services():
             images="https://img.freepik.com/premium-photo/aerial-view-extreme-sport-kayak-sails-mountain-river-rafting-whitewater-kayaking-generative-ai_87561-4212.jpg",
             reviews="A thrilling adventure!",
             experience_requirement="Weekend Warrior",
-            about_guide="Anna is an expert kayaker with over 8 years of experience."
+            about_guide="Anna is an expert kayaker with over 8 years of experience.",
+            daily_rate=620.00
         ),
 
         # James Anderson (guide_id=20)
@@ -270,11 +287,12 @@ def seed_services():
             country="Mexico",
             state="BCS",
             description="Explore the underwater world with our spear fishing tours.",
-            cost=1200.00,
+            cost=1600.00,
             images="https://cdn.shopify.com/s/files/1/0402/0528/7574/files/Captured_by_dan_Silveira_with_Sola_Video_Pro_15_000_s_4.jpg?v=1683140104",
             reviews="An unforgettable experience!",
             experience_requirement="Pro",
-            about_guide="James is a professional spear fisherman with over 15 years of experience."
+            about_guide="James is a professional spear fisherman with over 15 years of experience.",
+            booking_length=5
         ),
 
         # Olivia Martinez (guide_id=21)
@@ -286,15 +304,16 @@ def seed_services():
             country="New Zealand",
             state="OTG",
             description="Enjoy fly fishing in the beautiful waters of New Zealand.",
-            cost=1000.00,
+            cost=1200.00,
             images="https://assets.isu.pub/document-structure/190318122216-3a1760dc2cff206345621f36da71a1ab/v1/34a0e532c1416f15e3164bfd427da804.jpg?width=720&quality=85%2C50",
             reviews="A peaceful and rewarding experience.",
             experience_requirement="No Experience",
-            about_guide="Olivia is a passionate fly fisher with over 5 years of experience."
+            about_guide="Olivia is a passionate fly fisher with over 5 years of experience.",
+            booking_length=2
         ),
         Service(
             guide_id=21,
-            title="Saltwater Fly Casting Workshop",
+            title="Fly Casting Workshop",
             type="Other",
             location="Lake Wakatipu",
             country="New Zealand",
@@ -304,7 +323,8 @@ def seed_services():
             images="https://www.manictackleproject.com/cdn/shop/articles/kahawai-on-popper-fly_5d7312ca-fcd6-4380-a19e-1e7e3393fa7c.jpg?v=1637190151",
             reviews="Very informative and fun.",
             experience_requirement="No Experience",
-            about_guide="Olivia is a passionate fly fisher with over 5 years of experience."
+            about_guide="Olivia is a passionate fly fisher with over 5 years of experience.",
+            daily_rate=400.00
         ),
 
         # Ethan Thomas (guide_id=22)
@@ -320,7 +340,8 @@ def seed_services():
             images="https://www.montanaangler.com/sites/default/files/styles/full/public/uploads/2021-11/p1fl6tjf4lgvsfol14sj1inktjo6.jpg.jpg?itok=T45cTr04",
             reviews="A fantastic fishing trip!",
             experience_requirement="No Experience",
-            about_guide="Ethan is an experienced fly fishing guide with over 7 years of experience."
+            about_guide="Ethan is an experienced fly fishing guide with over 7 years of experience.",
+            daily_rate=400.00
         ),
 
         # Sophia White (guide_id=23)
@@ -332,11 +353,12 @@ def seed_services():
             country="USA",
             state="MT",
             description="Backcountry skiing in the beautiful mountains of Montana.",
-            cost=250.00,
+            cost=350.00,
             images="https://lh4.googleusercontent.com/qhy0vJjz1LdnizaPUlXGFzSfoZhgc1wj710_M3q2BZwYjnNS3q5YESy7DT014ac7jnd8ZpmXAkn2TYfF_Jd3lRT_j-qrNl0xGwiZp_G0TXomOCcEqCe-XXBjItkVDxGU0e8yd8yw",
             reviews="An exhilarating experience!",
             experience_requirement="Pro",
-            about_guide="Sophia is a professional skier with over 10 years of experience."
+            about_guide="Sophia is a professional skier with over 10 years of experience.",
+            daily_rate=350.00
         ),
         Service(
             guide_id=23,
@@ -350,7 +372,8 @@ def seed_services():
             images="https://i0.wp.com/avtraining.org/wp-content/uploads/2020/12/8L8A0801.1-copy.jpg",
             reviews="Very educational and important.",
             experience_requirement="No Experience",
-            about_guide="Sophia is a professional skier with over 10 years of experience."
+            about_guide="Sophia is a professional skier with over 10 years of experience.",
+            daily_rate=200.00
         ),
 
         # Tenzing Norgay (guide_id=24)
@@ -366,7 +389,8 @@ def seed_services():
             images="https://57hours.com/wp-content/uploads/2021/03/Mount-Everest-climbing13-888x591.jpg",
             reviews="A once-in-a-lifetime experience!",
             experience_requirement="Pro",
-            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
+            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits.",
+            booking_length=14
         ),
         Service(
             guide_id=24,
@@ -380,7 +404,8 @@ def seed_services():
             images="https://www.summitclimb.com/uploads/slides/images/slide_1588831580_everest-trek-nepal.jpg",
             reviews="Extremely helpful for high altitude acclimatization.",
             experience_requirement="Pro",
-            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
+            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits.",
+            booking_length=7
         ),
         Service(
             guide_id=24,
@@ -394,7 +419,8 @@ def seed_services():
             images="https://i.natgeofe.com/n/754066bf-ee3d-464f-99a5-6eda10b18c13/everest-basecamp-life-outside-dome_16x9.jpg",
             reviews="Essential for a successful climb.",
             experience_requirement="Weekend Warrior",
-            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
+            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits.",
+            booking_length=5
         ),
         Service(
             guide_id=24,
@@ -408,7 +434,8 @@ def seed_services():
             images="https://www.nepalhightrek.com/wp-content/uploads/2023/10/Village-in-Everest.jpg",
             reviews="A fascinating cultural experience.",
             experience_requirement="No Experience",
-            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits."
+            about_guide="Tenzing is a legendary mountaineer with numerous Everest summits.",
+            booking_length=3
         )
     ]
 
